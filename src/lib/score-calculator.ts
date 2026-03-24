@@ -24,7 +24,7 @@ function scoreSpf(spf: SpfResult): number {
 
 function scoreDkim(dkim: DkimResult): number {
   if (!dkim.found) return 0;
-  return dkim.selectorsFound.length >= 2 ? 25 : 15;
+  return 25;
 }
 
 function scoreDmarc(dmarc: DmarcResult): number {

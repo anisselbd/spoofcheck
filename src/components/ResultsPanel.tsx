@@ -16,7 +16,7 @@ function spfStatus(data: DnsCheckResponse) {
 
 function dkimStatus(data: DnsCheckResponse) {
   if (!data.dkim.found) return "fail";
-  return data.dkim.selectorsFound.length >= 2 ? "pass" : "warn";
+  return "pass";
 }
 
 function dmarcStatus(data: DnsCheckResponse) {
