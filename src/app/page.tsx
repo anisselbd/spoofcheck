@@ -1,37 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import type { DnsCheckResponse } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { cleanDomain } from "@/lib/validators";
 import DomainInput from "@/components/DomainInput";
-import ResultsPanel from "@/components/ResultsPanel";
 
 export default function Home() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<DnsCheckResponse | null>(null);
   const [error, setError] = useState("");
 
   async function handleCheck(domain: string) {
     setLoading(true);
     setError("");
-    setResults(null);
 
     try {
-      const res = await fetch("/api/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Erreur lors de la vérification");
-      }
-
-      const data: DnsCheckResponse = await res.json();
-      setResults(data);
+      const clean = cleanDomain(domain);
+      router.push(`/check/${encodeURIComponent(clean)}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inattendue");
-    } finally {
       setLoading(false);
     }
   }
@@ -70,8 +57,6 @@ export default function Home() {
               <p className="text-red-400">{error}</p>
             </div>
           )}
-
-          {results && <ResultsPanel data={results} />}
         </div>
       </main>
 

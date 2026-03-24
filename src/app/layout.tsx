@@ -5,6 +5,13 @@ export const metadata: Metadata = {
   title: "SpoofCheck — Votre domaine est-il usurpable ?",
   description:
     "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
+  openGraph: {
+    title: "SpoofCheck — Votre domaine est-il usurpable ?",
+    description:
+      "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
+    type: "website",
+    locale: "fr_FR",
+  },
 };
 
 export default function RootLayout({
