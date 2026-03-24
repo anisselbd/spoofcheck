@@ -3,6 +3,7 @@
 import type { DnsCheckResponse } from "@/lib/types";
 import ScoreGauge from "./ScoreGauge";
 import ResultCard from "./ResultCard";
+import CtaBanner from "./CtaBanner";
 
 interface ResultsPanelProps {
   data: DnsCheckResponse;
@@ -56,6 +57,8 @@ export default function ResultsPanel({ data }: ResultsPanelProps) {
             : "Ce domaine est protégé contre le spoofing"}
         </div>
       </div>
+
+      <CtaBanner domain={data.domain} spoofable={data.spoofable} score={data.score} />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <ResultCard
