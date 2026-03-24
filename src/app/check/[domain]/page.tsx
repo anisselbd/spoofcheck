@@ -7,17 +7,20 @@ import CheckPageClient from "@/components/CheckPageClient";
 
 type Props = {
   params: Promise<{ domain: string }>;
+  searchParams: Promise<{ dkim?: string }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { domain: rawDomain } = await params;
+  const { dkim: dkimSelector } = await searchParams;
   const domain = cleanDomain(decodeURIComponent(rawDomain));
 
   if (!isValidDomain(domain)) {
     return { title: "SpoofCheck" };
   }
 
-  const { spf, dkim, dmarc, mx } = await checkDomain(domain);
+  const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
+  const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
 
   const description = result.spoofable
@@ -40,15 +43,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CheckPage({ params }: Props) {
+export default async function CheckPage({ params, searchParams }: Props) {
   const { domain: rawDomain } = await params;
+  const { dkim: dkimSelector } = await searchParams;
   const domain = cleanDomain(decodeURIComponent(rawDomain));
 
   if (!isValidDomain(domain)) {
     redirect("/");
   }
 
-  const { spf, dkim, dmarc, mx } = await checkDomain(domain);
+  const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
+  const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
 
   return <CheckPageClient data={result} />;

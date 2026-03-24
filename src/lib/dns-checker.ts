@@ -88,15 +88,19 @@ export async function checkSpf(domain: string): Promise<SpfResult> {
   return result;
 }
 
-export async function checkDkim(domain: string): Promise<DkimResult> {
+export async function checkDkim(
+  domain: string,
+  extraSelectors?: string[]
+): Promise<DkimResult> {
+  const allSelectors = [...DKIM_SELECTORS, ...(extraSelectors || [])];
   const result: DkimResult = {
-    selectorsChecked: [...DKIM_SELECTORS],
+    selectorsChecked: allSelectors,
     selectorsFound: [],
     records: {},
     found: false,
   };
 
-  const checks = DKIM_SELECTORS.map(async (selector) => {
+  const checks = allSelectors.map(async (selector) => {
     const hostname = `${selector}._domainkey.${domain}`;
     const record = await resolveTxtSafe(hostname);
     if (record && (record.includes("p=") || record.includes("v=DKIM1"))) {
@@ -112,6 +116,19 @@ export async function checkDkim(domain: string): Promise<DkimResult> {
       result.selectorsFound.push(r.value.selector);
       result.records[r.value.selector] = r.value.record;
       result.found = true;
+    }
+  }
+
+  // If no standard selectors found, try to discover via _domainkey CNAME
+  if (!result.found) {
+    try {
+      const cnames = await resolver.resolveCname(`_domainkey.${domain}`);
+      if (cnames.length > 0) {
+        result.found = true;
+        result.selectorsFound.push("(CNAME détecté)");
+      }
+    } catch {
+      // No CNAME at _domainkey
     }
   }
 
@@ -199,6 +216,8 @@ export async function checkMx(domain: string): Promise<MxResult> {
       result.provider = "Zoho Mail";
     } else if (primary.includes("icloud") || primary.includes("apple")) {
       result.provider = "iCloud Mail";
+    } else if (primary.includes("securemail.pro")) {
+      result.provider = "Amen / team.blue";
     }
   } catch {
     // No MX records
@@ -207,10 +226,10 @@ export async function checkMx(domain: string): Promise<MxResult> {
   return result;
 }
 
-export async function checkDomain(domain: string) {
+export async function checkDomain(domain: string, extraDkimSelectors?: string[]) {
   const [spf, dkim, dmarc, mx] = await Promise.all([
     checkSpf(domain),
-    checkDkim(domain),
+    checkDkim(domain, extraDkimSelectors),
     checkDmarc(domain),
     checkMx(domain),
   ]);
