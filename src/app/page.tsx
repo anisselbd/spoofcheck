@@ -1,3 +1,4 @@
+import Link from "next/link";
 import HomeClient from "@/components/HomeClient";
 import FaqAccordion from "@/components/FaqAccordion";
 import { faqItems } from "@/lib/faq-data";
@@ -50,9 +51,17 @@ export default function Home() {
             <span className="text-white">Spoof</span>
             <span className="text-emerald-400">Check</span>
           </h1>
-          <span className="text-xs text-zinc-600">
-            Analyse gratuite de sécurité email
-          </span>
+          <nav className="flex items-center gap-4">
+            <Link
+              href="/guides"
+              className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+            >
+              Guides
+            </Link>
+            <span className="text-xs text-zinc-600">
+              Analyse gratuite de sécurité email
+            </span>
+          </nav>
         </div>
       </header>
 

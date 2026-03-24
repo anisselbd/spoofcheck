@@ -12,6 +12,8 @@ export default function ContactForm() {
   const [domaine, setDomaine] = useState(prefillDomain);
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function validate() {
@@ -28,10 +30,29 @@ export default function ContactForm() {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
+    setServerError("");
     if (Object.keys(errs).length > 0) return;
 
-    // For now, just show success. Backend will be handled later.
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nom, email, domaine, message }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setServerError(data.error || "Une erreur est survenue.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setServerError("Impossible de contacter le serveur. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -115,11 +136,18 @@ export default function ContactForm() {
         />
       </div>
 
+      {serverError && (
+        <div className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {serverError}
+        </div>
+      )}
+
       <button
         type="submit"
-        className="w-full h-11 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-200 transition-colors"
+        disabled={loading}
+        className="w-full h-11 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Envoyer ma demande
+        {loading ? "Envoi en cours..." : "Envoyer ma demande"}
       </button>
     </form>
   );

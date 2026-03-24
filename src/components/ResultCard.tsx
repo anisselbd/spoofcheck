@@ -46,20 +46,18 @@ export default function ResultCard({ title, status, record, details, delay = 0 }
         <div className="mt-3">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
+            className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors print:hidden"
           >
             {expanded ? "Masquer" : "Voir"} les détails ({details.length})
           </button>
-          {expanded && (
-            <ul className="mt-2 space-y-1">
-              {details.map((d, i) => (
-                <li key={i} className="text-sm text-zinc-400 flex gap-2">
-                  <span className="text-zinc-600 shrink-0">-</span>
-                  {d}
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className={`mt-2 space-y-1 ${expanded ? "" : "hidden"} print:!block`}>
+            {details.map((d, i) => (
+              <li key={i} className="text-sm text-zinc-400 flex gap-2">
+                <span className="text-zinc-600 shrink-0">-</span>
+                {d}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>

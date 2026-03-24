@@ -41,3 +41,206 @@ body {
 .animate-gauge {
   animation: gauge-fill 1s ease-out both;
 }
+
+/* ==========================================
+   Print / PDF export styles
+   ========================================== */
+@media print {
+  /* Reset background and colors for clean print */
+  :root {
+    --background: #ffffff;
+    --foreground: #111111;
+  }
+
+  body {
+    background: white !important;
+    color: #111 !important;
+    font-size: 12pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Disable animations in print */
+  .animate-fade-up,
+  .animate-gauge {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Hide CTA banner in print */
+  .bg-gradient-to-r {
+    display: none !important;
+  }
+
+  /* Print header */
+  .print-header {
+    text-align: center;
+    padding: 24pt 0 12pt;
+    border-bottom: 2pt solid #111;
+    margin-bottom: 12pt;
+  }
+
+  .print-header-logo {
+    font-size: 22pt;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #111;
+  }
+
+  .print-header-subtitle {
+    font-size: 10pt;
+    color: #666;
+    margin-top: 4pt;
+  }
+
+  .print-url {
+    color: #444 !important;
+    font-family: monospace;
+    font-size: 9pt !important;
+    word-break: break-all;
+  }
+
+  .print-date {
+    color: #666 !important;
+    font-size: 9pt !important;
+  }
+
+  /* Print footer */
+  .print-footer {
+    margin-top: 24pt;
+    padding: 12pt 24pt;
+    text-align: center;
+    font-size: 9pt;
+    color: #888;
+  }
+
+  .print-footer-line {
+    border-top: 1pt solid #ccc;
+    margin-bottom: 8pt;
+  }
+
+  /* Score gauge — make it visible in print */
+  svg circle {
+    stroke-dashoffset: inherit !important;
+  }
+
+  /* Score colors for print */
+  .text-emerald-400 {
+    color: #059669 !important;
+  }
+
+  .text-amber-400 {
+    color: #d97706 !important;
+  }
+
+  .text-red-400 {
+    color: #dc2626 !important;
+  }
+
+  .text-zinc-400,
+  .text-zinc-300 {
+    color: #444 !important;
+  }
+
+  .text-zinc-500,
+  .text-zinc-600 {
+    color: #666 !important;
+  }
+
+  /* Result cards — clean white cards with borders */
+  .rounded-xl.border.border-zinc-800 {
+    background: white !important;
+    border: 1pt solid #ccc !important;
+    border-radius: 8pt !important;
+    padding: 12pt !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Status badges — keep colors readable */
+  .bg-emerald-400\/10 {
+    background: #d1fae5 !important;
+    border-color: #059669 !important;
+  }
+
+  .bg-amber-400\/10 {
+    background: #fef3c7 !important;
+    border-color: #d97706 !important;
+  }
+
+  .bg-red-400\/10 {
+    background: #fee2e2 !important;
+    border-color: #dc2626 !important;
+  }
+
+  .bg-red-500\/10 {
+    background: #fee2e2 !important;
+    border-color: #dc2626 !important;
+    color: #dc2626 !important;
+  }
+
+  .bg-emerald-500\/10 {
+    background: #d1fae5 !important;
+    border-color: #059669 !important;
+    color: #059669 !important;
+  }
+
+  /* Code blocks — light background */
+  code,
+  .bg-zinc-800\/50 {
+    background: #f4f4f5 !important;
+    color: #111 !important;
+    border: 1pt solid #ddd !important;
+    font-size: 8pt;
+  }
+
+  /* Force details to be visible in print */
+  .rounded-xl.border.border-zinc-800 ul {
+    display: block !important;
+  }
+
+  /* Hide the "Voir les détails" button in print */
+  .rounded-xl.border.border-zinc-800 button {
+    display: none !important;
+  }
+
+  /* Recommendations */
+  .bg-zinc-800 {
+    background: #e4e4e7 !important;
+  }
+
+  .rounded-full.bg-zinc-800 {
+    background: #e4e4e7 !important;
+    color: #333 !important;
+  }
+
+  /* Grid layout for print */
+  .grid.gap-4.sm\:grid-cols-2 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8pt !important;
+  }
+
+  /* Page settings */
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+
+  /* Remove all dark backgrounds */
+  .bg-zinc-900,
+  .bg-zinc-900\/50 {
+    background: transparent !important;
+  }
+
+  /* White text should become dark */
+  .text-white {
+    color: #111 !important;
+  }
+
+  /* Links should not have underlines */
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}
