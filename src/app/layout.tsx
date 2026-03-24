@@ -2,15 +2,34 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://spoofchecker.online"),
   title: "SpoofCheck — Votre domaine est-il usurpable ?",
   description:
     "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
+  keywords: [
+    "spoofing email",
+    "SPF",
+    "DKIM",
+    "DMARC",
+    "sécurité email",
+    "vérification domaine",
+    "anti-spoofing",
+    "test email",
+    "protection email",
+    "usurpation email",
+  ],
   openGraph: {
     title: "SpoofCheck — Votre domaine est-il usurpable ?",
     description:
       "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
     type: "website",
     locale: "fr_FR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SpoofCheck — Votre domaine est-il usurpable ?",
+    description:
+      "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
   },
 };
 

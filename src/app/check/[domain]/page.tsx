@@ -25,12 +25,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : `${domain} est protégé contre le spoofing — Score ${result.score}/100 (${result.grade}). Vérifiez votre domaine gratuitement.`;
 
   return {
-    title: `SpoofCheck — ${domain}`,
+    title: `Analyse email de ${domain} — SpoofCheck`,
     description,
     openGraph: {
-      title: `SpoofCheck — ${domain}`,
+      title: `Analyse email de ${domain} — SpoofCheck`,
       description,
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Analyse email de ${domain} — SpoofCheck`,
+      description,
     },
   };
 }

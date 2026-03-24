@@ -1,30 +1,49 @@
-"use client";
+import HomeClient from "@/components/HomeClient";
+import FaqAccordion from "@/components/FaqAccordion";
+import { faqItems } from "@/lib/faq-data";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { cleanDomain } from "@/lib/validators";
-import DomainInput from "@/components/DomainInput";
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+
+const webAppJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "SpoofCheck",
+  url: "https://spoofchecker.online",
+  description:
+    "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
+  applicationCategory: "SecurityApplication",
+  operatingSystem: "Tout navigateur web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "EUR",
+  },
+  inLanguage: "fr",
+};
 
 export default function Home() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleCheck(domain: string) {
-    setLoading(true);
-    setError("");
-
-    try {
-      const clean = cleanDomain(domain);
-      router.push(`/check/${encodeURIComponent(clean)}`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inattendue");
-      setLoading(false);
-    }
-  }
-
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
+      />
+
       <header className="py-6 px-6 border-b border-zinc-800/50">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <h1 className="text-xl font-bold tracking-tight">
@@ -50,13 +69,14 @@ export default function Home() {
             </p>
           </div>
 
-          <DomainInput onCheck={handleCheck} loading={loading} />
+          <HomeClient />
 
-          {error && (
-            <div className="text-center">
-              <p className="text-red-400">{error}</p>
-            </div>
-          )}
+          <section className="space-y-6 pt-8">
+            <h2 className="text-2xl font-bold tracking-tight text-center">
+              Questions fréquentes
+            </h2>
+            <FaqAccordion />
+          </section>
         </div>
       </main>
 

@@ -4,9 +4,15 @@ import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "SpoofCheck — Sécurisez votre domaine",
+  title: "Sécurisez votre domaine — SpoofCheck",
   description:
-    "Correction SPF, DKIM et DMARC par un expert. Protégez votre domaine contre le spoofing email à partir de 79€.",
+    "Service de correction SPF, DKIM et DMARC par un expert. Protégez votre domaine contre le spoofing email et l'usurpation d'identité à partir de 79€.",
+  twitter: {
+    card: "summary_large_image",
+    title: "Sécurisez votre domaine — SpoofCheck",
+    description:
+      "Service de correction SPF, DKIM et DMARC par un expert. Protégez votre domaine contre le spoofing et l'usurpation d'identité.",
+  },
 };
 
 export default function ContactPage() {
