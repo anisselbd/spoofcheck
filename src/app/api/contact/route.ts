@@ -134,9 +134,10 @@ export async function POST(request: Request) {
 
     return Response.json({ success: true });
   } catch (err) {
-    console.error("Erreur envoi email contact:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("Erreur envoi email contact:", message);
     return Response.json(
-      { error: "Une erreur est survenue lors de l'envoi. Veuillez réessayer." },
+      { error: `Erreur d'envoi : ${message}` },
       { status: 500 }
     );
   }
