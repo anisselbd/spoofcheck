@@ -1,55 +1,36 @@
 import { headers } from "next/headers";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 export const dynamic = "force-dynamic";
 
-// ---------------------------------------------------------------------------
-// Rate limiter (en memoire, max 5 requetes par IP par heure)
-// ---------------------------------------------------------------------------
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const RATE_LIMIT_MAX = 5;
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 heure
+// Rate limiter (max 5 per IP per hour)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
-
   if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    rateLimitMap.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 });
     return false;
   }
-
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return true;
-  }
-
+  if (entry.count >= 5) return true;
   entry.count++;
   return false;
 }
 
-// ---------------------------------------------------------------------------
-// Validation
-// ---------------------------------------------------------------------------
-function validateBody(body: Record<string, unknown>): string | null {
-  const nom = typeof body.nom === "string" ? body.nom.trim() : "";
-  const email = typeof body.email === "string" ? body.email.trim() : "";
-  const domaine = typeof body.domaine === "string" ? body.domaine.trim() : "";
-
-  if (!nom) return "Le nom est requis";
-  if (!email) return "L'email est requis";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email invalide";
-  if (!domaine) return "Le domaine est requis";
-
-  return null;
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-// ---------------------------------------------------------------------------
-// POST handler
-// ---------------------------------------------------------------------------
 export async function POST(request: Request) {
   try {
-    // --- Rate limiting ---
     const hdrs = await headers();
     const ip =
       hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -63,96 +44,41 @@ export async function POST(request: Request) {
       );
     }
 
-    // --- Parse & validate ---
     const body = await request.json();
-    const validationError = validateBody(body);
-    if (validationError) {
-      return Response.json({ error: validationError }, { status: 400 });
-    }
-
-    const nom = (body.nom as string).trim();
-    const email = (body.email as string).trim();
-    const domaine = (body.domaine as string).trim();
+    const nom = typeof body.nom === "string" ? body.nom.trim() : "";
+    const email = typeof body.email === "string" ? body.email.trim() : "";
+    const domaine = typeof body.domaine === "string" ? body.domaine.trim() : "";
     const message = typeof body.message === "string" ? body.message.trim() : "";
 
-    // --- Send email via SMTP ---
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: { rejectUnauthorized: false },
-      connectionTimeout: 10000,
-    });
+    if (!nom) return Response.json({ error: "Le nom est requis" }, { status: 400 });
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return Response.json({ error: "Email invalide" }, { status: 400 });
+    if (!domaine) return Response.json({ error: "Le domaine est requis" }, { status: 400 });
 
-    const htmlBody = `
-<h2>Nouvelle demande de devis</h2>
-<table style="border-collapse:collapse;font-family:sans-serif;">
-  <tr>
-    <td style="padding:6px 12px;font-weight:bold;">Nom</td>
-    <td style="padding:6px 12px;">${escapeHtml(nom)}</td>
-  </tr>
-  <tr>
-    <td style="padding:6px 12px;font-weight:bold;">Email</td>
-    <td style="padding:6px 12px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td>
-  </tr>
-  <tr>
-    <td style="padding:6px 12px;font-weight:bold;">Domaine</td>
-    <td style="padding:6px 12px;">${escapeHtml(domaine)}</td>
-  </tr>
-  ${
-    message
-      ? `<tr>
-    <td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Message</td>
-    <td style="padding:6px 12px;white-space:pre-wrap;">${escapeHtml(message)}</td>
-  </tr>`
-      : ""
-  }
-</table>
-`;
-
-    const textBody = [
-      `Nouvelle demande de devis`,
-      ``,
-      `Nom : ${nom}`,
-      `Email : ${email}`,
-      `Domaine : ${domaine}`,
-      message ? `Message : ${message}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    await transporter.sendMail({
-      from: `"SpoofCheck" <${process.env.SMTP_USER}>`,
+    const { error } = await resend.emails.send({
+      from: "SpoofCheck <onboarding@resend.dev>",
       to: "contact@spoofchecker.online",
       replyTo: email,
       subject: `[SpoofCheck] Demande de devis — ${domaine}`,
-      text: textBody,
-      html: htmlBody,
+      html: `
+<h2>Nouvelle demande de devis</h2>
+<table style="border-collapse:collapse;font-family:sans-serif;">
+  <tr><td style="padding:6px 12px;font-weight:bold;">Nom</td><td style="padding:6px 12px;">${escapeHtml(nom)}</td></tr>
+  <tr><td style="padding:6px 12px;font-weight:bold;">Email</td><td style="padding:6px 12px;">${escapeHtml(email)}</td></tr>
+  <tr><td style="padding:6px 12px;font-weight:bold;">Domaine</td><td style="padding:6px 12px;">${escapeHtml(domaine)}</td></tr>
+  ${message ? `<tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;">Message</td><td style="padding:6px 12px;white-space:pre-wrap;">${escapeHtml(message)}</td></tr>` : ""}
+</table>`,
     });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return Response.json({ error: `Erreur d'envoi : ${error.message}` }, { status: 500 });
+    }
 
     return Response.json({ success: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error("Erreur envoi email contact:", message);
-    return Response.json(
-      { error: `Erreur d'envoi : ${message}` },
-      { status: 500 }
-    );
+    console.error("Erreur contact:", message);
+    return Response.json({ error: `Erreur : ${message}` }, { status: 500 });
   }
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
