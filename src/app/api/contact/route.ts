@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     if (!domaine) return Response.json({ error: "Le domaine est requis" }, { status: 400 });
 
     const { error } = await resend.emails.send({
-      from: "SpoofCheck <onboarding@resend.dev>",
+      from: "SpoofCheck <contact@spoofchecker.online>",
       to: "contact@spoofchecker.online",
       replyTo: email,
       subject: `[SpoofCheck] Demande de devis — ${domaine}`,
