@@ -52,7 +52,7 @@ export default function CheckPageClient({ data, lang, dict }: CheckPageClientPro
               href={lang === "fr" ? `/en/check/${data.domain}` : `/fr/check/${data.domain}`}
               className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
             >
-              {lang === "fr" ? "EN" : "FR"}
+              {lang === "fr" ? "🇬🇧" : "🇫🇷"}
             </Link>
             <span className="text-xs text-zinc-600">
               {dict.common.tagline}

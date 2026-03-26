@@ -71,7 +71,7 @@ export default async function Home({
               href={lang === "fr" ? "/en" : "/fr"}
               className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
             >
-              {lang === "fr" ? "EN" : "FR"}
+              {lang === "fr" ? "🇬🇧" : "🇫🇷"}
             </Link>
             <span className="text-xs text-zinc-600">
               {dict.common.tagline}

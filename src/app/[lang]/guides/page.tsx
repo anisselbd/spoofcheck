@@ -79,7 +79,7 @@ export default async function GuidesIndexPage({
               href={lang === "fr" ? "/en/guides" : "/fr/guides"}
               className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
             >
-              {lang === "fr" ? "EN" : "FR"}
+              {lang === "fr" ? "🇬🇧" : "🇫🇷"}
             </Link>
             <Link
               href={`/${lang}`}
