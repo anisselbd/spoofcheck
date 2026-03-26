@@ -4,22 +4,34 @@ import { useState } from "react";
 
 type Status = "pass" | "warn" | "fail";
 
+interface ResultCardDict {
+  statusPass: string;
+  statusWarn: string;
+  statusFail: string;
+  noRecordFound: string;
+  hideDetails: string;
+  showDetails: string;
+  detailsSuffix: string;
+}
+
 interface ResultCardProps {
   title: string;
   status: Status;
   record: string | null;
   details: string[];
   delay?: number;
+  dict: ResultCardDict;
 }
 
-const statusConfig: Record<Status, { label: string; color: string; bg: string }> = {
-  pass: { label: "OK", color: "text-emerald-400", bg: "bg-emerald-400/10 border-emerald-400/20" },
-  warn: { label: "Attention", color: "text-amber-400", bg: "bg-amber-400/10 border-amber-400/20" },
-  fail: { label: "Absent", color: "text-red-400", bg: "bg-red-400/10 border-red-400/20" },
-};
-
-export default function ResultCard({ title, status, record, details, delay = 0 }: ResultCardProps) {
+export default function ResultCard({ title, status, record, details, delay = 0, dict }: ResultCardProps) {
   const [expanded, setExpanded] = useState(false);
+
+  const statusConfig: Record<Status, { label: string; color: string; bg: string }> = {
+    pass: { label: dict.statusPass, color: "text-emerald-400", bg: "bg-emerald-400/10 border-emerald-400/20" },
+    warn: { label: dict.statusWarn, color: "text-amber-400", bg: "bg-amber-400/10 border-amber-400/20" },
+    fail: { label: dict.statusFail, color: "text-red-400", bg: "bg-red-400/10 border-red-400/20" },
+  };
+
   const config = statusConfig[status];
 
   return (
@@ -39,7 +51,7 @@ export default function ResultCard({ title, status, record, details, delay = 0 }
           {record}
         </code>
       ) : (
-        <p className="text-sm text-zinc-500 italic">Aucun enregistrement trouvé</p>
+        <p className="text-sm text-zinc-500 italic">{dict.noRecordFound}</p>
       )}
 
       {details.length > 0 && (
@@ -48,7 +60,7 @@ export default function ResultCard({ title, status, record, details, delay = 0 }
             onClick={() => setExpanded(!expanded)}
             className="text-sm text-zinc-400 hover:text-zinc-200 transition-colors print:hidden"
           >
-            {expanded ? "Masquer" : "Voir"} les détails ({details.length})
+            {expanded ? dict.hideDetails : dict.showDetails} {dict.detailsSuffix} ({details.length})
           </button>
           <ul className={`mt-2 space-y-1 ${expanded ? "" : "hidden"} print:!block`}>
             {details.map((d, i) => (

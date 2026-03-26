@@ -67,37 +67,25 @@ function buildRecommendations(
   const recs: string[] = [];
 
   if (!dmarc.found) {
-    recs.push(
-      'Ajoutez un enregistrement DMARC : _dmarc.votredomaine TXT "v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:dmarc@votredomaine"'
-    );
+    recs.push("rec_add_dmarc");
   } else if (dmarc.policy === "none") {
-    recs.push(
-      "Changez votre politique DMARC de p=none à p=reject pour bloquer le spoofing"
-    );
+    recs.push("rec_dmarc_none_to_reject");
   } else if (dmarc.policy === "quarantine") {
-    recs.push(
-      "Passez votre politique DMARC de p=quarantine à p=reject pour un blocage total"
-    );
+    recs.push("rec_dmarc_quarantine_to_reject");
   }
 
   if (!dmarc.reportingConfigured && dmarc.found) {
-    recs.push(
-      "Ajoutez rua=mailto:dmarc@votredomaine à votre DMARC pour recevoir les rapports"
-    );
+    recs.push("rec_add_rua");
   }
 
   if (!spf.found) {
-    recs.push(
-      'Ajoutez un enregistrement SPF : votredomaine TXT "v=spf1 include:votrefournisseur -all"'
-    );
+    recs.push("rec_add_spf");
   } else if (!spf.isStrict) {
-    recs.push("Durcissez votre SPF en remplaçant ~all par -all (hardfail)");
+    recs.push("rec_harden_spf");
   }
 
   if (!dkim.found) {
-    recs.push(
-      "Activez DKIM dans votre fournisseur mail et ajoutez la clé publique dans votre zone DNS"
-    );
+    recs.push("rec_add_dkim");
   }
 
   return recs;

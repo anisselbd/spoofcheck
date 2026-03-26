@@ -66,19 +66,19 @@ export default function DkimGuidePage() {
 
       <header className="py-6 px-6 border-b border-zinc-800/50">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
+          <Link href="/fr" className="text-xl font-bold tracking-tight">
             <span className="text-white">Spoof</span>
             <span className="text-emerald-400">Check</span>
           </Link>
           <nav className="flex items-center gap-4">
             <Link
-              href="/guides"
+              href="/fr/guides"
               className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
             >
               Guides
             </Link>
             <Link
-              href="/"
+              href="/fr"
               className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
             >
               Tester mon domaine
@@ -91,7 +91,7 @@ export default function DkimGuidePage() {
         <article className="max-w-3xl w-full space-y-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-sm text-zinc-500">
-              <Link href="/guides" className="hover:text-zinc-300 transition-colors">
+              <Link href="/fr/guides" className="hover:text-zinc-300 transition-colors">
                 Guides
               </Link>
               <span>/</span>
@@ -120,18 +120,18 @@ export default function DkimGuidePage() {
               </p>
               <p>
                 Contrairement au{" "}
-                <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   SPF
                 </Link>{" "}
                 qui verifie uniquement l'IP de l'expediteur, le DKIM garantit l'<strong className="text-zinc-100">integrite du message</strong> lui-meme. Meme si un email est relaie par plusieurs serveurs, la signature DKIM permet de prouver que le contenu n'a pas ete modifie.
               </p>
               <p>
                 Le DKIM est un composant essentiel de la securite email. Combine avec{" "}
-                <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   SPF
                 </Link>{" "}
                 et{" "}
-                <Link href="/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   DMARC
                 </Link>
                 , il constitue le triptyque de base pour proteger un domaine contre l'usurpation d'identite email.
@@ -249,7 +249,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
                 </h3>
                 <p>
                   Envoyez un email de test et verifiez les en-tetes pour confirmer la presence d'un en-tete <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code> valide. Utilisez{" "}
-                  <Link href="/" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     notre outil de verification gratuit
                   </Link>{" "}
                   pour valider que l'enregistrement DNS est correctement publie.
@@ -306,7 +306,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
                 </h3>
                 <p>
                   Chaque service qui envoie des emails en votre nom (newsletter, CRM, support) doit avoir son propre enregistrement DKIM. Sans cela, leurs emails ne passeront pas la verification{" "}
-                  <Link href="/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DMARC
                   </Link>.
                 </p>
@@ -334,7 +334,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
                   Quelle est la difference entre SPF et DKIM ?
                 </h3>
                 <p className="text-zinc-300 leading-relaxed">
-                  <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     SPF
                   </Link>{" "}
                   verifie que le serveur d'envoi est autorise a envoyer pour votre domaine (verification de l'IP). DKIM verifie que le contenu de l'email n'a pas ete modifie et qu'il est bien signe par votre domaine (verification cryptographique). Les deux sont complementaires : SPF authentifie le serveur, DKIM authentifie le message.
@@ -347,7 +347,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
                 </h3>
                 <p className="text-zinc-300 leading-relaxed">
                   Oui, contrairement au{" "}
-                  <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     SPF
                   </Link>{" "}
                   qui n'accepte qu'un seul enregistrement, vous pouvez avoir autant d'enregistrements DKIM que necessaire. Chaque service d'envoi utilise un selecteur different, ce qui cree des enregistrements DNS distincts. C'est la pratique recommandee.
@@ -374,7 +374,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Testez votre configuration SPF, DKIM et DMARC en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
             </p>
             <Link
-              href="/"
+              href="/fr"
               className="inline-flex items-center h-11 px-8 rounded-xl bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-400 transition-colors"
             >
               Tester mon domaine
@@ -388,7 +388,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <Link
-                href="/guides/spf"
+                href="/fr/guides/spf"
                 className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
               >
                 <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">
@@ -399,7 +399,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
                 </p>
               </Link>
               <Link
-                href="/guides/dmarc"
+                href="/fr/guides/dmarc"
                 className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
               >
                 <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">

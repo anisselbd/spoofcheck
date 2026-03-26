@@ -66,19 +66,19 @@ export default function SpfGuidePage() {
 
       <header className="py-6 px-6 border-b border-zinc-800/50">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
+          <Link href="/fr" className="text-xl font-bold tracking-tight">
             <span className="text-white">Spoof</span>
             <span className="text-emerald-400">Check</span>
           </Link>
           <nav className="flex items-center gap-4">
             <Link
-              href="/guides"
+              href="/fr/guides"
               className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
             >
               Guides
             </Link>
             <Link
-              href="/"
+              href="/fr"
               className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
             >
               Tester mon domaine
@@ -91,7 +91,7 @@ export default function SpfGuidePage() {
         <article className="max-w-3xl w-full space-y-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-sm text-zinc-500">
-              <Link href="/guides" className="hover:text-zinc-300 transition-colors">
+              <Link href="/fr/guides" className="hover:text-zinc-300 transition-colors">
                 Guides
               </Link>
               <span>/</span>
@@ -123,11 +123,11 @@ export default function SpfGuidePage() {
               </p>
               <p>
                 Le SPF seul ne suffit pas : il doit etre combine avec{" "}
-                <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   DKIM (DomainKeys Identified Mail)
                 </Link>{" "}
                 et{" "}
-                <Link href="/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   DMARC (Domain-based Message Authentication)
                 </Link>{" "}
                 pour une protection complete de votre domaine.
@@ -246,7 +246,7 @@ export default function SpfGuidePage() {
                 </h3>
                 <p>
                   Apres la propagation DNS (quelques minutes a 48 heures), testez votre enregistrement SPF. Vous pouvez utiliser{" "}
-                  <Link href="/" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     notre outil de verification gratuit
                   </Link>{" "}
                   pour valider que tout fonctionne correctement.
@@ -303,11 +303,11 @@ export default function SpfGuidePage() {
                 </h3>
                 <p>
                   Le SPF seul est insuffisant. Sans{" "}
-                  <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DKIM
                   </Link>{" "}
                   et{" "}
-                  <Link href="/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DMARC
                   </Link>
                   , un attaquant peut toujours contourner le SPF en utilisant un domaine d'enveloppe different du domaine visible dans le champ "From".
@@ -328,11 +328,11 @@ export default function SpfGuidePage() {
                 </h3>
                 <p className="text-zinc-300 leading-relaxed">
                   Non. Le SPF verifie uniquement l'adresse d'enveloppe (MAIL FROM), pas l'adresse affichee au destinataire (le header "From"). Un attaquant peut contourner le SPF en utilisant un domaine d'enveloppe different. C'est pourquoi vous devez obligatoirement combiner le SPF avec{" "}
-                  <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DKIM
                   </Link>{" "}
                   et{" "}
-                  <Link href="/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DMARC
                   </Link>{" "}
                   pour une protection complete.
@@ -354,7 +354,7 @@ export default function SpfGuidePage() {
                 </h3>
                 <p className="text-zinc-300 leading-relaxed">
                   <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> (hard fail) indique que les emails provenant de serveurs non autorises doivent etre rejetes. <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">~all</code> (soft fail) indique qu'ils doivent etre acceptes mais marques comme suspects. En pratique, avec une politique{" "}
-                  <Link href="/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dmarc" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DMARC
                   </Link>{" "}
                   correcte, la difference est minime. Neanmoins, <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> est recommande pour une securite maximale.
@@ -372,7 +372,7 @@ export default function SpfGuidePage() {
               Testez votre configuration SPF, DKIM et DMARC en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
             </p>
             <Link
-              href="/"
+              href="/fr"
               className="inline-flex items-center h-11 px-8 rounded-xl bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-400 transition-colors"
             >
               Tester mon domaine
@@ -386,7 +386,7 @@ export default function SpfGuidePage() {
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <Link
-                href="/guides/dkim"
+                href="/fr/guides/dkim"
                 className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
               >
                 <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">
@@ -397,7 +397,7 @@ export default function SpfGuidePage() {
                 </p>
               </Link>
               <Link
-                href="/guides/dmarc"
+                href="/fr/guides/dmarc"
                 className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
               >
                 <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">

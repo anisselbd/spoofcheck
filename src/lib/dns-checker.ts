@@ -52,12 +52,12 @@ export async function checkSpf(domain: string): Promise<SpfResult> {
       .filter((r) => r.startsWith("v=spf1"));
 
     if (spfRecords.length === 0) {
-      result.issues.push("Aucun enregistrement SPF trouvé");
+      result.issues.push("spf_not_found");
       return result;
     }
 
     if (spfRecords.length > 1) {
-      result.issues.push("Plusieurs enregistrements SPF détectés (invalide)");
+      result.issues.push("spf_multiple");
     }
 
     const spf = spfRecords[0];
@@ -69,20 +69,16 @@ export async function checkSpf(domain: string): Promise<SpfResult> {
       result.isStrict = true;
     } else if (spf.includes("~all")) {
       result.qualifier = "~all";
-      result.issues.push(
-        "SPF en softfail (~all) — les mails non autorisés ne sont pas rejetés"
-      );
+      result.issues.push("spf_softfail");
     } else if (spf.includes("?all")) {
       result.qualifier = "?all";
-      result.issues.push("SPF en mode neutre (?all) — aucune protection");
+      result.issues.push("spf_neutral");
     } else if (spf.includes("+all")) {
       result.qualifier = "+all";
-      result.issues.push(
-        "SPF avec +all — DANGER : autorise n'importe qui à envoyer"
-      );
+      result.issues.push("spf_pass_all");
     }
   } catch {
-    result.issues.push("Impossible de résoudre les enregistrements TXT");
+    result.issues.push("spf_resolve_error");
   }
 
   return result;
@@ -125,7 +121,7 @@ export async function checkDkim(
       const cnames = await resolver.resolveCname(`_domainkey.${domain}`);
       if (cnames.length > 0) {
         result.found = true;
-        result.selectorsFound.push("(CNAME détecté)");
+        result.selectorsFound.push("dkim_cname_detected");
       }
     } catch {
       // No CNAME at _domainkey
@@ -147,7 +143,7 @@ export async function checkDmarc(domain: string): Promise<DmarcResult> {
   const record = await resolveTxtSafe(`_dmarc.${domain}`);
 
   if (!record || !record.startsWith("v=DMARC1")) {
-    result.issues.push("Aucun enregistrement DMARC trouvé");
+    result.issues.push("dmarc_not_found");
     return result;
   }
 
@@ -160,21 +156,15 @@ export async function checkDmarc(domain: string): Promise<DmarcResult> {
   }
 
   if (result.policy === "none") {
-    result.issues.push(
-      "DMARC en mode monitoring (p=none) — ne bloque pas le spoofing"
-    );
+    result.issues.push("dmarc_none");
   } else if (result.policy === "quarantine") {
-    result.issues.push(
-      "DMARC en quarantaine — les mails spoofés vont en spam mais ne sont pas rejetés"
-    );
+    result.issues.push("dmarc_quarantine");
   }
 
   if (record.includes("rua=")) {
     result.reportingConfigured = true;
   } else {
-    result.issues.push(
-      "Pas de reporting DMARC configuré (rua=) — vous ne verrez pas les tentatives de spoofing"
-    );
+    result.issues.push("dmarc_no_reporting");
   }
 
   return result;

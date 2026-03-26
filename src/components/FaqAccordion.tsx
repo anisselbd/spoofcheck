@@ -1,14 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { faqItems } from "@/lib/faq-data";
 
-export default function FaqAccordion() {
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface FaqAccordionProps {
+  items: FaqItem[];
+}
+
+export default function FaqAccordion({ items }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <div className="space-y-3">
-      {faqItems.map((item, index) => (
+      {items.map((item, index) => (
         <div
           key={index}
           className="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden"

@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { cleanDomain, isValidDomain } from "@/lib/validators";
 import { checkDomain } from "@/lib/dns-checker";
 import { calculateScore } from "@/lib/score-calculator";
+import { getDictionary, hasLocale } from "../../dictionaries";
+import type { Locale } from "../../dictionaries";
 import CheckPageClient from "@/components/CheckPageClient";
 
 type Props = {
-  params: Promise<{ domain: string }>;
+  params: Promise<{ lang: string; domain: string }>;
   searchParams: Promise<{ dkim?: string }>;
 };
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
-  const { domain: rawDomain } = await params;
+  const { lang, domain: rawDomain } = await params;
   const { dkim: dkimSelector } = await searchParams;
+
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang as Locale);
   const domain = cleanDomain(decodeURIComponent(rawDomain));
 
   if (!isValidDomain(domain)) {
@@ -23,38 +28,40 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
 
-  const description = result.spoofable
-    ? `${domain} est vulnérable au spoofing email — Score ${result.score}/100 (${result.grade}). Vérifiez votre domaine gratuitement.`
-    : `${domain} est protégé contre le spoofing — Score ${result.score}/100 (${result.grade}). Vérifiez votre domaine gratuitement.`;
+  const descTemplate = result.spoofable
+    ? dict.metadata.checkDescSpoofable
+    : dict.metadata.checkDescProtected;
+
+  const description = descTemplate
+    .replace("{domain}", domain)
+    .replace("{score}", String(result.score))
+    .replace("{grade}", result.grade);
+
+  const title = dict.metadata.checkTitle.replace("{domain}", domain);
 
   return {
-    title: `Analyse email de ${domain} — SpoofCheck`,
+    title,
     description,
-    openGraph: {
-      title: `Analyse email de ${domain} — SpoofCheck`,
-      description,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `Analyse email de ${domain} — SpoofCheck`,
-      description,
-    },
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
 export default async function CheckPage({ params, searchParams }: Props) {
-  const { domain: rawDomain } = await params;
+  const { lang, domain: rawDomain } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const dict = await getDictionary(lang as Locale);
   const { dkim: dkimSelector } = await searchParams;
   const domain = cleanDomain(decodeURIComponent(rawDomain));
 
   if (!isValidDomain(domain)) {
-    redirect("/");
+    redirect(`/${lang}`);
   }
 
   const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
   const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
 
-  return <CheckPageClient data={result} />;
+  return <CheckPageClient data={result} lang={lang} dict={dict} />;
 }

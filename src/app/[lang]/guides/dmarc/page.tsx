@@ -66,19 +66,19 @@ export default function DmarcGuidePage() {
 
       <header className="py-6 px-6 border-b border-zinc-800/50">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
+          <Link href="/fr" className="text-xl font-bold tracking-tight">
             <span className="text-white">Spoof</span>
             <span className="text-emerald-400">Check</span>
           </Link>
           <nav className="flex items-center gap-4">
             <Link
-              href="/guides"
+              href="/fr/guides"
               className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
             >
               Guides
             </Link>
             <Link
-              href="/"
+              href="/fr"
               className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
             >
               Tester mon domaine
@@ -91,7 +91,7 @@ export default function DmarcGuidePage() {
         <article className="max-w-3xl w-full space-y-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-sm text-zinc-500">
-              <Link href="/guides" className="hover:text-zinc-300 transition-colors">
+              <Link href="/fr/guides" className="hover:text-zinc-300 transition-colors">
                 Guides
               </Link>
               <span>/</span>
@@ -114,11 +114,11 @@ export default function DmarcGuidePage() {
               <p>
                 Le <strong className="text-zinc-100">DMARC (Domain-based Message Authentication, Reporting and Conformance)</strong> est un protocole d'authentification email defini dans la{" "}
                 <strong className="text-zinc-100">RFC 7489</strong>. Il a ete cree pour resoudre une faiblesse majeure de{" "}
-                <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   SPF
                 </Link>{" "}
                 et{" "}
-                <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                   DKIM
                 </Link>{" "}
                 : ces protocoles, seuls, ne disent pas au serveur recepteur quoi faire en cas d'echec.
@@ -153,14 +153,14 @@ export default function DmarcGuidePage() {
                 </li>
                 <li>
                   <strong className="text-zinc-100">Verification SPF + alignement</strong> — Le serveur verifie si le{" "}
-                  <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     SPF
                   </Link>{" "}
                   passe ET si le domaine de l'enveloppe (MAIL FROM) est aligne avec le domaine du header "From".
                 </li>
                 <li>
                   <strong className="text-zinc-100">Verification DKIM + alignement</strong> — Le serveur verifie si le{" "}
-                  <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DKIM
                   </Link>{" "}
                   passe ET si le domaine de la signature DKIM (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>) est aligne avec le domaine du header "From".
@@ -228,11 +228,11 @@ export default function DmarcGuidePage() {
                 </h3>
                 <p>
                   Avant de configurer DMARC, assurez-vous que votre{" "}
-                  <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     SPF
                   </Link>{" "}
                   et{" "}
-                  <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DKIM
                   </Link>{" "}
                   sont correctement configures. DMARC s'appuie sur ces deux protocoles — s'ils ne fonctionnent pas, DMARC ne pourra pas fonctionner efficacement.
@@ -353,11 +353,11 @@ export default function DmarcGuidePage() {
                 </h3>
                 <p>
                   DMARC ne fonctionne pas de maniere isolee. Il s'appuie sur les resultats de{" "}
-                  <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     SPF
                   </Link>{" "}
                   et{" "}
-                  <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DKIM
                   </Link>
                   . Sans ces protocoles correctement configures, DMARC n'a rien a verifier et tous vos emails echoueront.
@@ -387,11 +387,11 @@ export default function DmarcGuidePage() {
                 </h3>
                 <p className="text-zinc-300 leading-relaxed">
                   L'alignement verifie que le domaine utilise dans le header "From" (visible par le destinataire) correspond au domaine verifie par{" "}
-                  <Link href="/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/spf" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     SPF
                   </Link>{" "}
                   (domaine de l'enveloppe) ou{" "}
-                  <Link href="/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
+                  <Link href="/fr/guides/dkim" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                     DKIM
                   </Link>{" "}
                   (domaine du tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>). En mode "relaxed" (par defaut), les sous-domaines sont acceptes. En mode "strict", les domaines doivent correspondre exactement.
@@ -418,7 +418,7 @@ export default function DmarcGuidePage() {
               Testez votre configuration SPF, DKIM et DMARC en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
             </p>
             <Link
-              href="/"
+              href="/fr"
               className="inline-flex items-center h-11 px-8 rounded-xl bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-400 transition-colors"
             >
               Tester mon domaine
@@ -432,7 +432,7 @@ export default function DmarcGuidePage() {
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <Link
-                href="/guides/spf"
+                href="/fr/guides/spf"
                 className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
               >
                 <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">
@@ -443,7 +443,7 @@ export default function DmarcGuidePage() {
                 </p>
               </Link>
               <Link
-                href="/guides/dkim"
+                href="/fr/guides/dkim"
                 className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
               >
                 <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">

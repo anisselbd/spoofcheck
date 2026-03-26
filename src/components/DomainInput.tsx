@@ -6,9 +6,15 @@ import { cleanDomain, isValidDomain } from "@/lib/validators";
 interface DomainInputProps {
   onCheck: (domain: string) => void;
   loading: boolean;
+  dict: {
+    placeholder: string;
+    invalidDomain: string;
+    analyzing: string;
+    check: string;
+  };
 }
 
-export default function DomainInput({ onCheck, loading }: DomainInputProps) {
+export default function DomainInput({ onCheck, loading, dict }: DomainInputProps) {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
 
@@ -16,7 +22,7 @@ export default function DomainInput({ onCheck, loading }: DomainInputProps) {
     e.preventDefault();
     const domain = cleanDomain(value);
     if (!isValidDomain(domain)) {
-      setError("Entrez un domaine valide (ex: example.com)");
+      setError(dict.invalidDomain);
       return;
     }
     setError("");
@@ -33,7 +39,7 @@ export default function DomainInput({ onCheck, loading }: DomainInputProps) {
             setValue(e.target.value);
             setError("");
           }}
-          placeholder="Entrez un domaine (ex: example.com)"
+          placeholder={dict.placeholder}
           className="flex-1 h-14 px-5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 text-lg transition-colors"
           disabled={loading}
         />
@@ -48,10 +54,10 @@ export default function DomainInput({ onCheck, loading }: DomainInputProps) {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Analyse...
+              {dict.analyzing}
             </span>
           ) : (
-            "Vérifier"
+            dict.check
           )}
         </button>
       </div>

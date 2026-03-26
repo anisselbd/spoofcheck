@@ -5,7 +5,20 @@ import { useRouter } from "next/navigation";
 import { cleanDomain } from "@/lib/validators";
 import DomainInput from "@/components/DomainInput";
 
-export default function HomeClient() {
+interface HomeClientProps {
+  lang: string;
+  dict: {
+    domainInput: {
+      placeholder: string;
+      invalidDomain: string;
+      analyzing: string;
+      check: string;
+      unexpectedError: string;
+    };
+  };
+}
+
+export default function HomeClient({ lang, dict }: HomeClientProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -16,16 +29,16 @@ export default function HomeClient() {
 
     try {
       const clean = cleanDomain(domain);
-      router.push(`/check/${encodeURIComponent(clean)}`);
+      router.push(`/${lang}/check/${encodeURIComponent(clean)}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur inattendue");
+      setError(err instanceof Error ? err.message : dict.domainInput.unexpectedError);
       setLoading(false);
     }
   }
 
   return (
     <>
-      <DomainInput onCheck={handleCheck} loading={loading} />
+      <DomainInput onCheck={handleCheck} loading={loading} dict={dict.domainInput} />
 
       {error && (
         <div className="text-center">

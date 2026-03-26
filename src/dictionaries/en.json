@@ -1,0 +1,156 @@
+{
+  "common": {
+    "siteName": "SpoofCheck",
+    "tagline": "Free email security analysis",
+    "footer": "SpoofCheck — Email security verification tool. DNS checks are public and non-intrusive.",
+    "guides": "Guides",
+    "testMyDomain": "Test my domain"
+  },
+  "home": {
+    "title": "Is your domain",
+    "titleHighlight": "spoofable",
+    "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, and DMARC analysis.",
+    "faqTitle": "Frequently asked questions"
+  },
+  "domainInput": {
+    "placeholder": "Enter a domain (e.g. example.com)",
+    "invalidDomain": "Enter a valid domain (e.g. example.com)",
+    "analyzing": "Analyzing...",
+    "check": "Check",
+    "unexpectedError": "Unexpected error"
+  },
+  "results": {
+    "spoofable": "This domain is vulnerable to spoofing",
+    "protected": "This domain is protected against spoofing",
+    "resultsFor": "Results for",
+    "recommendations": "Recommendations",
+    "providerDetected": "Provider detected:",
+    "priority": "priority",
+    "selectorsFound": "Selectors found:",
+    "selectorsChecked": "selectors checked, none found",
+    "selectors": "Selectors:",
+    "noRecordFound": "No record found",
+    "statusPass": "OK",
+    "statusWarn": "Warning",
+    "statusFail": "Missing",
+    "hideDetails": "Hide",
+    "showDetails": "Show",
+    "detailsSuffix": "details"
+  },
+  "check": {
+    "reportTitle": "Email security report",
+    "analysisDate": "Analysis performed on",
+    "checkAnother": "Check another domain",
+    "linkCopied": "Link copied!",
+    "copyLink": "Copy link",
+    "downloadPdf": "Download PDF report",
+    "rerun": "Run analysis again"
+  },
+  "cta": {
+    "title": "Your domain is vulnerable",
+    "subtitle": "We can fix this for you in less than 24 hours",
+    "price": "Starting at €79",
+    "button": "Secure my domain"
+  },
+  "contact": {
+    "headerTag": "Email security service",
+    "title": "Secure your domain",
+    "subtitle": "SPF, DKIM, and DMARC configuration by an expert.",
+    "subtitleLine2": "Protect your emails against identity spoofing.",
+    "includedTitle": "What's included",
+    "price": "Starting at €79",
+    "included1": "Full audit of your email configuration",
+    "included2": "DNS configuration (SPF, DKIM, DMARC)",
+    "included3": "Post-fix verification",
+    "included4": "30-day support",
+    "formTitle": "Request a quote",
+    "callTitle": "Or book a call directly",
+    "callSubtitle": "Let's discuss your setup in 15 minutes.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "nameRequired": "Name is required",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "domainLabel": "Domain",
+    "domainPlaceholder": "example.com",
+    "domainRequired": "Domain is required",
+    "messageLabel": "Message",
+    "messageOptional": "(optional)",
+    "messagePlaceholder": "Describe your needs...",
+    "sending": "Sending...",
+    "submit": "Send my request",
+    "successTitle": "Request sent!",
+    "successMessage": "We'll get back to you within 24 hours.",
+    "serverError": "An error occurred.",
+    "networkError": "Unable to reach the server. Please try again."
+  },
+  "guides": {
+    "title": "Email security guides",
+    "subtitle": "Understand SPF, DKIM, and DMARC to protect your domain against email spoofing and phishing.",
+    "readGuide": "Read the guide",
+    "ctaTitle": "Check your domain for free",
+    "ctaSubtitle": "Test your SPF, DKIM, and DMARC configuration in one click. Our tool analyzes your domain and tells you exactly what to fix.",
+    "spfTitle": "SPF (Sender Policy Framework)",
+    "spfDescription": "SPF defines which servers are authorized to send emails for your domain. It's the first line of defense against email address spoofing.",
+    "spfTopics": ["How SPF works", "Step-by-step configuration", "10 DNS lookup limit", "Difference between -all and ~all"],
+    "dkimTitle": "DKIM (DomainKeys Identified Mail)",
+    "dkimDescription": "DKIM uses asymmetric cryptography to sign your emails. It ensures the content hasn't been modified in transit and that the email actually comes from your domain.",
+    "dkimTopics": ["Applied asymmetric cryptography", "Key generation and publishing", "Selectors and key rotation", "Multi-service configuration"],
+    "dmarcTitle": "DMARC (Domain-based Message Authentication)",
+    "dmarcDescription": "DMARC orchestrates SPF and DKIM by defining a clear policy for emails that fail verification. It also adds a reporting system to monitor your domain.",
+    "dmarcTopics": ["Policy: none, quarantine, reject", "Domain alignment", "Aggregate and forensic reports", "Progressive deployment"]
+  },
+  "dns": {
+    "spf_not_found": "No SPF record found",
+    "spf_multiple": "Multiple SPF records detected (invalid)",
+    "spf_softfail": "SPF in softfail (~all) — unauthorized emails are not rejected",
+    "spf_neutral": "SPF in neutral mode (?all) — no protection",
+    "spf_pass_all": "SPF with +all — DANGER: allows anyone to send",
+    "spf_resolve_error": "Unable to resolve TXT records",
+    "dkim_cname_detected": "(CNAME detected)",
+    "dmarc_not_found": "No DMARC record found",
+    "dmarc_none": "DMARC in monitoring mode (p=none) — does not block spoofing",
+    "dmarc_quarantine": "DMARC in quarantine — spoofed emails go to spam but are not rejected",
+    "dmarc_no_reporting": "No DMARC reporting configured (rua=) — you won't see spoofing attempts",
+    "rec_add_dmarc": "Add a DMARC record: _dmarc.yourdomain TXT \"v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:dmarc@yourdomain\"",
+    "rec_dmarc_none_to_reject": "Change your DMARC policy from p=none to p=reject to block spoofing",
+    "rec_dmarc_quarantine_to_reject": "Upgrade your DMARC policy from p=quarantine to p=reject for full blocking",
+    "rec_add_rua": "Add rua=mailto:dmarc@yourdomain to your DMARC to receive reports",
+    "rec_add_spf": "Add an SPF record: yourdomain TXT \"v=spf1 include:yourprovider -all\"",
+    "rec_harden_spf": "Harden your SPF by replacing ~all with -all (hardfail)",
+    "rec_add_dkim": "Enable DKIM in your email provider and add the public key to your DNS zone"
+  },
+  "faq": [
+    {
+      "question": "What is email spoofing?",
+      "answer": "Email spoofing is an identity theft technique where someone sends an email pretending to be someone else. The attacker forges the sender address so the message appears to come from a legitimate source, like your company or a colleague. It's one of the most common methods used in phishing attacks."
+    },
+    {
+      "question": "How do I know if my domain is vulnerable?",
+      "answer": "Use our free tool: simply enter your domain name in the search bar above. SpoofCheck automatically analyzes your DNS records (SPF, DKIM, DMARC) and tells you if your domain is protected against email spoofing."
+    },
+    {
+      "question": "What are SPF, DKIM, and DMARC?",
+      "answer": "SPF (Sender Policy Framework) defines which servers are authorized to send emails for your domain. DKIM (DomainKeys Identified Mail) adds a cryptographic signature to your emails to ensure their integrity. DMARC (Domain-based Message Authentication, Reporting and Conformance) combines SPF and DKIM and defines what to do when authentication fails."
+    },
+    {
+      "question": "How do I fix an email vulnerability?",
+      "answer": "To protect your domain, you need to properly configure three DNS records: an SPF record listing your authorized sending servers, DKIM keys for signing your emails, and a DMARC policy telling receiving servers how to handle unauthenticated emails."
+    },
+    {
+      "question": "Is this test free?",
+      "answer": "Yes, SpoofCheck is 100% free. You can check as many domains as you want, with no signup or limits. DNS checks are public and non-intrusive."
+    }
+  ],
+  "metadata": {
+    "homeTitle": "SpoofCheck — Is your domain spoofable?",
+    "homeDescription": "Check for free if your domain is protected against email spoofing. SPF, DKIM, DMARC analysis in one click.",
+    "checkTitle": "Email analysis of {domain} — SpoofCheck",
+    "checkDescSpoofable": "{domain} is vulnerable to email spoofing — Score {score}/100 ({grade}). Check your domain for free.",
+    "checkDescProtected": "{domain} is protected against spoofing — Score {score}/100 ({grade}). Check your domain for free.",
+    "contactTitle": "Secure your domain — SpoofCheck",
+    "contactDescription": "SPF, DKIM, and DMARC fix service by an expert. Protect your domain against email spoofing and identity theft starting at €79."
+  }
+}

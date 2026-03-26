@@ -3,7 +3,33 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function ContactForm() {
+interface ContactFormDict {
+  nameLabel: string;
+  namePlaceholder: string;
+  nameRequired: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  emailRequired: string;
+  emailInvalid: string;
+  domainLabel: string;
+  domainPlaceholder: string;
+  domainRequired: string;
+  messageLabel: string;
+  messageOptional: string;
+  messagePlaceholder: string;
+  sending: string;
+  submit: string;
+  successTitle: string;
+  successMessage: string;
+  serverError: string;
+  networkError: string;
+}
+
+interface ContactFormProps {
+  dict: ContactFormDict;
+}
+
+export default function ContactForm({ dict }: ContactFormProps) {
   const searchParams = useSearchParams();
   const prefillDomain = searchParams.get("domain") ?? "";
 
@@ -18,11 +44,11 @@ export default function ContactForm() {
 
   function validate() {
     const errs: Record<string, string> = {};
-    if (!nom.trim()) errs.nom = "Le nom est requis";
-    if (!email.trim()) errs.email = "L'email est requis";
+    if (!nom.trim()) errs.nom = dict.nameRequired;
+    if (!email.trim()) errs.email = dict.emailRequired;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      errs.email = "Email invalide";
-    if (!domaine.trim()) errs.domaine = "Le domaine est requis";
+      errs.email = dict.emailInvalid;
+    if (!domaine.trim()) errs.domaine = dict.domainRequired;
     return errs;
   }
 
@@ -43,13 +69,13 @@ export default function ContactForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        setServerError(data.error || "Une erreur est survenue.");
+        setServerError(data.error || dict.serverError);
         return;
       }
 
       setSubmitted(true);
     } catch {
-      setServerError("Impossible de contacter le serveur. Veuillez réessayer.");
+      setServerError(dict.networkError);
     } finally {
       setLoading(false);
     }
@@ -60,10 +86,10 @@ export default function ContactForm() {
       <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-8 text-center space-y-3">
         <div className="text-3xl">&#10003;</div>
         <h3 className="text-lg font-semibold text-emerald-400">
-          Demande envoyée !
+          {dict.successTitle}
         </h3>
         <p className="text-sm text-zinc-300">
-          Nous vous recontactons sous 24h.
+          {dict.successMessage}
         </p>
       </div>
     );
@@ -73,7 +99,7 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-1.5">
         <label htmlFor="nom" className="block text-sm font-medium text-zinc-300">
-          Nom <span className="text-red-400">*</span>
+          {dict.nameLabel} <span className="text-red-400">*</span>
         </label>
         <input
           id="nom"
@@ -81,7 +107,7 @@ export default function ContactForm() {
           value={nom}
           onChange={(e) => setNom(e.target.value)}
           className="w-full h-11 px-4 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
-          placeholder="Votre nom"
+          placeholder={dict.namePlaceholder}
         />
         {errors.nom && (
           <p className="text-xs text-red-400">{errors.nom}</p>
@@ -90,7 +116,7 @@ export default function ContactForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
-          Email <span className="text-red-400">*</span>
+          {dict.emailLabel} <span className="text-red-400">*</span>
         </label>
         <input
           id="email"
@@ -98,7 +124,7 @@ export default function ContactForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full h-11 px-4 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
-          placeholder="vous@exemple.fr"
+          placeholder={dict.emailPlaceholder}
         />
         {errors.email && (
           <p className="text-xs text-red-400">{errors.email}</p>
@@ -107,7 +133,7 @@ export default function ContactForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="domaine" className="block text-sm font-medium text-zinc-300">
-          Domaine <span className="text-red-400">*</span>
+          {dict.domainLabel} <span className="text-red-400">*</span>
         </label>
         <input
           id="domaine"
@@ -115,7 +141,7 @@ export default function ContactForm() {
           value={domaine}
           onChange={(e) => setDomaine(e.target.value)}
           className="w-full h-11 px-4 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
-          placeholder="exemple.fr"
+          placeholder={dict.domainPlaceholder}
         />
         {errors.domaine && (
           <p className="text-xs text-red-400">{errors.domaine}</p>
@@ -124,7 +150,7 @@ export default function ContactForm() {
 
       <div className="space-y-1.5">
         <label htmlFor="message" className="block text-sm font-medium text-zinc-300">
-          Message <span className="text-zinc-500">(optionnel)</span>
+          {dict.messageLabel} <span className="text-zinc-500">{dict.messageOptional}</span>
         </label>
         <textarea
           id="message"
@@ -132,7 +158,7 @@ export default function ContactForm() {
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
           className="w-full px-4 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm placeholder:text-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors resize-none"
-          placeholder="Décrivez votre besoin..."
+          placeholder={dict.messagePlaceholder}
         />
       </div>
 
@@ -147,7 +173,7 @@ export default function ContactForm() {
         disabled={loading}
         className="w-full h-11 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? "Envoi en cours..." : "Envoyer ma demande"}
+        {loading ? dict.sending : dict.submit}
       </button>
     </form>
   );

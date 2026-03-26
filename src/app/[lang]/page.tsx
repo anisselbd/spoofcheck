@@ -1,39 +1,48 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getDictionary, hasLocale } from "./dictionaries";
+import type { Locale } from "./dictionaries";
 import HomeClient from "@/components/HomeClient";
 import FaqAccordion from "@/components/FaqAccordion";
-import { faqItems } from "@/lib/faq-data";
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const dict = await getDictionary(lang as Locale);
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: dict.faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
+  const webAppJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "SpoofCheck",
+    url: "https://spoofchecker.online",
+    description: dict.metadata.homeDescription,
+    applicationCategory: "SecurityApplication",
+    operatingSystem: "Any web browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "EUR",
     },
-  })),
-};
+    inLanguage: lang,
+  };
 
-const webAppJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "SpoofCheck",
-  url: "https://spoofchecker.online",
-  description:
-    "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
-  applicationCategory: "SecurityApplication",
-  operatingSystem: "Tout navigateur web",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "EUR",
-  },
-  inLanguage: "fr",
-};
-
-export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <script
@@ -53,13 +62,19 @@ export default function Home() {
           </h1>
           <nav className="flex items-center gap-4">
             <Link
-              href="/guides"
+              href={`/${lang}/guides`}
               className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
             >
-              Guides
+              {dict.common.guides}
+            </Link>
+            <Link
+              href={lang === "fr" ? "/en" : "/fr"}
+              className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              {lang === "fr" ? "EN" : "FR"}
             </Link>
             <span className="text-xs text-zinc-600">
-              Analyse gratuite de sécurité email
+              {dict.common.tagline}
             </span>
           </nav>
         </div>
@@ -69,30 +84,28 @@ export default function Home() {
         <div className="max-w-3xl w-full space-y-12">
           <div className="text-center space-y-4">
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-              Votre domaine est-il{" "}
-              <span className="text-red-400">usurpable</span> ?
+              {dict.home.title}{" "}
+              <span className="text-red-400">{dict.home.titleHighlight}</span> ?
             </h2>
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
-              Vérifiez en un clic si votre domaine est protégé contre le
-              spoofing email. Analyse SPF, DKIM et DMARC.
+              {dict.home.subtitle}
             </p>
           </div>
 
-          <HomeClient />
+          <HomeClient lang={lang} dict={{ domainInput: dict.domainInput }} />
 
           <section className="space-y-6 pt-8">
             <h2 className="text-2xl font-bold tracking-tight text-center">
-              Questions fréquentes
+              {dict.home.faqTitle}
             </h2>
-            <FaqAccordion />
+            <FaqAccordion items={dict.faq} />
           </section>
         </div>
       </main>
 
       <footer className="py-6 px-6 border-t border-zinc-800/50">
         <div className="max-w-3xl mx-auto text-center text-sm text-zinc-600">
-          SpoofCheck — Outil de vérification de sécurité email. Les
-          vérifications DNS sont publiques et non intrusives.
+          {dict.common.footer}
         </div>
       </footer>
     </div>
