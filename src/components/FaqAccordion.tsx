@@ -19,7 +19,7 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
       {items.map((item, index) => (
         <div
           key={index}
-          className="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden"
+          className="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden card-glow"
         >
           <button
             type="button"

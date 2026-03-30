@@ -17,6 +17,94 @@ body {
     sans-serif;
 }
 
+/* ==========================================
+   Glow & neon effects
+   ========================================== */
+
+@keyframes pulse-glow-red {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(248, 113, 113, 0.4), 0 0 24px rgba(248, 113, 113, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 16px rgba(248, 113, 113, 0.6), 0 0 48px rgba(248, 113, 113, 0.3);
+  }
+}
+
+.animate-glow-red {
+  animation: pulse-glow-red 3s ease-in-out infinite;
+}
+
+@keyframes neon-border {
+  0%, 100% {
+    border-color: rgba(52, 211, 153, 0.3);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.1), inset 0 0 8px rgba(52, 211, 153, 0.05);
+  }
+  50% {
+    border-color: rgba(52, 211, 153, 0.6);
+    box-shadow: 0 0 16px rgba(52, 211, 153, 0.2), inset 0 0 16px rgba(52, 211, 153, 0.08);
+  }
+}
+
+.neon-input:focus {
+  animation: neon-border 2s ease-in-out infinite;
+  outline: none;
+}
+
+.card-glow {
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.card-glow:hover {
+  border-color: rgba(52, 211, 153, 0.3);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.08), 0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #34d399 0%,
+    #34d399 40%,
+    #a7f3d0 50%,
+    #34d399 60%,
+    #34d399 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: float 20s ease-in-out infinite;
+}
+
 @keyframes gauge-fill {
   from {
     stroke-dashoffset: 283;
@@ -62,10 +150,21 @@ body {
 
   /* Disable animations in print */
   .animate-fade-up,
-  .animate-gauge {
+  .animate-gauge,
+  .animate-glow-red,
+  .text-shimmer {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .text-shimmer {
+    -webkit-text-fill-color: #059669 !important;
+  }
+
+  .orb,
+  canvas {
+    display: none !important;
   }
 
   /* Hide CTA banner in print */

@@ -65,7 +65,9 @@
     "linkCopied": "Link copied!",
     "copyLink": "Copy link",
     "downloadPdf": "Download PDF report",
-    "rerun": "Run analysis again"
+    "rerun": "Run analysis again",
+    "shareTwitter": "Share on X",
+    "shareLinkedin": "Share on LinkedIn"
   },
   "helpBanner": {
     "title": "Need help securing your domain?",

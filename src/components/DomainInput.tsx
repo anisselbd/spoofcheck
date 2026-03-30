@@ -40,7 +40,7 @@ export default function DomainInput({ onCheck, loading, dict }: DomainInputProps
             setError("");
           }}
           placeholder={dict.placeholder}
-          className="flex-1 h-14 px-5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 text-lg transition-colors"
+          className="flex-1 h-14 px-5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-100 placeholder-zinc-500 neon-input text-lg transition-colors"
           disabled={loading}
         />
         <button

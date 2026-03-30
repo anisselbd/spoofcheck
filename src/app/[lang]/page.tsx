@@ -4,6 +4,7 @@ import { getDictionary, hasLocale } from "./dictionaries";
 import type { Locale } from "./dictionaries";
 import HomeClient from "@/components/HomeClient";
 import FaqAccordion from "@/components/FaqAccordion";
+import MatrixRain from "@/components/MatrixRain";
 
 export default async function Home({
   params,
@@ -44,7 +45,11 @@ export default async function Home({
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative flex flex-col min-h-screen">
+      <MatrixRain />
+      <div className="orb z-0 w-[500px] h-[500px] bg-emerald-500/[0.03] top-[-100px] left-[-200px]" />
+      <div className="orb z-0 w-[400px] h-[400px] bg-red-500/[0.03] bottom-[10%] right-[-150px]" style={{ animationDelay: "-7s" }} />
+      <div className="orb z-0 w-[300px] h-[300px] bg-emerald-500/[0.02] top-[50%] left-[30%]" style={{ animationDelay: "-13s" }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
@@ -54,11 +59,11 @@ export default async function Home({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
       />
 
-      <header className="py-6 px-6 border-b border-zinc-800/50">
+      <header className="relative z-10 py-6 px-6 border-b border-zinc-800/50">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <h1 className="text-xl font-bold tracking-tight">
             <span className="text-white">Spoof</span>
-            <span className="text-emerald-400">Check</span>
+            <span className="text-shimmer">Check</span>
           </h1>
           <nav className="flex items-center gap-4">
             <Link
@@ -80,12 +85,12 @@ export default async function Home({
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center px-6 py-16">
+      <main className="relative z-10 flex-1 flex flex-col items-center px-6 py-16">
         <div className="max-w-3xl w-full space-y-12">
           <div className="text-center space-y-4">
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
               {dict.home.title}{" "}
-              <span className="text-red-400">{dict.home.titleHighlight}</span> ?
+              <span className="text-red-400 animate-glow-red">{dict.home.titleHighlight}</span> ?
             </h2>
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
               {dict.home.subtitle}
@@ -102,7 +107,7 @@ export default async function Home({
               {dict.testimonials.map((t) => (
                 <div
                   key={t.author}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3"
+                  className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3 card-glow"
                 >
                   <p className="text-sm text-zinc-300 leading-relaxed">
                     &ldquo;{t.text}&rdquo;
@@ -134,7 +139,7 @@ export default async function Home({
         </div>
       </main>
 
-      <footer className="py-6 px-6 border-t border-zinc-800/50">
+      <footer className="relative z-10 py-6 px-6 border-t border-zinc-800/50">
         <div className="max-w-3xl mx-auto text-center text-sm text-zinc-600">
           {dict.common.footer}
         </div>

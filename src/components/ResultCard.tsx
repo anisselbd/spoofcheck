@@ -36,7 +36,7 @@ export default function ResultCard({ title, status, record, details, delay = 0, 
 
   return (
     <div
-      className="animate-fade-up rounded-xl border border-zinc-800 bg-zinc-900/50 p-5"
+      className="animate-fade-up rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 card-glow"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="flex items-center justify-between mb-3">
