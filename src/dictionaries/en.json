@@ -46,45 +46,10 @@
     "downloadPdf": "Download PDF report",
     "rerun": "Run analysis again"
   },
-  "cta": {
-    "title": "Your domain is vulnerable",
-    "subtitle": "We can fix this for you in less than 24 hours",
-    "price": "Starting at €79",
-    "button": "Secure my domain"
-  },
-  "contact": {
-    "headerTag": "Email security service",
-    "title": "Secure your domain",
-    "subtitle": "SPF, DKIM, and DMARC configuration by an expert.",
-    "subtitleLine2": "Protect your emails against identity spoofing.",
-    "includedTitle": "What's included",
-    "price": "Starting at €79",
-    "included1": "Full audit of your email configuration",
-    "included2": "DNS configuration (SPF, DKIM, DMARC)",
-    "included3": "Post-fix verification",
-    "included4": "30-day support",
-    "formTitle": "Request a quote",
-    "callTitle": "Or book a call directly",
-    "callSubtitle": "Let's discuss your setup in 15 minutes.",
-    "nameLabel": "Name",
-    "namePlaceholder": "Your name",
-    "nameRequired": "Name is required",
-    "emailLabel": "Email",
-    "emailPlaceholder": "you@example.com",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Invalid email",
-    "domainLabel": "Domain",
-    "domainPlaceholder": "example.com",
-    "domainRequired": "Domain is required",
-    "messageLabel": "Message",
-    "messageOptional": "(optional)",
-    "messagePlaceholder": "Describe your needs...",
-    "sending": "Sending...",
-    "submit": "Send my request",
-    "successTitle": "Request sent!",
-    "successMessage": "We'll get back to you within 24 hours.",
-    "serverError": "An error occurred.",
-    "networkError": "Unable to reach the server. Please try again."
+  "helpBanner": {
+    "title": "Need help securing your domain?",
+    "subtitle": "If you're not sure how to apply these fixes, get in touch and we'll help you out.",
+    "button": "Contact us"
   },
   "guides": {
     "title": "Email security guides",
@@ -149,8 +114,6 @@
     "homeDescription": "Check for free if your domain is protected against email spoofing. SPF, DKIM, DMARC analysis in one click.",
     "checkTitle": "Email analysis of {domain} — SpoofCheck",
     "checkDescSpoofable": "{domain} is vulnerable to email spoofing — Score {score}/100 ({grade}). Check your domain for free.",
-    "checkDescProtected": "{domain} is protected against spoofing — Score {score}/100 ({grade}). Check your domain for free.",
-    "contactTitle": "Secure your domain — SpoofCheck",
-    "contactDescription": "SPF, DKIM, and DMARC fix service by an expert. Protect your domain against email spoofing and identity theft starting at €79."
+    "checkDescProtected": "{domain} is protected against spoofing — Score {score}/100 ({grade}). Check your domain for free."
   }
 }

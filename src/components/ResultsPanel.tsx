@@ -4,7 +4,6 @@ import type { DnsCheckResponse } from "@/lib/types";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import ScoreGauge from "./ScoreGauge";
 import ResultCard from "./ResultCard";
-import CtaBanner from "./CtaBanner";
 
 interface ResultsPanelProps {
   data: DnsCheckResponse;
@@ -69,8 +68,6 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
         </div>
       </div>
 
-      <CtaBanner domain={data.domain} spoofable={data.spoofable} score={data.score} lang={lang} dict={dict.cta} />
-
       <div className="grid gap-4 sm:grid-cols-2">
         <ResultCard
           title="SPF"
@@ -127,6 +124,19 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
               </li>
             ))}
           </ol>
+        </div>
+      )}
+
+      {(data.spoofable || data.score < 70) && (
+        <div className="animate-fade-up rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center space-y-3" style={{ animationDelay: "600ms" }}>
+          <h3 className="text-lg font-semibold">{dict.helpBanner.title}</h3>
+          <p className="text-sm text-zinc-400">{dict.helpBanner.subtitle}</p>
+          <a
+            href="mailto:contact@spoofcheck.fr"
+            className="inline-flex items-center h-11 px-6 rounded-xl border border-zinc-700 text-zinc-300 font-medium text-sm hover:border-zinc-500 hover:text-zinc-100 transition-colors"
+          >
+            {dict.helpBanner.button}
+          </a>
         </div>
       )}
     </div>

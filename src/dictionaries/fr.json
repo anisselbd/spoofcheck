@@ -46,45 +46,10 @@
     "downloadPdf": "Télécharger le rapport PDF",
     "rerun": "Relancer l'analyse"
   },
-  "cta": {
-    "title": "Votre domaine est vulnérable",
-    "subtitle": "Nous pouvons corriger ça pour vous en moins de 24h",
-    "price": "À partir de 79€",
-    "button": "Sécuriser mon domaine"
-  },
-  "contact": {
-    "headerTag": "Service de sécurisation email",
-    "title": "Sécurisez votre domaine",
-    "subtitle": "Correction SPF, DKIM et DMARC par un expert.",
-    "subtitleLine2": "Protégez vos emails contre l'usurpation d'identité.",
-    "includedTitle": "Ce qui est inclus",
-    "price": "À partir de 79€",
-    "included1": "Audit complet de votre configuration email",
-    "included2": "Configuration DNS (SPF, DKIM, DMARC)",
-    "included3": "Vérification post-correction",
-    "included4": "Support pendant 30 jours",
-    "formTitle": "Demandez un devis",
-    "callTitle": "Ou réservez directement un appel",
-    "callSubtitle": "Discutons de votre configuration en 15 minutes.",
-    "nameLabel": "Nom",
-    "namePlaceholder": "Votre nom",
-    "nameRequired": "Le nom est requis",
-    "emailLabel": "Email",
-    "emailPlaceholder": "vous@exemple.fr",
-    "emailRequired": "L'email est requis",
-    "emailInvalid": "Email invalide",
-    "domainLabel": "Domaine",
-    "domainPlaceholder": "exemple.fr",
-    "domainRequired": "Le domaine est requis",
-    "messageLabel": "Message",
-    "messageOptional": "(optionnel)",
-    "messagePlaceholder": "Décrivez votre besoin...",
-    "sending": "Envoi en cours...",
-    "submit": "Envoyer ma demande",
-    "successTitle": "Demande envoyée !",
-    "successMessage": "Nous vous recontactons sous 24h.",
-    "serverError": "Une erreur est survenue.",
-    "networkError": "Impossible de contacter le serveur. Veuillez réessayer."
+  "helpBanner": {
+    "title": "Besoin d'aide pour sécuriser votre domaine ?",
+    "subtitle": "Si vous ne savez pas comment appliquer ces corrections, contactez-nous et nous vous aiderons.",
+    "button": "Nous contacter"
   },
   "guides": {
     "title": "Guides sécurité email",
@@ -149,8 +114,6 @@
     "homeDescription": "Vérifiez gratuitement si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC en un clic.",
     "checkTitle": "Analyse email de {domain} — SpoofCheck",
     "checkDescSpoofable": "{domain} est vulnérable au spoofing email — Score {score}/100 ({grade}). Vérifiez votre domaine gratuitement.",
-    "checkDescProtected": "{domain} est protégé contre le spoofing — Score {score}/100 ({grade}). Vérifiez votre domaine gratuitement.",
-    "contactTitle": "Sécurisez votre domaine — SpoofCheck",
-    "contactDescription": "Service de correction SPF, DKIM et DMARC par un expert. Protégez votre domaine contre le spoofing email et l'usurpation d'identité à partir de 79€."
+    "checkDescProtected": "{domain} est protégé contre le spoofing — Score {score}/100 ({grade}). Vérifiez votre domaine gratuitement."
   }
 }
