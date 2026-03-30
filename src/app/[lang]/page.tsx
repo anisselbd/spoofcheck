@@ -107,12 +107,16 @@ export default async function Home({
                   <p className="text-sm text-zinc-300 leading-relaxed">
                     &ldquo;{t.text}&rdquo;
                   </p>
-                  <div className="flex items-center gap-2 text-xs text-zinc-500">
-                    <span className="font-medium text-zinc-400">
-                      {t.author}
+                  <div className="flex items-center gap-3 text-xs text-zinc-500">
+                    <span className="shrink-0 w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 uppercase">
+                      {t.author[0]}
                     </span>
-                    <span>&middot;</span>
-                    <span>{t.source}</span>
+                    <div>
+                      <span className="block font-medium text-zinc-400">
+                        {t.author}
+                      </span>
+                      <span>{t.source}</span>
+                    </div>
                   </div>
                 </div>
               ))}
