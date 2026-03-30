@@ -96,6 +96,31 @@ export default async function Home({
 
           <section className="space-y-6 pt-8">
             <h2 className="text-2xl font-bold tracking-tight text-center">
+              {dict.home.testimonialsTitle}
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {dict.testimonials.map((t) => (
+                <div
+                  key={t.author}
+                  className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3"
+                >
+                  <p className="text-sm text-zinc-300 leading-relaxed">
+                    &ldquo;{t.text}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-zinc-500">
+                    <span className="font-medium text-zinc-400">
+                      {t.author}
+                    </span>
+                    <span>&middot;</span>
+                    <span>{t.source}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-6 pt-8">
+            <h2 className="text-2xl font-bold tracking-tight text-center">
               {dict.home.faqTitle}
             </h2>
             <FaqAccordion items={dict.faq} />

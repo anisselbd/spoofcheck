@@ -10,8 +10,26 @@
     "title": "Is your domain",
     "titleHighlight": "spoofable",
     "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, and DMARC analysis.",
-    "faqTitle": "Frequently asked questions"
+    "faqTitle": "Frequently asked questions",
+    "testimonialsTitle": "What users are saying"
   },
+  "testimonials": [
+    {
+      "author": "spardha",
+      "source": "Reddit",
+      "text": "I used it, it worked well and I realized I had an issue with my SPF record. The tool didn't try to sell me anything and it seems like a useful tool for those looking to self-host their email."
+    },
+    {
+      "author": "littleko",
+      "source": "Reddit",
+      "text": "Nice work. SMTP being unauthenticated by default is really one of the most underestimated security flaws. One thing to highlight: having SPF and DKIM records is not enough. DMARC is what ties them together and actually enforces the policy."
+    },
+    {
+      "author": "Efficient-Cup-8619",
+      "source": "Reddit",
+      "text": "Awesome! I appreciate this. I'm pushing my company because they have an MSP managing everything. This will add to my growing concerns about vulnerabilities I'm going to present to the organization."
+    }
+  ],
   "domainInput": {
     "placeholder": "Enter a domain (e.g. example.com)",
     "invalidDomain": "Enter a valid domain (e.g. example.com)",
