@@ -17,16 +17,19 @@
     {
       "author": "spardha",
       "source": "Reddit",
+      "avatar": "/avatars/spardha.jpg",
       "text": "I used it, it worked well and I realized I had an issue with my SPF record. The tool didn't try to sell me anything and it seems like a useful tool for those looking to self-host their email."
     },
     {
       "author": "littleko",
       "source": "Reddit",
+      "avatar": "/avatars/littleko.jpg",
       "text": "Nice work. SMTP being unauthenticated by default is really one of the most underestimated security flaws. One thing to highlight: having SPF and DKIM records is not enough. DMARC is what ties them together and actually enforces the policy."
     },
     {
       "author": "Efficient-Cup-8619",
       "source": "Reddit",
+      "avatar": "/avatars/efficient-cup.jpg",
       "text": "Awesome! I appreciate this. I'm pushing my company because they have an MSP managing everything. This will add to my growing concerns about vulnerabilities I'm going to present to the organization."
     }
   ],

@@ -17,16 +17,19 @@
     {
       "author": "spardha",
       "source": "Reddit",
+      "avatar": "/avatars/spardha.jpg",
       "text": "Je l'ai utilisé, ça a bien fonctionné et j'ai réalisé que j'avais un problème avec mon enregistrement SPF. L'outil n'a pas essayé de me vendre quelque chose et il semble être un outil utile pour ceux qui cherchent à auto-héberger leur mail."
     },
     {
       "author": "littleko",
       "source": "Reddit",
+      "avatar": "/avatars/littleko.jpg",
       "text": "Beau travail. Le protocole SMTP, étant non authentifié par défaut, reste vraiment l'une des failles de sécurité les plus sous-estimées. Une chose à souligner : avoir des enregistrements SPF et DKIM ne suffit pas. DMARC est ce qui les relie et qui impose réellement la politique."
     },
     {
       "author": "Efficient-Cup-8619",
       "source": "Reddit",
+      "avatar": "/avatars/efficient-cup.jpg",
       "text": "Génial ! J'apprécie ça. Je fais pression sur mon entreprise parce qu'ils ont un MSP qui gère tout. Cela ajoutera des arguments à mes préoccupations croissantes concernant les vulnérabilités."
     }
   ],

@@ -108,9 +108,11 @@ export default async function Home({
                     &ldquo;{t.text}&rdquo;
                   </p>
                   <div className="flex items-center gap-3 text-xs text-zinc-500">
-                    <span className="shrink-0 w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-zinc-300 uppercase">
-                      {t.author[0]}
-                    </span>
+                    <img
+                      src={t.avatar}
+                      alt={t.author}
+                      className="shrink-0 w-8 h-8 rounded-full object-cover"
+                    />
                     <div>
                       <span className="block font-medium text-zinc-400">
                         {t.author}
