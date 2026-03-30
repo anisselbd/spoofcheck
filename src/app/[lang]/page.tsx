@@ -5,6 +5,7 @@ import type { Locale } from "./dictionaries";
 import HomeClient from "@/components/HomeClient";
 import FaqAccordion from "@/components/FaqAccordion";
 import MatrixRain from "@/components/MatrixRain";
+import Footer from "@/components/Footer";
 
 export default async function Home({
   params,
@@ -139,11 +140,7 @@ export default async function Home({
         </div>
       </main>
 
-      <footer className="relative z-10 py-6 px-6 border-t border-zinc-800/50">
-        <div className="max-w-3xl mx-auto text-center text-sm text-zinc-600">
-          {dict.common.footer}
-        </div>
-      </footer>
+      <Footer lang={lang} dict={dict.common} />
     </div>
   );
 }

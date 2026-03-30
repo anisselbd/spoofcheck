@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getDictionary, hasLocale } from "../dictionaries";
 import type { Locale } from "../dictionaries";
+import Footer from "@/components/Footer";
 
 export async function generateMetadata({
   params,
@@ -161,11 +162,7 @@ export default async function GuidesIndexPage({
         </div>
       </main>
 
-      <footer className="py-6 px-6 border-t border-zinc-800/50">
-        <div className="max-w-3xl mx-auto text-center text-sm text-zinc-600">
-          {dict.common.footer}
-        </div>
-      </footer>
+      <Footer lang={lang} dict={dict.common} />
     </div>
   );
 }

@@ -3,6 +3,13 @@
     "siteName": "SpoofCheck",
     "tagline": "Analyse gratuite de sécurité email",
     "footer": "SpoofCheck — Outil de vérification de sécurité email. Les vérifications DNS sont publiques et non intrusives.",
+    "footerHome": "Accueil",
+    "footerGuides": "Guides",
+    "footerGuideSPF": "Guide SPF",
+    "footerGuideDKIM": "Guide DKIM",
+    "footerGuideDMARC": "Guide DMARC",
+    "footerMadeBy": "Fait par",
+    "footerRights": "Tous droits réservés.",
     "guides": "Guides",
     "testMyDomain": "Tester mon domaine"
   },

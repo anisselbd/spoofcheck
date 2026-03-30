@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Guide DMARC : Configurer la politique DMARC email — SpoofCheck",
@@ -56,7 +57,8 @@ const articleJsonLd = {
   dateModified: "2025-06-01",
 };
 
-export default function DmarcGuidePage() {
+export default async function DmarcGuidePage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
   return (
     <div className="flex flex-col min-h-screen">
       <script
@@ -458,12 +460,7 @@ export default function DmarcGuidePage() {
         </article>
       </main>
 
-      <footer className="py-6 px-6 border-t border-zinc-800/50">
-        <div className="max-w-3xl mx-auto text-center text-sm text-zinc-600">
-          SpoofCheck — Outil de verification de securite email. Les
-          verifications DNS sont publiques et non intrusives.
-        </div>
-      </footer>
+      <Footer lang={lang} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import type { DnsCheckResponse } from "@/lib/types";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import ResultsPanel from "./ResultsPanel";
+import Footer from "./Footer";
 
 interface CheckPageClientProps {
   data: DnsCheckResponse;
@@ -169,11 +170,7 @@ export default function CheckPageClient({ data, lang, dict }: CheckPageClientPro
         </div>
       </main>
 
-      <footer className="py-6 px-6 border-t border-zinc-800/50 print:hidden">
-        <div className="max-w-3xl mx-auto text-center text-sm text-zinc-600">
-          {dict.common.footer}
-        </div>
-      </footer>
+      <Footer lang={lang} dict={dict.common} />
 
       {/* Print-only footer */}
       <div className="hidden print:block print-footer">
