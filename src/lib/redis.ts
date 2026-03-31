@@ -4,7 +4,7 @@ const COUNTER_KEY = "domains_checked";
 
 function getClient() {
   return createClient({ url: process.env.KV_REDIS_URL })
-    .on("error", () => {})
+    .on("error", (err) => console.error("[redis]", err.message))
     .connect();
 }
 

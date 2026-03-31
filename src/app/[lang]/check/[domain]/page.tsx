@@ -64,7 +64,7 @@ export default async function CheckPage({ params, searchParams }: Props) {
   const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
 
-  incrementDomainsChecked().catch(() => {});
+  await incrementDomainsChecked().catch(() => {});
 
   return <CheckPageClient data={result} lang={lang} dict={dict} />;
 }
