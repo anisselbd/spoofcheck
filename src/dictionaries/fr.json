@@ -18,7 +18,8 @@
     "titleHighlight": "usurpable",
     "subtitle": "Vérifiez en un clic si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM et DMARC.",
     "faqTitle": "Questions fréquentes",
-    "testimonialsTitle": "Ce qu'en disent les utilisateurs"
+    "testimonialsTitle": "Ce qu'en disent les utilisateurs",
+    "domainsChecked": "domaines analysés"
   },
   "testimonials": [
     {

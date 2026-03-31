@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { cleanDomain, isValidDomain } from "@/lib/validators";
 import { checkDomain } from "@/lib/dns-checker";
 import { calculateScore } from "@/lib/score-calculator";
+import { incrementDomainsChecked } from "@/lib/redis";
 import { getDictionary, hasLocale } from "../../dictionaries";
 import type { Locale } from "../../dictionaries";
 import CheckPageClient from "@/components/CheckPageClient";
@@ -62,6 +63,8 @@ export default async function CheckPage({ params, searchParams }: Props) {
   const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
   const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
+
+  incrementDomainsChecked().catch(() => {});
 
   return <CheckPageClient data={result} lang={lang} dict={dict} />;
 }

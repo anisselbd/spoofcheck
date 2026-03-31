@@ -18,7 +18,8 @@
     "titleHighlight": "spoofable",
     "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, and DMARC analysis.",
     "faqTitle": "Frequently asked questions",
-    "testimonialsTitle": "What users are saying"
+    "testimonialsTitle": "What users are saying",
+    "domainsChecked": "domains analyzed"
   },
   "testimonials": [
     {

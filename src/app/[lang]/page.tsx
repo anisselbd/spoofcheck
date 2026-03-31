@@ -6,6 +6,7 @@ import HomeClient from "@/components/HomeClient";
 import FaqAccordion from "@/components/FaqAccordion";
 import MatrixRain from "@/components/MatrixRain";
 import Footer from "@/components/Footer";
+import { getDomainsChecked } from "@/lib/redis";
 
 export default async function Home({
   params,
@@ -15,6 +16,7 @@ export default async function Home({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang as Locale);
+  const domainsChecked = await getDomainsChecked().catch(() => 0);
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -96,6 +98,14 @@ export default async function Home({
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
               {dict.home.subtitle}
             </p>
+            {domainsChecked > 0 && (
+              <p className="text-lg text-zinc-400 pt-2">
+                <span className="text-2xl text-emerald-400 font-bold tabular-nums">
+                  {domainsChecked.toLocaleString(lang === "fr" ? "fr-FR" : "en-US")}
+                </span>{" "}
+                {dict.home.domainsChecked}
+              </p>
+            )}
           </div>
 
           <HomeClient lang={lang} dict={{ domainInput: dict.domainInput }} />
