@@ -16,7 +16,10 @@ export default async function Home({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang as Locale);
-  const domainsChecked = await getDomainsChecked().catch(() => 0);
+  const domainsChecked = await getDomainsChecked().catch((e) => {
+    console.error("[redis:get]", e instanceof Error ? e.message : e);
+    return 0;
+  });
 
   const faqJsonLd = {
     "@context": "https://schema.org",
