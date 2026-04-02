@@ -3,6 +3,12 @@ import type { MetadataRoute } from "next";
 const BASE = "https://spoofchecker.online";
 const locales = ["fr", "en"];
 
+const popularDomains = [
+  "gmail.com", "outlook.com", "yahoo.com", "protonmail.com", "icloud.com",
+  "orange.fr", "free.fr", "sfr.fr", "laposte.net", "ovh.net",
+  "hotmail.com", "aol.com", "zoho.com", "gmx.com", "fastmail.com",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: "", changeFrequency: "weekly" as const, priority: 1 },
@@ -13,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/guides/spf-vs-dkim-vs-dmarc", changeFrequency: "monthly" as const, priority: 0.8 },
   ];
 
-  return pages.flatMap(({ path, changeFrequency, priority }) =>
+  const staticPages = pages.flatMap(({ path, changeFrequency, priority }) =>
     locales.map((lang) => ({
       url: `${BASE}/${lang}${path}`,
       lastModified: new Date(),
@@ -21,4 +27,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority,
     }))
   );
+
+  const domainPages = popularDomains.flatMap((domain) =>
+    locales.map((lang) => ({
+      url: `${BASE}/${lang}/email-security/${domain}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }))
+  );
+
+  return [...staticPages, ...domainPages];
 }
