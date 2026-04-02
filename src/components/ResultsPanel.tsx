@@ -76,6 +76,8 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
           details={translateKeys(data.spf.issues)}
           delay={100}
           dict={r}
+          guideHref={`/${lang}/guides/spf`}
+          guideLabel={dict.guides.readGuide}
         />
         <ResultCard
           title="DKIM"
@@ -88,6 +90,8 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
           details={dkimDetails}
           delay={200}
           dict={r}
+          guideHref={`/${lang}/guides/dkim`}
+          guideLabel={dict.guides.readGuide}
         />
         <ResultCard
           title="DMARC"
@@ -96,6 +100,8 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
           details={translateKeys(data.dmarc.issues)}
           delay={300}
           dict={r}
+          guideHref={`/${lang}/guides/dmarc`}
+          guideLabel={dict.guides.readGuide}
         />
         <ResultCard
           title="MX"

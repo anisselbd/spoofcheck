@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 type Status = "pass" | "warn" | "fail";
 
@@ -21,9 +22,11 @@ interface ResultCardProps {
   details: string[];
   delay?: number;
   dict: ResultCardDict;
+  guideHref?: string;
+  guideLabel?: string;
 }
 
-export default function ResultCard({ title, status, record, details, delay = 0, dict }: ResultCardProps) {
+export default function ResultCard({ title, status, record, details, delay = 0, dict, guideHref, guideLabel }: ResultCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const statusConfig: Record<Status, { label: string; color: string; bg: string }> = {
@@ -71,6 +74,18 @@ export default function ResultCard({ title, status, record, details, delay = 0, 
             ))}
           </ul>
         </div>
+      )}
+
+      {guideHref && status !== "pass" && (
+        <Link
+          href={guideHref}
+          className="mt-3 inline-flex items-center text-sm text-emerald-400 hover:text-emerald-300 transition-colors print:hidden"
+        >
+          {guideLabel}
+          <svg className="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
       )}
     </div>
   );
