@@ -6,6 +6,7 @@ interface FooterDict {
   footerGuideSPF: string;
   footerGuideDKIM: string;
   footerGuideDMARC: string;
+  footerGuideComp: string;
   footerMadeBy: string;
   footerRights: string;
 }
@@ -17,6 +18,7 @@ const defaults: Record<string, FooterDict> = {
     footerGuideSPF: "Guide SPF",
     footerGuideDKIM: "Guide DKIM",
     footerGuideDMARC: "Guide DMARC",
+    footerGuideComp: "SPF vs DKIM vs DMARC",
     footerMadeBy: "Fait par",
     footerRights: "Tous droits réservés.",
   },
@@ -26,6 +28,7 @@ const defaults: Record<string, FooterDict> = {
     footerGuideSPF: "SPF Guide",
     footerGuideDKIM: "DKIM Guide",
     footerGuideDMARC: "DMARC Guide",
+    footerGuideComp: "SPF vs DKIM vs DMARC",
     footerMadeBy: "Made by",
     footerRights: "All rights reserved.",
   },
@@ -92,6 +95,9 @@ export default function Footer({ lang, dict }: FooterProps) {
             </Link>
             <Link href={`/${lang}/guides/dmarc`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
               {t.footerGuideDMARC}
+            </Link>
+            <Link href={`/${lang}/guides/spf-vs-dkim-vs-dmarc`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              {t.footerGuideComp}
             </Link>
           </nav>
         </div>

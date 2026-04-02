@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/guides/spf", changeFrequency: "monthly" as const, priority: 0.8 },
     { path: "/guides/dkim", changeFrequency: "monthly" as const, priority: 0.8 },
     { path: "/guides/dmarc", changeFrequency: "monthly" as const, priority: 0.8 },
+    { path: "/guides/spf-vs-dkim-vs-dmarc", changeFrequency: "monthly" as const, priority: 0.8 },
   ];
 
   return pages.flatMap(({ path, changeFrequency, priority }) =>

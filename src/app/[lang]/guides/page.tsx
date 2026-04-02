@@ -66,6 +66,12 @@ export default async function GuidesIndexPage({
       description: g.dmarcDescription,
       topics: g.dmarcTopics,
     },
+    {
+      href: `/${lang}/guides/spf-vs-dkim-vs-dmarc`,
+      title: g.compTitle,
+      description: g.compDescription,
+      topics: g.compTopics,
+    },
   ];
 
   return (

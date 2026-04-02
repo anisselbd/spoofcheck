@@ -96,7 +96,10 @@
     "dkimTopics": ["Applied asymmetric cryptography", "Key generation and publishing", "Selectors and key rotation", "Multi-service configuration"],
     "dmarcTitle": "DMARC (Domain-based Message Authentication)",
     "dmarcDescription": "DMARC orchestrates SPF and DKIM by defining a clear policy for emails that fail verification. It also adds a reporting system to monitor your domain.",
-    "dmarcTopics": ["Policy: none, quarantine, reject", "Domain alignment", "Aggregate and forensic reports", "Progressive deployment"]
+    "dmarcTopics": ["Policy: none, quarantine, reject", "Domain alignment", "Aggregate and forensic reports", "Progressive deployment"],
+    "compTitle": "SPF vs DKIM vs DMARC",
+    "compDescription": "Understand the differences between SPF, DKIM, and DMARC, and how these three protocols work together to protect your domain.",
+    "compTopics": ["Comparison table", "Role of each protocol", "How they work together", "Where to start"]
   },
   "dns": {
     "spf_not_found": "No SPF record found",
@@ -141,8 +144,8 @@
     }
   ],
   "metadata": {
-    "homeTitle": "SpoofCheck — Is your domain spoofable?",
-    "homeDescription": "Check for free if your domain is protected against email spoofing. SPF, DKIM, DMARC analysis in one click.",
+    "homeTitle": "SpoofCheck — Free Email Spoofing Test | SPF, DKIM, DMARC",
+    "homeDescription": "Free email spoofing test. Check if your domain is vulnerable to spoofing. SPF, DKIM, DMARC analysis in one click. Protect against email impersonation.",
     "checkTitle": "Email analysis of {domain} — SpoofCheck",
     "checkDescSpoofable": "{domain} is vulnerable to email spoofing — Score {score}/100 ({grade}). Check your domain for free.",
     "checkDescProtected": "{domain} is protected against spoofing — Score {score}/100 ({grade}). Check your domain for free."
