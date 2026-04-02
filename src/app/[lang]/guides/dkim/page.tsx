@@ -2,38 +2,49 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Guide DKIM : Configurer la signature DKIM email — SpoofCheck",
-  description:
-    "Guide complet sur le DKIM (DomainKeys Identified Mail) : comment configurer une signature DKIM, authentifier vos emails et garantir leur integrite.",
-  keywords: [
-    "dkim email",
-    "configurer dkim",
-    "signature dkim",
-    "domainkeys identified mail",
-    "dkim record",
-    "cle dkim",
-    "authentification email",
-    "securite email",
-    "dns dkim",
-  ],
-  openGraph: {
-    title: "Guide DKIM : Configurer la signature DKIM email",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  return {
+    title: "Guide DKIM : Configurer la signature DKIM email — SpoofCheck",
     description:
-      "Guide complet sur le DKIM : configuration, fonctionnement et bonnes pratiques pour authentifier vos emails.",
-    type: "article",
-    locale: "fr_FR",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Guide DKIM : Configurer la signature DKIM email",
-    description:
-      "Guide complet sur le DKIM : configuration, fonctionnement et bonnes pratiques.",
-  },
-  alternates: {
-    canonical: "https://spoofchecker.online/guides/dkim",
-  },
-};
+      "Guide complet sur le DKIM (DomainKeys Identified Mail) : comment configurer une signature DKIM, authentifier vos emails et garantir leur integrite.",
+    keywords: [
+      "dkim email",
+      "configurer dkim",
+      "signature dkim",
+      "domainkeys identified mail",
+      "dkim record",
+      "cle dkim",
+      "authentification email",
+      "securite email",
+      "dns dkim",
+    ],
+    openGraph: {
+      title: "Guide DKIM : Configurer la signature DKIM email",
+      description:
+        "Guide complet sur le DKIM : configuration, fonctionnement et bonnes pratiques pour authentifier vos emails.",
+      type: "article",
+      locale: lang === "fr" ? "fr_FR" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Guide DKIM : Configurer la signature DKIM email",
+      description:
+        "Guide complet sur le DKIM : configuration, fonctionnement et bonnes pratiques.",
+    },
+    alternates: {
+      canonical: `https://spoofchecker.online/${lang}/guides/dkim`,
+      languages: {
+        fr: "https://spoofchecker.online/fr/guides/dkim",
+        en: "https://spoofchecker.online/en/guides/dkim",
+      },
+    },
+  };
+}
 
 const articleJsonLd = {
   "@context": "https://schema.org",

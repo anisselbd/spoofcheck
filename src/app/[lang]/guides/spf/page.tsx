@@ -2,38 +2,49 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Guide SPF : Configurer et comprendre le SPF email — SpoofCheck",
-  description:
-    "Guide complet sur le SPF (Sender Policy Framework) : comment configurer un enregistrement SPF, proteger votre domaine contre le spoofing email et eviter les erreurs courantes.",
-  keywords: [
-    "spf email",
-    "configurer spf",
-    "enregistrement spf",
-    "sender policy framework",
-    "spf record",
-    "protection email",
-    "anti-spoofing",
-    "securite email",
-    "dns spf",
-  ],
-  openGraph: {
-    title: "Guide SPF : Configurer et comprendre le SPF email",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  return {
+    title: "Guide SPF : Configurer et comprendre le SPF email — SpoofCheck",
     description:
-      "Guide complet sur le SPF : configuration, fonctionnement et erreurs courantes. Protegez votre domaine contre le spoofing.",
-    type: "article",
-    locale: "fr_FR",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Guide SPF : Configurer et comprendre le SPF email",
-    description:
-      "Guide complet sur le SPF : configuration, fonctionnement et erreurs courantes.",
-  },
-  alternates: {
-    canonical: "https://spoofchecker.online/guides/spf",
-  },
-};
+      "Guide complet sur le SPF (Sender Policy Framework) : comment configurer un enregistrement SPF, proteger votre domaine contre le spoofing email et eviter les erreurs courantes.",
+    keywords: [
+      "spf email",
+      "configurer spf",
+      "enregistrement spf",
+      "sender policy framework",
+      "spf record",
+      "protection email",
+      "anti-spoofing",
+      "securite email",
+      "dns spf",
+    ],
+    openGraph: {
+      title: "Guide SPF : Configurer et comprendre le SPF email",
+      description:
+        "Guide complet sur le SPF : configuration, fonctionnement et erreurs courantes. Protegez votre domaine contre le spoofing.",
+      type: "article",
+      locale: lang === "fr" ? "fr_FR" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Guide SPF : Configurer et comprendre le SPF email",
+      description:
+        "Guide complet sur le SPF : configuration, fonctionnement et erreurs courantes.",
+    },
+    alternates: {
+      canonical: `https://spoofchecker.online/${lang}/guides/spf`,
+      languages: {
+        fr: "https://spoofchecker.online/fr/guides/spf",
+        en: "https://spoofchecker.online/en/guides/spf",
+      },
+    },
+  };
+}
 
 const articleJsonLd = {
   "@context": "https://schema.org",

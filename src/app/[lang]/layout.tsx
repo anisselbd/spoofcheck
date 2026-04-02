@@ -33,12 +33,19 @@ export async function generateMetadata({
       "email test",
       "email protection",
     ],
+    alternates: {
+      canonical: `https://spoofchecker.online/${lang}`,
+      languages: {
+        fr: "https://spoofchecker.online/fr",
+        en: "https://spoofchecker.online/en",
+      },
+    },
     openGraph: {
       title: dict.metadata.homeTitle,
       description: dict.metadata.homeDescription,
       type: "website",
       locale: lang === "fr" ? "fr_FR" : "en_US",
-      url: "https://spoofchecker.online",
+      url: `https://spoofchecker.online/${lang}`,
       siteName: "SpoofCheck",
       images: [
         {

@@ -29,6 +29,10 @@ export async function generateMetadata({
     },
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/guides`,
+      languages: {
+        fr: "https://spoofchecker.online/fr/guides",
+        en: "https://spoofchecker.online/en/guides",
+      },
     },
   };
 }

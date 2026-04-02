@@ -2,38 +2,49 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Guide DMARC : Configurer la politique DMARC email — SpoofCheck",
-  description:
-    "Guide complet sur le DMARC (Domain-based Message Authentication) : comment configurer une politique DMARC, proteger votre domaine contre le phishing et recevoir des rapports.",
-  keywords: [
-    "dmarc email",
-    "configurer dmarc",
-    "politique dmarc",
-    "dmarc record",
-    "dmarc reject",
-    "dmarc quarantine",
-    "rapport dmarc",
-    "protection phishing",
-    "securite email",
-  ],
-  openGraph: {
-    title: "Guide DMARC : Configurer la politique DMARC email",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  return {
+    title: "Guide DMARC : Configurer la politique DMARC email — SpoofCheck",
     description:
-      "Guide complet sur le DMARC : configuration, politique et rapports pour proteger votre domaine contre le phishing.",
-    type: "article",
-    locale: "fr_FR",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Guide DMARC : Configurer la politique DMARC email",
-    description:
-      "Guide complet sur le DMARC : configuration, politique et rapports.",
-  },
-  alternates: {
-    canonical: "https://spoofchecker.online/guides/dmarc",
-  },
-};
+      "Guide complet sur le DMARC (Domain-based Message Authentication) : comment configurer une politique DMARC, proteger votre domaine contre le phishing et recevoir des rapports.",
+    keywords: [
+      "dmarc email",
+      "configurer dmarc",
+      "politique dmarc",
+      "dmarc record",
+      "dmarc reject",
+      "dmarc quarantine",
+      "rapport dmarc",
+      "protection phishing",
+      "securite email",
+    ],
+    openGraph: {
+      title: "Guide DMARC : Configurer la politique DMARC email",
+      description:
+        "Guide complet sur le DMARC : configuration, politique et rapports pour proteger votre domaine contre le phishing.",
+      type: "article",
+      locale: lang === "fr" ? "fr_FR" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Guide DMARC : Configurer la politique DMARC email",
+      description:
+        "Guide complet sur le DMARC : configuration, politique et rapports.",
+    },
+    alternates: {
+      canonical: `https://spoofchecker.online/${lang}/guides/dmarc`,
+      languages: {
+        fr: "https://spoofchecker.online/fr/guides/dmarc",
+        en: "https://spoofchecker.online/en/guides/dmarc",
+      },
+    },
+  };
+}
 
 const articleJsonLd = {
   "@context": "https://schema.org",
