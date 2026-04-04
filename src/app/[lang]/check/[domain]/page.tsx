@@ -45,6 +45,13 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   return {
     title,
     description,
+    alternates: {
+      canonical: `https://spoofchecker.online/${lang}/check/${domain}`,
+      languages: {
+        fr: `https://spoofchecker.online/fr/check/${domain}`,
+        en: `https://spoofchecker.online/en/check/${domain}`,
+      },
+    },
     openGraph: { title, description, type: "website" },
     twitter: { card: "summary_large_image", title, description },
   };
@@ -70,5 +77,33 @@ export default async function CheckPage({ params, searchParams }: Props) {
     console.error("[redis:incr]", e instanceof Error ? e.message : e)
   );
 
-  return <CheckPageClient data={result} lang={lang} dict={dict} />;
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "SpoofCheck", item: `https://spoofchecker.online/${lang}` },
+      { "@type": "ListItem", position: 2, name: domain, item: `https://spoofchecker.online/${lang}/check/${domain}` },
+    ],
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: dict.metadata.checkTitle.replace("{domain}", domain),
+    description: (result.spoofable ? dict.metadata.checkDescSpoofable : dict.metadata.checkDescProtected)
+      .replace("{domain}", domain)
+      .replace("{score}", String(result.score))
+      .replace("{grade}", result.grade),
+    url: `https://spoofchecker.online/${lang}/check/${domain}`,
+    inLanguage: lang,
+    isPartOf: { "@type": "WebSite", name: "SpoofCheck", url: "https://spoofchecker.online" },
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <CheckPageClient data={result} lang={lang} dict={dict} />
+    </>
+  );
 }
