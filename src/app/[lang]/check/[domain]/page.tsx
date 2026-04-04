@@ -75,7 +75,7 @@ export default async function CheckPage({ params, searchParams }: Props) {
 
   await Promise.all([
     incrementDomainsChecked(),
-    trackDomain(domain),
+    trackDomain(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable }),
   ]).catch((e) =>
     console.error("[redis]", e instanceof Error ? e.message : e)
   );
