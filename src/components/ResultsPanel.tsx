@@ -123,15 +123,34 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
       {data.recommendations.length > 0 && (
         <div className="animate-fade-up rounded-xl border border-zinc-800 bg-zinc-900/50 p-6" style={{ animationDelay: "500ms" }}>
           <h3 className="text-lg font-semibold mb-4">{r.recommendations}</h3>
-          <ol className="space-y-3">
-            {translateKeys(data.recommendations).map((rec, i) => (
-              <li key={i} className="flex gap-3 text-sm text-zinc-300">
-                <span className="shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-400">
-                  {i + 1}
-                </span>
-                <span>{rec}</span>
-              </li>
-            ))}
+          <ol className="space-y-4">
+            {data.recommendations.map((key, i) => {
+              const label = t(dict, key);
+              const why = t(dict, `${key}_why`);
+              const hasWhy = why !== `${key}_why`;
+              return (
+                <li key={key}>
+                  <details className="group">
+                    <summary className="flex gap-3 text-sm text-zinc-300 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                      <span className="shrink-0 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-400">
+                        {i + 1}
+                      </span>
+                      <span className="flex-1">{label}</span>
+                      {hasWhy && (
+                        <span className="shrink-0 text-zinc-500 group-open:rotate-180 transition-transform print:hidden" aria-hidden="true">
+                          ▾
+                        </span>
+                      )}
+                    </summary>
+                    {hasWhy && (
+                      <p className="mt-2 ml-9 text-sm text-zinc-400 leading-relaxed print:!block">
+                        {why}
+                      </p>
+                    )}
+                  </details>
+                </li>
+              );
+            })}
           </ol>
         </div>
       )}

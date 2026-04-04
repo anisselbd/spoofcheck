@@ -114,12 +114,19 @@
     "dmarc_quarantine": "DMARC en quarantaine — les mails spoofés vont en spam mais ne sont pas rejetés",
     "dmarc_no_reporting": "Pas de reporting DMARC configuré (rua=) — vous ne verrez pas les tentatives de spoofing",
     "rec_add_dmarc": "Ajoutez un enregistrement DMARC : _dmarc.votredomaine TXT \"v=DMARC1; p=reject; adkim=s; aspf=s; rua=mailto:dmarc@votredomaine\"",
+    "rec_add_dmarc_why": "Sans DMARC, les serveurs de réception ne savent pas quoi faire quand les vérifications SPF ou DKIM échouent. N'importe qui peut envoyer des emails en se faisant passer pour votre domaine, et la plupart des serveurs les délivreront. DMARC avec p=reject ordonne aux serveurs de bloquer complètement les emails non autorisés.",
     "rec_dmarc_none_to_reject": "Changez votre politique DMARC de p=none à p=reject pour bloquer le spoofing",
+    "rec_dmarc_none_to_reject_why": "Avec p=none, votre enregistrement DMARC ne fait que surveiller — il ne bloque pas les emails usurpés. Les attaquants peuvent toujours envoyer des emails depuis votre domaine et ils seront livrés normalement. Passer à p=reject ordonne aux serveurs de rejeter les messages frauduleux avant qu'ils n'atteignent la boîte de réception.",
     "rec_dmarc_quarantine_to_reject": "Passez votre politique DMARC de p=quarantine à p=reject pour un blocage total",
+    "rec_dmarc_quarantine_to_reject_why": "Avec p=quarantine, les emails usurpés sont envoyés dans le spam au lieu d'être bloqués. Certains destinataires consultent leur dossier spam, et des attaques sophistiquées peuvent être considérées comme légitimes. p=reject garantit que les emails frauduleux n'atteignent aucun dossier.",
     "rec_add_rua": "Ajoutez rua=mailto:dmarc@votredomaine à votre DMARC pour recevoir les rapports",
+    "rec_add_rua_why": "Sans reporting DMARC (rua=), vous n'avez aucune visibilité sur qui envoie des emails au nom de votre domaine. Les rapports agrégés vous permettent de détecter les tentatives de spoofing, d'identifier les expéditeurs légitimes mal configurés, et de durcir votre politique en toute confiance.",
     "rec_add_spf": "Ajoutez un enregistrement SPF : votredomaine TXT \"v=spf1 include:votrefournisseur -all\"",
+    "rec_add_spf_why": "SPF indique aux serveurs de réception quelles adresses IP sont autorisées à envoyer des emails pour votre domaine. Sans lui, n'importe quel serveur dans le monde peut envoyer des emails semblant venir de vous. Ajouter SPF avec -all (hardfail) signifie que les expéditeurs non autorisés seront rejetés.",
     "rec_harden_spf": "Durcissez votre SPF en remplaçant ~all par -all (hardfail)",
-    "rec_add_dkim": "Activez DKIM dans votre fournisseur mail et ajoutez la clé publique dans votre zone DNS"
+    "rec_harden_spf_why": "Avec ~all (softfail), les expéditeurs non autorisés sont signalés mais les emails sont généralement quand même délivrés. Passer à -all (hardfail) ordonne explicitement aux serveurs de rejeter les emails provenant de sources non autorisées, offrant une protection bien plus forte contre le spoofing.",
+    "rec_add_dkim": "Activez DKIM dans votre fournisseur mail et ajoutez la clé publique dans votre zone DNS",
+    "rec_add_dkim_why": "DKIM ajoute une signature cryptographique à vos emails, prouvant qu'ils n'ont pas été altérés en transit et qu'ils proviennent bien de votre domaine. Sans lui, les attaquants peuvent forger des emails qui passent les vérifications de base, et vos emails légitimes ont plus de chances d'atterrir dans le spam."
   },
   "faq": [
     {

@@ -342,4 +342,10 @@ body {
     text-decoration: none !important;
     color: inherit !important;
   }
+
+  /* Force recommendation details open in print */
+  details > p,
+  details > div {
+    display: block !important;
+  }
 }
