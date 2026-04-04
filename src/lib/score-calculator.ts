@@ -6,13 +6,14 @@ import type {
   DnsCheckResponse,
 } from "./types";
 
-function scoreSpf(spf: SpfResult): number {
+function scoreSpf(spf: SpfResult, dmarc: DmarcResult): number {
   if (!spf.found) return 0;
   switch (spf.qualifier) {
     case "-all":
       return 25;
     case "~all":
-      return 15;
+      // ~all is fine when DMARC enforces the policy (RFC 7489 §10.1)
+      return dmarc.policy === "reject" ? 25 : 15;
     case "?all":
       return 5;
     case "+all":
@@ -80,7 +81,7 @@ function buildRecommendations(
 
   if (!spf.found) {
     recs.push("rec_add_spf");
-  } else if (!spf.isStrict) {
+  } else if (!spf.isStrict && dmarc.policy !== "reject") {
     recs.push("rec_harden_spf");
   }
 
@@ -99,7 +100,7 @@ export function calculateScore(
   mx: MxResult
 ): DnsCheckResponse {
   const score =
-    scoreSpf(spf) + scoreDkim(dkim) + scoreDmarc(dmarc) + scoreMx(mx);
+    scoreSpf(spf, dmarc) + scoreDkim(dkim) + scoreDmarc(dmarc) + scoreMx(mx);
 
   const spoofable =
     !dmarc.found || dmarc.policy === "none" || (!spf.found && !dkim.found);

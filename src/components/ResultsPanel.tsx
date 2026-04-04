@@ -13,7 +13,10 @@ interface ResultsPanelProps {
 
 function spfStatus(data: DnsCheckResponse) {
   if (!data.spf.found) return "fail";
-  return data.spf.isStrict ? "pass" : "warn";
+  if (data.spf.isStrict) return "pass";
+  // ~all is acceptable when DMARC enforces the policy
+  if (data.spf.qualifier === "~all" && data.dmarc.policy === "reject") return "pass";
+  return "warn";
 }
 
 function dkimStatus(data: DnsCheckResponse) {
