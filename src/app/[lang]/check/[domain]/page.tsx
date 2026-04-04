@@ -52,8 +52,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
         en: `https://spoofchecker.online/en/check/${domain}`,
       },
     },
-    openGraph: { title, description, type: "website" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, type: "website", images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }] },
+    twitter: { card: "summary_large_image", title, description, images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }] },
   };
 }
 

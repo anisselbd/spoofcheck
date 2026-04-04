@@ -21,6 +21,7 @@ export async function generateMetadata({
       description: dict.guides.subtitle,
       type: "website",
       locale: lang === "fr" ? "fr_FR" : "en_US",
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
     },
     twitter: {
       card: "summary_large_image",

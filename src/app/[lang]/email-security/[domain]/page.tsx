@@ -61,11 +61,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: "article",
       locale: isFr ? "fr_FR" : "en_US",
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
     },
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/email-security/${domain}`,

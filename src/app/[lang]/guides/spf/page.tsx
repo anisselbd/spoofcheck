@@ -50,6 +50,7 @@ export async function generateMetadata({
         : "Complete guide to SPF: configuration, how it works, and common mistakes. Protect your domain against spoofing.",
       type: "article",
       locale: isFr ? "fr_FR" : "en_US",
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
     },
     twitter: {
       card: "summary_large_image",
