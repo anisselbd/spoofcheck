@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { DomainCheckData, CheckEvent } from "@/lib/redis";
+import WorldMap from "./WorldMap";
 
 type DomainEntry = { domain: string } & DomainCheckData;
 
@@ -291,69 +292,8 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
           </div>
           <div className="grid gap-4 lg:grid-cols-5">
             {/* Map */}
-            <div className="lg:col-span-3 relative">
-              <svg viewBox="0 0 1000 500" className="w-full h-auto" style={{ minHeight: 220 }}>
-                <defs>
-                  <radialGradient id="glow">
-                    <stop offset="0%" stopColor="#34d399" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
-                  </radialGradient>
-                </defs>
-                {/* Simplified continent outlines */}
-                <g fill="#27272a" stroke="#3f3f46" strokeWidth="0.5">
-                  {/* North America */}
-                  <path d="M50,120 L80,80 L120,60 L160,50 L200,55 L230,70 L250,90 L240,120 L220,140 L200,160 L180,180 L170,200 L160,220 L140,230 L130,210 L120,190 L100,180 L80,170 L60,160 L50,140 Z" />
-                  {/* Greenland */}
-                  <path d="M280,30 L320,25 L350,35 L360,55 L340,70 L310,65 L290,50 Z" />
-                  {/* South America */}
-                  <path d="M200,260 L220,250 L240,255 L260,270 L280,300 L300,330 L310,360 L300,390 L280,410 L260,400 L240,380 L220,350 L210,320 L200,290 Z" />
-                  {/* Europe */}
-                  <path d="M430,60 L450,55 L470,60 L490,70 L510,65 L530,70 L540,90 L530,100 L520,110 L500,120 L480,130 L460,125 L440,115 L430,100 L425,80 Z" />
-                  {/* UK + Ireland */}
-                  <path d="M420,75 L430,70 L435,80 L430,90 L420,85 Z" />
-                  {/* Africa */}
-                  <path d="M440,180 L460,170 L490,165 L520,170 L550,180 L570,200 L580,230 L575,260 L560,290 L540,320 L520,340 L500,350 L480,340 L460,310 L450,280 L440,250 L435,220 L435,200 Z" />
-                  {/* Asia */}
-                  <path d="M540,50 L580,40 L620,35 L670,40 L720,50 L760,60 L800,70 L830,90 L850,110 L860,140 L840,160 L810,170 L780,180 L750,190 L720,185 L690,170 L660,155 L630,140 L600,130 L570,120 L550,100 L540,80 Z" />
-                  {/* India */}
-                  <path d="M660,160 L680,155 L700,170 L710,200 L700,230 L680,245 L660,230 L650,200 L650,180 Z" />
-                  {/* Southeast Asia */}
-                  <path d="M730,190 L750,185 L770,195 L780,210 L770,225 L750,220 L740,210 Z" />
-                  {/* Japan */}
-                  <path d="M840,100 L850,90 L860,95 L858,110 L848,115 L840,108 Z" />
-                  {/* Australia */}
-                  <path d="M770,310 L810,295 L850,300 L880,310 L890,340 L880,370 L850,380 L820,375 L790,360 L775,340 L770,320 Z" />
-                  {/* New Zealand */}
-                  <path d="M910,370 L915,360 L920,365 L918,380 L912,378 Z" />
-                </g>
-                {/* Country dots */}
-                {sortedCountries.map(([code, count]) => {
-                  const coords = COUNTRY_COORDS[code];
-                  if (!coords) return null;
-                  const [xPct, yPct] = coords;
-                  const x = xPct * 10;
-                  const y = yPct * 10;
-                  const intensity = Math.max(0.4, count / maxCountryCount);
-                  const radius = Math.max(6, Math.min(25, 6 + (count / maxCountryCount) * 19));
-                  return (
-                    <g key={code}>
-                      <circle cx={x} cy={y} r={radius * 2} fill="url(#glow)" opacity={intensity * 0.5} />
-                      <circle
-                        cx={x} cy={y} r={radius}
-                        fill={`rgba(52, 211, 153, ${intensity})`}
-                        stroke="rgba(52, 211, 153, 0.3)"
-                        strokeWidth="1"
-                        className="hover:brightness-150 transition-all cursor-pointer"
-                      >
-                        <title>{COUNTRY_NAMES[code] || code}: {count} checks</title>
-                      </circle>
-                      {radius >= 10 && (
-                        <text x={x} y={y + 3} textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">{count}</text>
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
+            <div className="lg:col-span-3">
+              <WorldMap countries={geo.countries} />
             </div>
             {/* Country + City list */}
             <div className="lg:col-span-2 space-y-4">
