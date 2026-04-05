@@ -4,6 +4,8 @@ const COUNTER_KEY = "domains_checked";
 const DOMAINS_SET_KEY = "domains_tested";
 const DOMAIN_PREFIX = "domain:";
 const CHECKS_LOG_KEY = "checks_log";
+const COUNTRIES_KEY = "visitors_by_country";
+const CITIES_KEY = "visitors_by_city";
 
 function getClient() {
   return createClient({ url: process.env.KV_REDIS_URL })
@@ -30,13 +32,13 @@ export async function incrementDomainsChecked(): Promise<number> {
 
 export async function trackDomain(
   domain: string,
-  data: { score: number; grade: string; spoofable: boolean }
+  data: { score: number; grade: string; spoofable: boolean; country?: string; city?: string }
 ): Promise<void> {
   const client = await getClient();
   try {
     const key = `${DOMAIN_PREFIX}${domain}`;
     const now = Date.now();
-    await Promise.all([
+    const ops: Promise<unknown>[] = [
       client.sAdd(DOMAINS_SET_KEY, domain),
       client.hSet(key, {
         score: data.score.toString(),
@@ -46,7 +48,14 @@ export async function trackDomain(
       }),
       client.hIncrBy(key, "checkCount", 1),
       client.zAdd(CHECKS_LOG_KEY, { score: now, value: `${now}:${domain}` }),
-    ]);
+    ];
+    if (data.country) {
+      ops.push(client.hIncrBy(COUNTRIES_KEY, data.country, 1));
+    }
+    if (data.country && data.city) {
+      ops.push(client.hIncrBy(CITIES_KEY, `${data.city}, ${data.country}`, 1));
+    }
+    await Promise.all(ops);
   } finally {
     await client.disconnect();
   }
@@ -106,6 +115,21 @@ export async function getAllDomainData(): Promise<
         };
       })
       .filter(Boolean) as Array<{ domain: string } & DomainCheckData>;
+  } finally {
+    await client.disconnect();
+  }
+}
+
+export async function getGeoData(): Promise<{ countries: Record<string, number>; cities: Record<string, number> }> {
+  const client = await getClient();
+  try {
+    const [countries, cities] = await Promise.all([
+      client.hGetAll(COUNTRIES_KEY),
+      client.hGetAll(CITIES_KEY),
+    ]);
+    const parseMap = (m: Record<string, string>) =>
+      Object.fromEntries(Object.entries(m).map(([k, v]) => [k, parseInt(v, 10)]));
+    return { countries: parseMap(countries), cities: parseMap(cities) };
   } finally {
     await client.disconnect();
   }

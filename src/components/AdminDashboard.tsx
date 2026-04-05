@@ -5,10 +5,16 @@ import type { DomainCheckData, CheckEvent } from "@/lib/redis";
 
 type DomainEntry = { domain: string } & DomainCheckData;
 
+interface GeoData {
+  countries: Record<string, number>;
+  cities: Record<string, number>;
+}
+
 interface Props {
   totalChecks: number;
   domains: DomainEntry[];
   timeline: CheckEvent[];
+  geo: GeoData;
   token: string;
 }
 
@@ -55,9 +61,42 @@ function getTld(domain: string): string {
   return parts.pop()!;
 }
 
+// Mercator projection: country code -> [x%, y%] on a 800x400 map
+const COUNTRY_COORDS: Record<string, [number, number]> = {
+  US: [18, 38], CA: [17, 28], MX: [15, 45], BR: [32, 62], AR: [28, 72],
+  CL: [25, 72], CO: [24, 52], GB: [47, 27], FR: [48, 33], DE: [50, 29],
+  NL: [49, 27], BE: [49, 29], CH: [49, 32], IT: [51, 35], ES: [46, 36],
+  PT: [44, 36], IE: [45, 26], PL: [53, 28], CZ: [52, 30], AT: [51, 31],
+  SE: [52, 20], NO: [50, 18], DK: [50, 24], FI: [55, 18], RO: [55, 33],
+  HU: [53, 31], BG: [55, 34], GR: [54, 37], RU: [65, 22], UA: [57, 30],
+  TR: [58, 36], IN: [72, 44], JP: [86, 36], CN: [78, 38], KR: [84, 37],
+  AU: [84, 68], NZ: [90, 75], ZA: [55, 70], NG: [49, 50], EG: [56, 42],
+  IL: [58, 40], AE: [64, 44], SA: [62, 44], SG: [78, 52], PH: [82, 48],
+  ID: [80, 55], TH: [77, 48], VN: [78, 48], MY: [78, 52], PK: [68, 42],
+  BD: [73, 44], LK: [72, 50], KE: [58, 54], MA: [44, 40], TN: [50, 38],
+  DZ: [48, 40], PE: [23, 60], VE: [26, 50], EC: [22, 54],
+};
+
+const COUNTRY_NAMES: Record<string, string> = {
+  US: "USA", CA: "Canada", MX: "Mexique", BR: "Bresil", AR: "Argentine",
+  GB: "Royaume-Uni", FR: "France", DE: "Allemagne", NL: "Pays-Bas",
+  BE: "Belgique", CH: "Suisse", IT: "Italie", ES: "Espagne", PT: "Portugal",
+  IE: "Irlande", PL: "Pologne", CZ: "Tchequie", AT: "Autriche",
+  SE: "Suede", NO: "Norvege", DK: "Danemark", FI: "Finlande",
+  RO: "Roumanie", HU: "Hongrie", BG: "Bulgarie", GR: "Grece",
+  RU: "Russie", UA: "Ukraine", TR: "Turquie", IN: "Inde", JP: "Japon",
+  CN: "Chine", KR: "Coree du Sud", AU: "Australie", NZ: "Nouvelle-Zelande",
+  ZA: "Afrique du Sud", NG: "Nigeria", EG: "Egypte", IL: "Israel",
+  AE: "Emirats", SA: "Arabie Saoudite", SG: "Singapour", PH: "Philippines",
+  ID: "Indonesie", TH: "Thailande", VN: "Vietnam", MY: "Malaisie",
+  PK: "Pakistan", BD: "Bangladesh", LK: "Sri Lanka", KE: "Kenya",
+  MA: "Maroc", TN: "Tunisie", DZ: "Algerie", PE: "Perou",
+  VE: "Venezuela", EC: "Equateur", CL: "Chili", CO: "Colombie",
+};
+
 type SortKey = "domain" | "score" | "grade" | "checkedAt" | "checkCount";
 
-export default function AdminDashboard({ totalChecks, domains, timeline, token }: Props) {
+export default function AdminDashboard({ totalChecks, domains, timeline, geo, token }: Props) {
   const [search, setSearch] = useState("");
   const [gradeFilter, setGradeFilter] = useState<string>("");
   const [spoofFilter, setSpoofFilter] = useState<string>("");
@@ -156,6 +195,12 @@ export default function AdminDashboard({ totalChecks, domains, timeline, token }
 
   const scoreColor = avgScore >= 70 ? "text-emerald-400" : avgScore >= 50 ? "text-yellow-400" : "text-red-400";
 
+  // Geo data
+  const totalVisitors = Object.values(geo.countries).reduce((a, b) => a + b, 0);
+  const maxCountryCount = Math.max(...Object.values(geo.countries), 1);
+  const sortedCountries = Object.entries(geo.countries).sort((a, b) => b[1] - a[1]);
+  const sortedCities = Object.entries(geo.cities).sort((a, b) => b[1] - a[1]).slice(0, 15);
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
       {/* Header */}
@@ -236,6 +281,90 @@ export default function AdminDashboard({ totalChecks, domains, timeline, token }
           <span>{timelineData[timelineData.length - 1]?.label}</span>
         </div>
       </div>
+
+      {/* World Map */}
+      {totalVisitors > 0 && (
+        <div className="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-5 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-zinc-300">Visiteurs dans le monde</h2>
+            <span className="text-xs text-zinc-500">{totalVisitors} checks geolocalisees</span>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-5">
+            {/* Map */}
+            <div className="lg:col-span-3 relative">
+              <svg viewBox="0 0 100 50" className="w-full h-auto" style={{ minHeight: 200 }}>
+                {/* World outline - simplified continents */}
+                <rect x="0" y="0" width="100" height="50" fill="transparent" />
+                {/* Grid lines */}
+                {[10, 20, 30, 40].map((y) => (
+                  <line key={`h${y}`} x1="0" y1={y} x2="100" y2={y} stroke="#27272a" strokeWidth="0.15" />
+                ))}
+                {[20, 40, 60, 80].map((x) => (
+                  <line key={`v${x}`} x1={x} y1="0" x2={x} y2="50" stroke="#27272a" strokeWidth="0.15" />
+                ))}
+                {/* Equator */}
+                <line x1="0" y1="25" x2="100" y2="25" stroke="#3f3f46" strokeWidth="0.1" strokeDasharray="0.5,0.5" />
+                {/* Country dots */}
+                {sortedCountries.map(([code, count]) => {
+                  const coords = COUNTRY_COORDS[code];
+                  if (!coords) return null;
+                  const [x, y] = coords;
+                  const intensity = Math.max(0.3, count / maxCountryCount);
+                  const radius = Math.max(0.6, Math.min(2.5, 0.6 + (count / maxCountryCount) * 1.9));
+                  return (
+                    <g key={code}>
+                      <circle
+                        cx={x}
+                        cy={y}
+                        r={radius + 0.5}
+                        fill={`rgba(52, 211, 153, ${intensity * 0.2})`}
+                      />
+                      <circle
+                        cx={x}
+                        cy={y}
+                        r={radius}
+                        fill={`rgba(52, 211, 153, ${intensity})`}
+                        className="hover:brightness-150 transition-all cursor-pointer"
+                      >
+                        <title>{COUNTRY_NAMES[code] || code}: {count} checks</title>
+                      </circle>
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
+            {/* Country + City list */}
+            <div className="lg:col-span-2 space-y-4">
+              <div className="space-y-1.5 max-h-[120px] overflow-y-auto">
+                {sortedCountries.slice(0, 10).map(([code, count]) => (
+                  <div key={code} className="flex items-center justify-between text-sm">
+                    <span className="text-zinc-300">{COUNTRY_NAMES[code] || code}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(count / maxCountryCount) * 100}%` }} />
+                      </div>
+                      <span className="text-zinc-500 text-xs tabular-nums w-6 text-right">{count}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {sortedCities.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-medium text-zinc-500 mb-1.5">Top villes</h3>
+                  <div className="space-y-1 max-h-[100px] overflow-y-auto">
+                    {sortedCities.map(([city, count]) => (
+                      <div key={city} className="flex items-center justify-between text-xs">
+                        <span className="text-zinc-400 truncate mr-2">{city}</span>
+                        <span className="text-zinc-500 tabular-nums shrink-0">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Top domains */}

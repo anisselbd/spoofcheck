@@ -5,6 +5,7 @@ import { redirect, notFound } from "next/navigation";
 import { cleanDomain, isValidDomain } from "@/lib/validators";
 import { checkDomain } from "@/lib/dns-checker";
 import { calculateScore } from "@/lib/score-calculator";
+import { headers } from "next/headers";
 import { incrementDomainsChecked, trackDomain } from "@/lib/redis";
 import { getDictionary, hasLocale } from "../../dictionaries";
 import type { Locale } from "../../dictionaries";
@@ -73,9 +74,13 @@ export default async function CheckPage({ params, searchParams }: Props) {
   const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
   const result = calculateScore(domain, spf, dkim, dmarc, mx);
 
+  const hdrs = await headers();
+  const country = hdrs.get("x-vercel-ip-country") ?? undefined;
+  const city = hdrs.get("x-vercel-ip-city") ? decodeURIComponent(hdrs.get("x-vercel-ip-city")!) : undefined;
+
   await Promise.all([
     incrementDomainsChecked(),
-    trackDomain(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable }),
+    trackDomain(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable, country, city }),
   ]).catch((e) =>
     console.error("[redis]", e instanceof Error ? e.message : e)
   );

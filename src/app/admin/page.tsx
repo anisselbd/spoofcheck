@@ -1,4 +1,4 @@
-import { getDomainsChecked, getAllDomainData, getChecksTimeline } from "@/lib/redis";
+import { getDomainsChecked, getAllDomainData, getChecksTimeline, getGeoData } from "@/lib/redis";
 import AdminLogin from "@/components/AdminLogin";
 import AdminDashboard from "@/components/AdminDashboard";
 
@@ -17,10 +17,11 @@ export default async function AdminPage({
 
   const since48h = Date.now() - 48 * 3600000;
 
-  const [totalChecks, domains, timeline] = await Promise.all([
+  const [totalChecks, domains, timeline, geo] = await Promise.all([
     getDomainsChecked(),
     getAllDomainData(),
     getChecksTimeline(since48h),
+    getGeoData(),
   ]);
 
   return (
@@ -28,6 +29,7 @@ export default async function AdminPage({
       totalChecks={totalChecks}
       domains={domains}
       timeline={timeline}
+      geo={geo}
       token={token as string}
     />
   );
