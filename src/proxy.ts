@@ -19,10 +19,11 @@ function getLocale(request: NextRequest): string {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip internal paths, API routes, static files
+  // Skip internal paths, API routes, admin, static files
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
+    pathname.startsWith("/admin") ||
     pathname.includes(".") // static files like .png, .ico, etc.
   ) {
     return;
