@@ -25,6 +25,8 @@ const DKIM_SELECTORS = [
   "everlytickey1",
   "cm",
   "mxvault",
+  "zoho",
+  "zmail",
 ];
 
 async function resolveTxtSafe(hostname: string): Promise<string | null> {
