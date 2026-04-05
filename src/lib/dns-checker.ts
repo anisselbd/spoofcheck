@@ -140,9 +140,18 @@ export async function checkDmarc(domain: string): Promise<DmarcResult> {
     issues: [],
   };
 
-  const record = await resolveTxtSafe(`_dmarc.${domain}`);
+  let record: string | null = null;
+  try {
+    const records = await resolver.resolveTxt(`_dmarc.${domain}`);
+    const dmarc = records
+      .map((r) => r.join(""))
+      .find((r) => r.startsWith("v=DMARC1"));
+    record = dmarc ?? null;
+  } catch {
+    // No TXT records
+  }
 
-  if (!record || !record.startsWith("v=DMARC1")) {
+  if (!record) {
     result.issues.push("dmarc_not_found");
     return result;
   }
