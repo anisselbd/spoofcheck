@@ -75,6 +75,39 @@ export async function getTestedDomains(): Promise<string[]> {
   }
 }
 
+export async function getAllDomainData(): Promise<
+  Array<{ domain: string } & DomainCheckData>
+> {
+  const client = await getClient();
+  try {
+    const domains = await client.sMembers(DOMAINS_SET_KEY);
+    if (domains.length === 0) return [];
+
+    const pipeline = client.multi();
+    for (const domain of domains) {
+      pipeline.hGetAll(`${DOMAIN_PREFIX}${domain}`);
+    }
+    const results = await pipeline.exec();
+
+    return domains
+      .map((domain, i) => {
+        const raw = results[i] as unknown as Record<string, string> | null;
+        if (!raw || !raw.score) return null;
+        return {
+          domain,
+          score: parseInt(raw.score, 10),
+          grade: raw.grade,
+          spoofable: raw.spoofable === "1",
+          checkedAt: raw.checkedAt,
+          checkCount: parseInt(raw.checkCount, 10) || 1,
+        };
+      })
+      .filter(Boolean) as Array<{ domain: string } & DomainCheckData>;
+  } finally {
+    await client.disconnect();
+  }
+}
+
 export async function getDomainsChecked(): Promise<number> {
   const client = await getClient();
   try {
