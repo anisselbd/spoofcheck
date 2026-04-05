@@ -7,6 +7,10 @@ interface FooterDict {
   footerGuideDKIM: string;
   footerGuideDMARC: string;
   footerGuideComp: string;
+  footerAbout: string;
+  footerContact: string;
+  footerPrivacy: string;
+  footerTerms: string;
   footerMadeBy: string;
   footerRights: string;
 }
@@ -19,6 +23,10 @@ const defaults: Record<string, FooterDict> = {
     footerGuideDKIM: "Guide DKIM",
     footerGuideDMARC: "Guide DMARC",
     footerGuideComp: "SPF vs DKIM vs DMARC",
+    footerAbout: "À propos",
+    footerContact: "Contact",
+    footerPrivacy: "Confidentialité",
+    footerTerms: "Conditions",
     footerMadeBy: "Fait par",
     footerRights: "Tous droits réservés.",
   },
@@ -29,6 +37,10 @@ const defaults: Record<string, FooterDict> = {
     footerGuideDKIM: "DKIM Guide",
     footerGuideDMARC: "DMARC Guide",
     footerGuideComp: "SPF vs DKIM vs DMARC",
+    footerAbout: "About",
+    footerContact: "Contact",
+    footerPrivacy: "Privacy",
+    footerTerms: "Terms",
     footerMadeBy: "Made by",
     footerRights: "All rights reserved.",
   },
@@ -108,9 +120,18 @@ export default function Footer({ lang, dict }: FooterProps) {
             <Link href={`/${lang}`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
               {t.footerHome}
             </Link>
-            <a href="mailto:contact@spoofcheck.fr" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
-              contact@spoofcheck.fr
-            </a>
+            <Link href={`/${lang}/about`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              {t.footerAbout}
+            </Link>
+            <Link href={`/${lang}/contact`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              {t.footerContact}
+            </Link>
+            <Link href={`/${lang}/privacy`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              {t.footerPrivacy}
+            </Link>
+            <Link href={`/${lang}/terms`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              {t.footerTerms}
+            </Link>
           </nav>
         </div>
       </div>
