@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
+import { useState, useCallback } from "react";
+import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps";
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -38,7 +38,7 @@ const NUM_TO_ALPHA2: Record<string, string> = {
   "894": "ZM",
 };
 
-const COUNTRY_NAMES: Record<string, string> = {
+export const COUNTRY_NAMES: Record<string, string> = {
   US: "USA", CA: "Canada", MX: "Mexique", BR: "Bresil", AR: "Argentine",
   GB: "Royaume-Uni", FR: "France", DE: "Allemagne", NL: "Pays-Bas",
   BE: "Belgique", CH: "Suisse", IT: "Italie", ES: "Espagne", PT: "Portugal",
@@ -54,16 +54,83 @@ const COUNTRY_NAMES: Record<string, string> = {
   PA: "Panama", PR: "Porto Rico",
 };
 
+// Country center coordinates for fly-to zoom
+const COUNTRY_CENTERS: Record<string, [number, number]> = {
+  US: [-98, 39], CA: [-106, 56], MX: [-102, 23], BR: [-51, -14], AR: [-64, -34],
+  CL: [-71, -35], CO: [-72, 4], GB: [-2, 54], FR: [2, 46], DE: [10, 51],
+  NL: [5, 52], BE: [4, 50], CH: [8, 47], IT: [12, 42], ES: [-4, 40],
+  PT: [-8, 39], IE: [-8, 53], PL: [20, 52], CZ: [15, 49], AT: [14, 47],
+  SE: [15, 62], NO: [9, 61], DK: [10, 56], FI: [26, 64], RO: [25, 46],
+  HU: [19, 47], BG: [25, 43], GR: [22, 39], RU: [105, 60], UA: [32, 49],
+  TR: [35, 39], IN: [79, 21], JP: [138, 36], CN: [104, 35], KR: [128, 36],
+  AU: [134, -25], NZ: [174, -41], ZA: [25, -29], NG: [8, 10], EG: [30, 27],
+  IL: [35, 31], AE: [54, 24], SA: [45, 24], TN: [9, 34], AL: [20, 41],
+  BA: [18, 44], IS: [-19, 65], EE: [25, 59], VN: [108, 14], DO: [-70, 19],
+  GT: [-90, 15], PA: [-80, 9], PR: [-66, 18],
+};
+
+// Approximate city coordinates
+const CITY_COORDS: Record<string, [number, number]> = {
+  "West Palm Beach": [-80.05, 26.72], "Martins Ferry": [-80.73, 40.10],
+  "Heilbronn": [9.22, 49.14], "Lille": [3.06, 50.63], "Zurich": [8.54, 47.38],
+  "Paris": [2.35, 48.86], "Lyon": [4.83, 45.76], "Marseille": [5.37, 43.30],
+  "London": [-0.12, 51.51], "Berlin": [13.41, 52.52], "Munich": [11.58, 48.14],
+  "Amsterdam": [4.90, 52.37], "Toronto": [-79.38, 43.65], "Montreal": [-73.57, 45.50],
+  "Vancouver": [-123.12, 49.28], "Sydney": [151.21, -33.87], "Melbourne": [144.96, -37.81],
+  "New York": [-74.01, 40.71], "San Francisco": [-122.42, 37.77],
+  "Los Angeles": [-118.24, 34.05], "Chicago": [-87.63, 41.88],
+  "Madrid": [-3.70, 40.42], "Barcelona": [2.17, 41.39], "Rome": [12.50, 41.89],
+  "Dublin": [-6.26, 53.35], "Brussels": [4.35, 50.85], "Vienna": [16.37, 48.21],
+  "Prague": [14.42, 50.08], "Stockholm": [18.07, 59.33], "Oslo": [10.75, 59.91],
+  "Copenhagen": [12.57, 55.68], "Helsinki": [24.94, 60.17], "Bucharest": [26.10, 44.43],
+  "Lisbon": [-9.14, 38.74], "Warsaw": [21.01, 52.23],
+};
+
 interface WorldMapProps {
   countries: Record<string, number>;
+  cities: Record<string, number>;
+  hoveredCountry: string | null;
+  selectedCountry: string | null;
+  onHoverCountry: (code: string | null) => void;
+  onSelectCountry: (code: string | null) => void;
 }
 
-export default function WorldMap({ countries }: WorldMapProps) {
+export default function WorldMap({
+  countries, cities, hoveredCountry, selectedCountry, onHoverCountry, onSelectCountry,
+}: WorldMapProps) {
   const [tooltip, setTooltip] = useState<{ name: string; count: number; x: number; y: number } | null>(null);
   const maxCount = Math.max(...Object.values(countries), 1);
 
+  // Zoom state for fly-to
+  const defaultCenter: [number, number] = [10, 30];
+  const defaultZoom = 1;
+
+  const center = selectedCountry && COUNTRY_CENTERS[selectedCountry]
+    ? COUNTRY_CENTERS[selectedCountry]
+    : defaultCenter;
+  const zoom = selectedCountry ? 4 : defaultZoom;
+
+  // Cities for the selected country
+  const maxCityCount = Math.max(...Object.values(cities), 1);
+
+  const getCityName = (cityKey: string) => cityKey.split(",")[0].trim();
+  const getCityCountry = (cityKey: string) => cityKey.split(",")[1]?.trim() || "";
+
+  const visibleCities = selectedCountry
+    ? Object.entries(cities)
+        .filter(([key]) => getCityCountry(key) === selectedCountry)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 15)
+    : Object.entries(cities)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+  const topCityCount = visibleCities.length > 0 ? visibleCities[0][1] : 1;
+
   function getCountryColor(alpha2: string | undefined): string {
     if (!alpha2 || !countries[alpha2]) return "#1c1c1f";
+    if (alpha2 === selectedCountry) return "#059669";
+    if (alpha2 === hoveredCountry) return "#34d399";
     const count = countries[alpha2];
     const intensity = count / maxCount;
     if (intensity > 0.5) return "#059669";
@@ -73,10 +140,10 @@ export default function WorldMap({ countries }: WorldMapProps) {
     return "#063b30";
   }
 
-  function getCountryHover(alpha2: string | undefined): string {
-    if (!alpha2 || !countries[alpha2]) return "#27272a";
-    return "#34d399";
-  }
+  const handleCountryClick = useCallback((alpha2: string | undefined) => {
+    if (!alpha2 || !countries[alpha2]) return;
+    onSelectCountry(selectedCountry === alpha2 ? null : alpha2);
+  }, [countries, selectedCountry, onSelectCountry]);
 
   return (
     <div className="relative">
@@ -84,36 +151,45 @@ export default function WorldMap({ countries }: WorldMapProps) {
         projection="geoMercator"
         projectionConfig={{ scale: 120, center: [10, 30] }}
         className="w-full h-auto"
-        style={{ maxHeight: 320 }}
+        style={{ maxHeight: 350 }}
       >
-        <ZoomableGroup>
+        <ZoomableGroup
+          center={center}
+          zoom={zoom}
+          minZoom={1}
+          maxZoom={8}
+          translateExtent={[[-200, -100], [1200, 600]]}
+        >
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const alpha2 = NUM_TO_ALPHA2[geo.id];
-                const count = alpha2 ? countries[alpha2] : 0;
+                const count = alpha2 ? countries[alpha2] || 0 : 0;
                 const name = alpha2 ? (COUNTRY_NAMES[alpha2] || alpha2) : "";
+                const isHovered = alpha2 === hoveredCountry;
+                const isSelected = alpha2 === selectedCountry;
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
                     fill={getCountryColor(alpha2)}
-                    stroke="#27272a"
-                    strokeWidth={0.3}
+                    stroke={isSelected ? "#34d399" : isHovered ? "#52525b" : "#27272a"}
+                    strokeWidth={isSelected ? 1 : 0.3}
+                    onClick={() => handleCountryClick(alpha2)}
                     onMouseEnter={(e) => {
-                      if (count) {
-                        setTooltip({ name, count, x: e.clientX, y: e.clientY });
-                      }
+                      if (alpha2) onHoverCountry(alpha2);
+                      if (count) setTooltip({ name, count, x: e.clientX, y: e.clientY });
                     }}
                     onMouseMove={(e) => {
-                      if (count) {
-                        setTooltip({ name, count, x: e.clientX, y: e.clientY });
-                      }
+                      if (count) setTooltip({ name, count, x: e.clientX, y: e.clientY });
                     }}
-                    onMouseLeave={() => setTooltip(null)}
+                    onMouseLeave={() => {
+                      onHoverCountry(null);
+                      setTooltip(null);
+                    }}
                     style={{
-                      default: { outline: "none", cursor: count ? "pointer" : "default" },
-                      hover: { outline: "none", fill: getCountryHover(alpha2), transition: "fill 0.2s" },
+                      default: { outline: "none", cursor: count ? "pointer" : "default", transition: "fill 0.2s" },
+                      hover: { outline: "none", transition: "fill 0.2s" },
                       pressed: { outline: "none" },
                     }}
                   />
@@ -121,9 +197,47 @@ export default function WorldMap({ countries }: WorldMapProps) {
               })
             }
           </Geographies>
+
+          {/* City circles */}
+          {visibleCities.map(([cityKey, count]) => {
+            const cityName = getCityName(cityKey);
+            const coords = CITY_COORDS[cityName];
+            if (!coords) return null;
+            const radius = Math.max(2, Math.min(8, 2 + (count / topCityCount) * 6));
+            const isTop = count === topCityCount;
+            return (
+              <Marker key={cityKey} coordinates={coords}>
+                {isTop && (
+                  <circle r={radius + 4} fill="none" stroke="#34d399" strokeWidth={0.5} opacity={0.6}>
+                    <animate attributeName="r" from={radius + 2} to={radius + 6} dur="2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" from="0.6" to="0" dur="2s" repeatCount="indefinite" />
+                  </circle>
+                )}
+                <circle
+                  r={radius}
+                  fill="rgba(52, 211, 153, 0.8)"
+                  stroke="rgba(255,255,255,0.3)"
+                  strokeWidth={0.5}
+                />
+                <title>{cityName}: {count} checks</title>
+              </Marker>
+            );
+          })}
         </ZoomableGroup>
       </ComposableMap>
-      {tooltip && (
+
+      {/* Back button when zoomed */}
+      {selectedCountry && (
+        <button
+          onClick={() => onSelectCountry(null)}
+          className="absolute top-2 left-2 px-3 py-1.5 rounded-lg bg-zinc-800/90 border border-zinc-700 text-xs text-zinc-300 hover:text-zinc-100 hover:border-zinc-500 transition-colors backdrop-blur-sm"
+        >
+          ← Vue monde
+        </button>
+      )}
+
+      {/* Tooltip */}
+      {tooltip && !selectedCountry && (
         <div
           className="fixed z-50 pointer-events-none bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 shadow-xl"
           style={{ left: tooltip.x + 12, top: tooltip.y - 40 }}

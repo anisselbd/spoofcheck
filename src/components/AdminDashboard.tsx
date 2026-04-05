@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { DomainCheckData, CheckEvent } from "@/lib/redis";
-import WorldMap from "./WorldMap";
+import WorldMap, { COUNTRY_NAMES as MAP_COUNTRY_NAMES } from "./WorldMap";
 
 type DomainEntry = { domain: string } & DomainCheckData;
 
@@ -103,6 +103,8 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
   const [spoofFilter, setSpoofFilter] = useState<string>("");
   const [sortKey, setSortKey] = useState<SortKey>("checkedAt");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   const uniqueDomains = domains.length;
   const avgScore = uniqueDomains > 0 ? Math.round(domains.reduce((s, d) => s + d.score, 0) / uniqueDomains) : 0;
@@ -291,37 +293,112 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
             <span className="text-xs text-zinc-500">{totalVisitors} checks geolocalisees</span>
           </div>
           <div className="grid gap-4 lg:grid-cols-5">
-            {/* Map */}
             <div className="lg:col-span-3">
-              <WorldMap countries={geo.countries} />
+              <WorldMap
+                countries={geo.countries}
+                cities={geo.cities}
+                hoveredCountry={hoveredCountry}
+                selectedCountry={selectedCountry}
+                onHoverCountry={setHoveredCountry}
+                onSelectCountry={setSelectedCountry}
+              />
             </div>
-            {/* Country + City list */}
-            <div className="lg:col-span-2 space-y-4">
-              <div className="space-y-1.5 max-h-[120px] overflow-y-auto">
-                {sortedCountries.slice(0, 10).map(([code, count]) => (
-                  <div key={code} className="flex items-center justify-between text-sm">
-                    <span className="text-zinc-300">{COUNTRY_NAMES[code] || code}</span>
-                    <div className="flex items-center gap-2">
-                      <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                        <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(count / maxCountryCount) * 100}%` }} />
+            <div className="lg:col-span-2 space-y-4 overflow-hidden">
+              {/* Detail panel when country selected */}
+              {selectedCountry ? (
+                <div className="animate-fade-up space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-semibold text-zinc-100">
+                      {MAP_COUNTRY_NAMES[selectedCountry] || selectedCountry}
+                    </h3>
+                    <span className="text-emerald-400 font-bold text-lg">{geo.countries[selectedCountry] || 0}</span>
+                  </div>
+                  {/* Cities in this country */}
+                  {(() => {
+                    const countryCities = Object.entries(geo.cities)
+                      .filter(([k]) => k.split(",")[1]?.trim() === selectedCountry)
+                      .sort((a, b) => b[1] - a[1]);
+                    const topCity = countryCities[0]?.[1] || 1;
+                    return countryCities.length > 0 ? (
+                      <div>
+                        <h4 className="text-xs font-medium text-zinc-500 mb-2">Villes</h4>
+                        <div className="space-y-2 max-h-[100px] overflow-y-auto">
+                          {countryCities.map(([city, count]) => (
+                            <div key={city} className="space-y-1">
+                              <div className="flex justify-between text-sm">
+                                <span className="text-zinc-300">{city.split(",")[0]}</span>
+                                <span className="text-zinc-400 tabular-nums">{count}</span>
+                              </div>
+                              <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-emerald-500/70 rounded-full" style={{ width: `${(count / topCity) * 100}%` }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <span className="text-zinc-500 text-xs tabular-nums w-6 text-right">{count}</span>
+                    ) : (
+                      <p className="text-xs text-zinc-500">Pas de donnees villes</p>
+                    );
+                  })()}
+                  {/* Top domains checked from this country (approximate) */}
+                  <div>
+                    <h4 className="text-xs font-medium text-zinc-500 mb-2">Domaines recents</h4>
+                    <div className="space-y-1 max-h-[80px] overflow-y-auto">
+                      {domains
+                        .sort((a, b) => b.checkCount - a.checkCount)
+                        .slice(0, 5)
+                        .map((d) => (
+                          <div key={d.domain} className="flex items-center justify-between text-xs">
+                            <span className="font-mono text-zinc-300 truncate mr-2">{d.domain}</span>
+                            <span className={`shrink-0 w-5 h-5 rounded text-[10px] font-bold text-white flex items-center justify-center ${GRADE_COLORS[d.grade]}`}>{d.grade}</span>
+                          </div>
+                        ))}
                     </div>
                   </div>
-                ))}
-              </div>
-              {sortedCities.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-medium text-zinc-500 mb-1.5">Top villes</h3>
-                  <div className="space-y-1 max-h-[100px] overflow-y-auto">
-                    {sortedCities.map(([city, count]) => (
-                      <div key={city} className="flex items-center justify-between text-xs">
-                        <span className="text-zinc-400 truncate mr-2">{city}</span>
-                        <span className="text-zinc-500 tabular-nums shrink-0">{count}</span>
+                  <button
+                    onClick={() => setSelectedCountry(null)}
+                    className="w-full text-xs text-zinc-500 hover:text-zinc-300 transition-colors py-1"
+                  >
+                    ← Retour vue monde
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
+                    {sortedCountries.slice(0, 15).map(([code, count]) => (
+                      <div
+                        key={code}
+                        className={`flex items-center justify-between text-sm px-2 py-1 rounded-lg cursor-pointer transition-colors ${
+                          hoveredCountry === code ? "bg-zinc-800" : "hover:bg-zinc-800/50"
+                        }`}
+                        onMouseEnter={() => setHoveredCountry(code)}
+                        onMouseLeave={() => setHoveredCountry(null)}
+                        onClick={() => setSelectedCountry(code)}
+                      >
+                        <span className="text-zinc-300">{MAP_COUNTRY_NAMES[code] || code}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(count / maxCountryCount) * 100}%` }} />
+                          </div>
+                          <span className="text-zinc-500 text-xs tabular-nums w-6 text-right">{count}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
-                </div>
+                  {sortedCities.length > 0 && (
+                    <div>
+                      <h3 className="text-xs font-medium text-zinc-500 mb-1.5">Top villes</h3>
+                      <div className="space-y-1 max-h-[100px] overflow-y-auto">
+                        {sortedCities.map(([city, count]) => (
+                          <div key={city} className="flex items-center justify-between text-xs">
+                            <span className="text-zinc-400 truncate mr-2">{city}</span>
+                            <span className="text-zinc-500 tabular-nums shrink-0">{count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
