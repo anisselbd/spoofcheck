@@ -1,62 +1,23 @@
 "use client";
 
-// Dot matrix world map - 72x36 grid, equirectangular projection
-// Each row is a string of 72 chars: 1=land, 0=water
-const MAP_DATA = [
-  "000000000000000000000000000000000000000000000000000000000000000000000000",
-  "000000000000000000000000000001111111111111111111111111111111100000000000",
-  "000000000000000000000001100111111111111111111111111111111111111100000000",
-  "000000000001111100000011111111111111111111111111111111111111111110000000",
-  "000000000111111110001111111111111111111111111111111111111111111111100000",
-  "000000001111111111011111111011111111111111111111111111111111111111100000",
-  "000000011111111111111111100011111111111111111111111111111111111111110000",
-  "000000011111111111111110000011111111111111111111111111111111111111100000",
-  "000000111111111111111100000011101111111111111111111111111111111111100000",
-  "000001111111111111111000000001101111111111110011111111111111111111100000",
-  "000001111111111111110000000001111111111111100001111111111111111111000000",
-  "000011111111111111100000000011111111111111000001111111111111111111000000",
-  "000011111111111111000000000011111111111110000011111111111111111110000000",
-  "000011111111111110000000000001111111111100000011111111111111111100000000",
-  "000001111111111100000000000001111111111100000111111111111111111000000000",
-  "000000111111111000000000000000111111111000001111111111111111100000000000",
-  "000000011111110000000000000000011111110000001111111111111100000000000000",
-  "000000011111110000000000000000001111100000011111111111110000000000000000",
-  "000000001111100000000001000000000110000000111111110111100000000100000000",
-  "000000000111100000000011100000000000000001111111100011000000001110000000",
-  "000000000011110000000011100000000000000011111111000000000000011100000000",
-  "000000000001111000000001100000000000000111111110000000000000111000000000",
-  "000000000000111100000000100000000000001111111100000000000001110000000000",
-  "000000000000011110000000000000000000011111111000000000000011100000000000",
-  "000000000000001111000000000000000000111111100000000000000111000000000000",
-  "000000000000000111100000000000000001111111000000000000001100000000000000",
-  "000000000000000011110000000000000011111110000000000000000000000000000000",
-  "000000000000000001110000000000000111111000000000000000000000000000000000",
-  "000000000000000000110000000000001111100000000000000000000000000110000000",
-  "000000000000000000010000000000011110000000000000000000000000011111000000",
-  "000000000000000000000000000000111000000000000000000000000000111111100000",
-  "000000000000000000000000000001100000000000000000000000000001111111000000",
-  "000000000000000000000000000000000000000000000000000000000000111110000000",
-  "000000000000000000000000000000000000000000000000000000000000011100000000",
-  "000000000000000000000000000000000000000000000000000000000000001000000000",
-  "000000000000000000000000000000000000000000000000000000000000000000000000",
-];
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 
-const COLS = 72;
-const ROWS = 36;
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
-// Country code -> approximate [col, row] on the 72x36 grid
-const COUNTRY_POS: Record<string, [number, number]> = {
-  US: [13, 12], CA: [12, 8], MX: [11, 15], BR: [23, 21], AR: [20, 26],
-  CL: [18, 26], CO: [17, 18], GB: [34, 9], FR: [35, 12], DE: [36, 10],
-  NL: [35, 9], BE: [35, 10], CH: [36, 11], IT: [37, 13], ES: [33, 13],
-  PT: [32, 13], IE: [33, 9], PL: [38, 10], CZ: [37, 10], AT: [37, 11],
-  SE: [37, 7], NO: [36, 6], DK: [36, 8], FI: [39, 6], RO: [40, 12],
-  HU: [38, 11], BG: [40, 12], GR: [39, 13], RU: [47, 8], UA: [41, 10],
-  TR: [42, 13], IN: [52, 16], JP: [62, 12], CN: [56, 12], KR: [60, 12],
-  AU: [60, 28], NZ: [65, 30], ZA: [40, 27], NG: [36, 18], EG: [41, 15],
-  IL: [42, 14], AE: [46, 16], SA: [45, 16], SG: [56, 19], PH: [59, 17],
-  ID: [57, 20], TH: [55, 17], VN: [56, 17], MY: [56, 19], PK: [49, 14],
-  BD: [53, 15], MA: [33, 15], TN: [36, 14], DZ: [35, 14],
+// Country code (ISO 3166-1 alpha-2) -> [longitude, latitude]
+const COUNTRY_CENTERS: Record<string, [number, number]> = {
+  US: [-98, 39], CA: [-106, 56], MX: [-102, 23], BR: [-51, -14], AR: [-64, -34],
+  CL: [-71, -35], CO: [-72, 4], GB: [-2, 54], FR: [2, 46], DE: [10, 51],
+  NL: [5, 52], BE: [4, 50], CH: [8, 47], IT: [12, 42], ES: [-4, 40],
+  PT: [-8, 39], IE: [-8, 53], PL: [20, 52], CZ: [15, 49], AT: [14, 47],
+  SE: [15, 62], NO: [9, 61], DK: [10, 56], FI: [26, 64], RO: [25, 46],
+  HU: [19, 47], BG: [25, 43], GR: [22, 39], RU: [105, 60], UA: [32, 49],
+  TR: [35, 39], IN: [79, 21], JP: [138, 36], CN: [104, 35], KR: [128, 36],
+  AU: [134, -25], NZ: [174, -41], ZA: [25, -29], NG: [8, 10], EG: [30, 27],
+  IL: [35, 31], AE: [54, 24], SA: [45, 24], SG: [104, 1], PH: [122, 13],
+  ID: [120, -5], TH: [101, 15], VN: [108, 14], MY: [110, 4], PK: [70, 30],
+  BD: [90, 24], KE: [38, 0], MA: [-6, 32], TN: [9, 34], DZ: [3, 28],
+  PE: [-76, -10], VE: [-67, 7], EC: [-78, -2],
 };
 
 interface WorldMapProps {
@@ -66,65 +27,54 @@ interface WorldMapProps {
 export default function WorldMap({ countries }: WorldMapProps) {
   const maxCount = Math.max(...Object.values(countries), 1);
 
-  // Build a set of highlighted positions
-  const highlights = new Map<string, { code: string; count: number; intensity: number }>();
-  for (const [code, count] of Object.entries(countries)) {
-    const pos = COUNTRY_POS[code];
-    if (!pos) continue;
-    const key = `${pos[0]},${pos[1]}`;
-    const existing = highlights.get(key);
-    if (!existing || count > existing.count) {
-      highlights.set(key, { code, count, intensity: Math.max(0.4, count / maxCount) });
-    }
-  }
-
   return (
-    <div className="relative w-full" style={{ aspectRatio: "2/1" }}>
-      <svg viewBox={`0 0 ${COLS * 2} ${ROWS * 2}`} className="w-full h-full">
-        {MAP_DATA.map((row, y) =>
-          row.split("").map((cell, x) => {
-            if (cell === "0") return null;
-            const key = `${x},${y}`;
-            const highlight = highlights.get(key);
-
-            if (highlight) {
-              return (
-                <g key={key}>
-                  <circle
-                    cx={x * 2 + 1}
-                    cy={y * 2 + 1}
-                    r={1.8}
-                    fill={`rgba(52, 211, 153, ${highlight.intensity})`}
-                    className="cursor-pointer"
-                  >
-                    <title>{COUNTRY_POS[highlight.code] ? (
-                      Object.entries(COUNTRY_POS).find(([c]) => c === highlight.code)?.[0]
-                    ) : highlight.code}: {highlight.count} checks</title>
-                  </circle>
-                  <circle
-                    cx={x * 2 + 1}
-                    cy={y * 2 + 1}
-                    r={3.5}
-                    fill="none"
-                    stroke="rgba(52, 211, 153, 0.3)"
-                    strokeWidth="0.3"
-                  />
-                </g>
-              );
-            }
-
-            return (
-              <circle
-                key={key}
-                cx={x * 2 + 1}
-                cy={y * 2 + 1}
-                r={0.5}
-                fill="#3f3f46"
-              />
-            );
-          })
-        )}
-      </svg>
-    </div>
+    <ComposableMap
+      projection="geoMercator"
+      projectionConfig={{ scale: 120, center: [10, 30] }}
+      className="w-full h-auto"
+      style={{ maxHeight: 300 }}
+    >
+      <Geographies geography={GEO_URL}>
+        {({ geographies }) =>
+          geographies.map((geo) => (
+            <Geography
+              key={geo.rsmKey}
+              geography={geo}
+              fill="#27272a"
+              stroke="#3f3f46"
+              strokeWidth={0.4}
+              style={{
+                default: { outline: "none" },
+                hover: { outline: "none", fill: "#3f3f46" },
+                pressed: { outline: "none" },
+              }}
+            />
+          ))
+        }
+      </Geographies>
+      {Object.entries(countries).map(([code, count]) => {
+        const coords = COUNTRY_CENTERS[code];
+        if (!coords) return null;
+        const intensity = Math.max(0.4, count / maxCount);
+        const radius = Math.max(4, Math.min(16, 4 + (count / maxCount) * 12));
+        return (
+          <Marker key={code} coordinates={coords}>
+            <circle r={radius + 3} fill={`rgba(52, 211, 153, ${intensity * 0.15})`} />
+            <circle
+              r={radius}
+              fill={`rgba(52, 211, 153, ${intensity})`}
+              stroke="rgba(52, 211, 153, 0.3)"
+              strokeWidth={0.5}
+            />
+            {radius >= 8 && (
+              <text textAnchor="middle" y={3} fill="white" fontSize={8} fontWeight="bold">
+                {count}
+              </text>
+            )}
+            <title>{code}: {count} checks</title>
+          </Marker>
+        );
+      })}
+    </ComposableMap>
   );
 }
