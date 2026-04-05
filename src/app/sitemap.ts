@@ -9,6 +9,14 @@ const popularDomains = [
   "hotmail.com", "aol.com", "zoho.com", "gmx.com", "fastmail.com",
 ];
 
+function alternates(path: string) {
+  return {
+    languages: Object.fromEntries(
+      locales.map((lang) => [lang, `${BASE}/${lang}${path}`])
+    ),
+  };
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: "", changeFrequency: "weekly" as const, priority: 1 },
@@ -25,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency,
       priority,
+      alternates: alternates(path),
     }))
   );
 
@@ -34,6 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.7,
+      alternates: alternates(`/email-security/${domain}`),
     }))
   );
 
