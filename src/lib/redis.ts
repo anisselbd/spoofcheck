@@ -3,6 +3,7 @@ import { createClient } from "redis";
 const COUNTER_KEY = "domains_checked";
 const DOMAINS_SET_KEY = "domains_tested";
 const DOMAIN_PREFIX = "domain:";
+const CHECKS_LOG_KEY = "checks_log";
 
 function getClient() {
   return createClient({ url: process.env.KV_REDIS_URL })
@@ -34,15 +35,17 @@ export async function trackDomain(
   const client = await getClient();
   try {
     const key = `${DOMAIN_PREFIX}${domain}`;
+    const now = Date.now();
     await Promise.all([
       client.sAdd(DOMAINS_SET_KEY, domain),
       client.hSet(key, {
         score: data.score.toString(),
         grade: data.grade,
         spoofable: data.spoofable ? "1" : "0",
-        checkedAt: new Date().toISOString(),
+        checkedAt: new Date(now).toISOString(),
       }),
       client.hIncrBy(key, "checkCount", 1),
+      client.zAdd(CHECKS_LOG_KEY, { score: now, value: `${now}:${domain}` }),
     ]);
   } finally {
     await client.disconnect();
@@ -103,6 +106,27 @@ export async function getAllDomainData(): Promise<
         };
       })
       .filter(Boolean) as Array<{ domain: string } & DomainCheckData>;
+  } finally {
+    await client.disconnect();
+  }
+}
+
+export interface CheckEvent {
+  domain: string;
+  timestamp: number;
+}
+
+export async function getChecksTimeline(since: number): Promise<CheckEvent[]> {
+  const client = await getClient();
+  try {
+    const entries = await client.zRangeByScore(CHECKS_LOG_KEY, since, "+inf");
+    return entries.map((entry) => {
+      const colonIdx = entry.indexOf(":");
+      return {
+        timestamp: parseInt(entry.substring(0, colonIdx), 10),
+        domain: entry.substring(colonIdx + 1),
+      };
+    });
   } finally {
     await client.disconnect();
   }
