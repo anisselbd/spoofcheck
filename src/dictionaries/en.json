@@ -51,6 +51,12 @@
       "source": "Reddit",
       "avatar": "/avatars/memorymobile.png",
       "text": "I've used it on a few of my domains and one of them didn't have a DMARC record, it gave you a solution on how to create one. I like how on the MX area it also identified the mail provider. This is a very solid tool for anyone to properly secure their mail services."
+    },
+    {
+      "author": "Anonymous",
+      "source": "Reddit",
+      "avatar": "/avatars/anonymous.png",
+      "text": "Very nice tool, will be adding to my useful tools bookmark."
     }
   ],
   "domainInput": {

@@ -51,6 +51,12 @@
       "source": "Reddit",
       "avatar": "/avatars/memorymobile.png",
       "text": "Je l'ai utilisé sur plusieurs de mes domaines et l'un d'eux n'avait pas de DMARC, l'outil m'a donné la solution pour en créer un. J'aime bien la détection du fournisseur mail dans la section MX. Un outil vraiment solide pour sécuriser ses services mail."
+    },
+    {
+      "author": "Anonymous",
+      "source": "Reddit",
+      "avatar": "/avatars/anonymous.png",
+      "text": "Très bon outil, je vais l'ajouter à mes favoris d'outils utiles."
     }
   ],
   "domainInput": {
