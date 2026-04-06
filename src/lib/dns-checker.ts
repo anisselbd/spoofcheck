@@ -27,6 +27,9 @@ const DKIM_SELECTORS = [
   "mxvault",
   "zoho",
   "zmail",
+  "fm1",
+  "fm2",
+  "fm3",
 ];
 
 async function resolveTxtSafe(hostname: string): Promise<string | null> {
@@ -219,6 +222,8 @@ export async function checkMx(domain: string): Promise<MxResult> {
       result.provider = "iCloud Mail";
     } else if (primary.includes("securemail.pro")) {
       result.provider = "Amen / team.blue";
+    } else if (primary.includes("fastmail") || primary.includes("messagingengine")) {
+      result.provider = "Fastmail";
     }
   } catch {
     // No MX records
