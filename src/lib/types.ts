@@ -27,6 +27,16 @@ export interface MxResult {
   provider: string | null;
 }
 
+export interface MtaStsResult {
+  found: boolean;
+  record: string | null;
+  mode: "enforce" | "testing" | "none" | null;
+  mxPatterns: string[];
+  maxAge: number | null;
+  policyError: boolean;
+  issues: string[];
+}
+
 export interface DnsCheckResponse {
   domain: string;
   score: number;
@@ -36,6 +46,7 @@ export interface DnsCheckResponse {
   dkim: DkimResult;
   dmarc: DmarcResult;
   mx: MxResult;
+  mtaSts: MtaStsResult;
   recommendations: string[];
   checkedAt: string;
 }

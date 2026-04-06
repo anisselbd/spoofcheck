@@ -3,6 +3,7 @@ import type {
   DkimResult,
   DmarcResult,
   MxResult,
+  MtaStsResult,
   DnsCheckResponse,
 } from "./types";
 
@@ -33,13 +34,13 @@ function scoreDmarc(dmarc: DmarcResult): number {
   let score = 0;
   switch (dmarc.policy) {
     case "reject":
-      score = 30;
+      score = 25;
       break;
     case "quarantine":
-      score = 20;
+      score = 17;
       break;
     case "none":
-      score = 10;
+      score = 8;
       break;
     default:
       score = 5;
@@ -49,7 +50,20 @@ function scoreDmarc(dmarc: DmarcResult): number {
 }
 
 function scoreMx(mx: MxResult): number {
-  return mx.found ? 15 : 0;
+  return mx.found ? 10 : 0;
+}
+
+function scoreMtaSts(mtaSts: MtaStsResult): number {
+  if (!mtaSts.found) return 0;
+  if (mtaSts.policyError) return 2;
+  switch (mtaSts.mode) {
+    case "enforce":
+      return 10;
+    case "testing":
+      return 5;
+    default:
+      return 2;
+  }
 }
 
 function getGrade(score: number): DnsCheckResponse["grade"] {
@@ -63,7 +77,8 @@ function getGrade(score: number): DnsCheckResponse["grade"] {
 function buildRecommendations(
   spf: SpfResult,
   dkim: DkimResult,
-  dmarc: DmarcResult
+  dmarc: DmarcResult,
+  mtaSts: MtaStsResult
 ): string[] {
   const recs: string[] = [];
 
@@ -89,6 +104,14 @@ function buildRecommendations(
     recs.push("rec_add_dkim");
   }
 
+  if (!mtaSts.found) {
+    recs.push("rec_add_mta_sts");
+  } else if (mtaSts.mode === "testing") {
+    recs.push("rec_mta_sts_enforce");
+  } else if (mtaSts.policyError) {
+    recs.push("rec_fix_mta_sts_policy");
+  }
+
   return recs;
 }
 
@@ -97,10 +120,11 @@ export function calculateScore(
   spf: SpfResult,
   dkim: DkimResult,
   dmarc: DmarcResult,
-  mx: MxResult
+  mx: MxResult,
+  mtaSts: MtaStsResult
 ): DnsCheckResponse {
   const score =
-    scoreSpf(spf, dmarc) + scoreDkim(dkim) + scoreDmarc(dmarc) + scoreMx(mx);
+    scoreSpf(spf, dmarc) + scoreDkim(dkim) + scoreDmarc(dmarc) + scoreMx(mx) + scoreMtaSts(mtaSts);
 
   const spoofable =
     !dmarc.found || dmarc.policy === "none" || (!spf.found && !dkim.found);
@@ -114,7 +138,8 @@ export function calculateScore(
     dkim,
     dmarc,
     mx,
-    recommendations: buildRecommendations(spf, dkim, dmarc),
+    mtaSts,
+    recommendations: buildRecommendations(spf, dkim, dmarc, mtaSts),
     checkedAt: new Date().toISOString(),
   };
 }

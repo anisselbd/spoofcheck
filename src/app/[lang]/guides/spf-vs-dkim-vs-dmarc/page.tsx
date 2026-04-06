@@ -48,7 +48,7 @@ export async function generateMetadata({
         : "Complete comparison of the 3 email authentication protocols. Discover their differences and how to combine them.",
       type: "article",
       locale: isFr ? "fr_FR" : "en_US",
-      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }],
     },
     twitter: {
       card: "summary_large_image",

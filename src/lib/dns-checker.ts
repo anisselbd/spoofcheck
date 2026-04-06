@@ -1,5 +1,5 @@
 import dns from "dns";
-import type { SpfResult, DkimResult, DmarcResult, MxResult } from "./types";
+import type { SpfResult, DkimResult, DmarcResult, MxResult, MtaStsResult } from "./types";
 
 const resolver = new dns.promises.Resolver();
 resolver.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -232,13 +232,83 @@ export async function checkMx(domain: string): Promise<MxResult> {
   return result;
 }
 
+export async function checkMtaSts(domain: string): Promise<MtaStsResult> {
+  const result: MtaStsResult = {
+    found: false,
+    record: null,
+    mode: null,
+    mxPatterns: [],
+    maxAge: null,
+    policyError: false,
+    issues: [],
+  };
+
+  // Step 1: Check _mta-sts TXT record
+  const txt = await resolveTxtSafe(`_mta-sts.${domain}`);
+  if (!txt || !txt.startsWith("v=STSv1")) {
+    result.issues.push("mta_sts_no_record");
+    return result;
+  }
+
+  result.found = true;
+  result.record = txt;
+
+  // Step 2: Fetch the policy file
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(`https://mta-sts.${domain}/.well-known/mta-sts.txt`, {
+      signal: controller.signal,
+      redirect: "follow",
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      result.policyError = true;
+      result.issues.push("mta_sts_policy_fetch_error");
+      return result;
+    }
+
+    const body = await res.text();
+    const lines = body.split("\n").map((l) => l.trim()).filter(Boolean);
+
+    for (const line of lines) {
+      const [key, ...rest] = line.split(":");
+      const value = rest.join(":").trim();
+      switch (key.trim().toLowerCase()) {
+        case "mode":
+          result.mode = value as MtaStsResult["mode"];
+          break;
+        case "mx":
+          result.mxPatterns.push(value);
+          break;
+        case "max_age":
+          result.maxAge = parseInt(value, 10) || null;
+          break;
+      }
+    }
+
+    if (result.mode === "none") {
+      result.issues.push("mta_sts_mode_none");
+    } else if (result.mode === "testing") {
+      result.issues.push("mta_sts_mode_testing");
+    }
+  } catch {
+    result.policyError = true;
+    result.issues.push("mta_sts_policy_fetch_error");
+  }
+
+  return result;
+}
+
 export async function checkDomain(domain: string, extraDkimSelectors?: string[]) {
-  const [spf, dkim, dmarc, mx] = await Promise.all([
+  const [spf, dkim, dmarc, mx, mtaSts] = await Promise.all([
     checkSpf(domain),
     checkDkim(domain, extraDkimSelectors),
     checkDmarc(domain),
     checkMx(domain),
+    checkMtaSts(domain),
   ]);
 
-  return { spf, dkim, dmarc, mx };
+  return { spf, dkim, dmarc, mx, mtaSts };
 }

@@ -21,7 +21,7 @@ export async function generateMetadata({
       description: dict.guides.subtitle,
       type: "website",
       locale: lang === "fr" ? "fr_FR" : "en_US",
-      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -67,6 +67,12 @@ export default async function GuidesIndexPage({
       title: g.dmarcTitle,
       description: g.dmarcDescription,
       topics: g.dmarcTopics,
+    },
+    {
+      href: `/${lang}/guides/mta-sts`,
+      title: g.mtaStsTitle,
+      description: g.mtaStsDescription,
+      topics: g.mtaStsTopics,
     },
     {
       href: `/${lang}/guides/spf-vs-dkim-vs-dmarc`,

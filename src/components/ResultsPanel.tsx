@@ -34,6 +34,13 @@ function mxStatus(data: DnsCheckResponse) {
   return data.mx.found ? "pass" : "fail";
 }
 
+function mtaStsStatus(data: DnsCheckResponse) {
+  if (!data.mtaSts.found) return "fail";
+  if (data.mtaSts.policyError) return "warn";
+  if (data.mtaSts.mode === "enforce") return "pass";
+  return "warn";
+}
+
 function t(dict: Dictionary, key: string): string {
   return (dict.dns as Record<string, string>)[key] ?? key;
 }
@@ -116,6 +123,16 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
           }
           details={mxDetails}
           delay={400}
+          dict={r}
+        />
+        <ResultCard
+          title="MTA-STS"
+          status={mtaStsStatus(data)}
+          record={data.mtaSts.record}
+          details={translateKeys(data.mtaSts.issues)}
+          guideHref={`/${lang}/guides/mta-sts`}
+          guideLabel={dict.guides.readGuide}
+          delay={500}
           dict={r}
         />
       </div>

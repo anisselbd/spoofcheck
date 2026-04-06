@@ -6,6 +6,7 @@ interface FooterDict {
   footerGuideSPF: string;
   footerGuideDKIM: string;
   footerGuideDMARC: string;
+  footerGuideMtaSts: string;
   footerGuideComp: string;
   footerAbout: string;
   footerContact: string;
@@ -22,6 +23,7 @@ const defaults: Record<string, FooterDict> = {
     footerGuideSPF: "Guide SPF",
     footerGuideDKIM: "Guide DKIM",
     footerGuideDMARC: "Guide DMARC",
+    footerGuideMtaSts: "Guide MTA-STS",
     footerGuideComp: "SPF vs DKIM vs DMARC",
     footerAbout: "À propos",
     footerContact: "Contact",
@@ -36,6 +38,7 @@ const defaults: Record<string, FooterDict> = {
     footerGuideSPF: "SPF Guide",
     footerGuideDKIM: "DKIM Guide",
     footerGuideDMARC: "DMARC Guide",
+    footerGuideMtaSts: "MTA-STS Guide",
     footerGuideComp: "SPF vs DKIM vs DMARC",
     footerAbout: "About",
     footerContact: "Contact",
@@ -107,6 +110,9 @@ export default function Footer({ lang, dict }: FooterProps) {
             </Link>
             <Link href={`/${lang}/guides/dmarc`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
               {t.footerGuideDMARC}
+            </Link>
+            <Link href={`/${lang}/guides/mta-sts`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              {t.footerGuideMtaSts}
             </Link>
             <Link href={`/${lang}/guides/spf-vs-dkim-vs-dmarc`} className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
               {t.footerGuideComp}

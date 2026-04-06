@@ -329,7 +329,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
           Verifiez votre domaine gratuitement
         </h2>
         <p className="text-zinc-400 max-w-lg mx-auto">
-          Testez votre configuration SPF, DKIM et DMARC en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
+          Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
         </p>
         <Link
           href={`/${lang}`}
@@ -365,6 +365,17 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
             </h3>
             <p className="text-sm text-zinc-400">
               Apprenez a configurer la signature DKIM pour authentifier vos emails.
+            </p>
+          </Link>
+          <Link
+            href={`/${lang}/guides/mta-sts`}
+            className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-2 hover:border-zinc-700 transition-colors group"
+          >
+            <h3 className="font-semibold text-zinc-100 group-hover:text-emerald-400 transition-colors">
+              Guide MTA-STS
+            </h3>
+            <p className="text-sm text-zinc-400">
+              Apprenez comment MTA-STS impose le chiffrement TLS pour proteger vos emails en transit.
             </p>
           </Link>
         </div>

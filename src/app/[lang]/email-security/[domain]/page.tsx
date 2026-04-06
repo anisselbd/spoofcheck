@@ -46,12 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = lang === "fr";
 
   const title = isFr
-    ? `Securite email de ${domain} — Analyse SPF, DKIM, DMARC | SpoofCheck`
-    : `Email Security of ${domain} — SPF, DKIM, DMARC Analysis | SpoofCheck`;
+    ? `Securite email de ${domain} — Analyse SPF, DKIM, DMARC, MTA-STS | SpoofCheck`
+    : `Email Security of ${domain} — SPF, DKIM, DMARC, MTA-STS Analysis | SpoofCheck`;
 
   const description = isFr
-    ? `Analyse complete de la securite email de ${domain}. Verifiez la configuration SPF, DKIM et DMARC de ${domain} et decouvrez si ce domaine est vulnerable au spoofing.`
-    : `Complete email security analysis of ${domain}. Check ${domain}'s SPF, DKIM, and DMARC configuration and find out if this domain is vulnerable to spoofing.`;
+    ? `Analyse complete de la securite email de ${domain}. Verifiez la configuration SPF, DKIM, DMARC et MTA-STS de ${domain} et decouvrez si ce domaine est vulnerable au spoofing.`
+    : `Complete email security analysis of ${domain}. Check ${domain}'s SPF, DKIM, DMARC, and MTA-STS configuration and find out if this domain is vulnerable to spoofing.`;
 
   return {
     title,
@@ -61,13 +61,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: "article",
       locale: isFr ? "fr_FR" : "en_US",
-      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }],
     },
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/email-security/${domain}`,
@@ -88,8 +88,8 @@ export default async function EmailSecurityPage({ params }: Props) {
   const dict = await getDictionary(lang as Locale);
   const isFr = lang === "fr";
 
-  const { spf, dkim, dmarc, mx } = await checkDomain(domain);
-  const result = calculateScore(domain, spf, dkim, dmarc, mx);
+  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain);
+  const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
   const checkedDate = new Date(result.checkedAt).toLocaleDateString(
     isFr ? "fr-FR" : "en-US",
@@ -103,8 +103,8 @@ export default async function EmailSecurityPage({ params }: Props) {
       ? `Analyse de securite email de ${domain}`
       : `Email Security Analysis of ${domain}`,
     description: isFr
-      ? `Analyse complete de la securite email de ${domain}. Configuration SPF, DKIM et DMARC.`
-      : `Complete email security analysis of ${domain}. SPF, DKIM, and DMARC configuration.`,
+      ? `Analyse complete de la securite email de ${domain}. Configuration SPF, DKIM, DMARC et MTA-STS.`
+      : `Complete email security analysis of ${domain}. SPF, DKIM, DMARC, and MTA-STS configuration.`,
     author: {
       "@type": "Organization",
       name: "SpoofCheck",
@@ -164,8 +164,8 @@ export default async function EmailSecurityPage({ params }: Props) {
             </h1>
             <p className="text-lg text-zinc-400 max-w-xl mx-auto">
               {isFr
-                ? `Verification complete des enregistrements SPF, DKIM et DMARC de ${domain}. Decouvrez si ce domaine est protege contre l'usurpation d'identite email.`
-                : `Complete verification of ${domain}'s SPF, DKIM, and DMARC records. Find out if this domain is protected against email spoofing.`}
+                ? `Verification complete des enregistrements SPF, DKIM, DMARC et MTA-STS de ${domain}. Decouvrez si ce domaine est protege contre l'usurpation d'identite email.`
+                : `Complete verification of ${domain}'s SPF, DKIM, DMARC, and MTA-STS records. Find out if this domain is protected against email spoofing.`}
             </p>
             <p className="text-sm text-zinc-500">
               {isFr
@@ -246,6 +246,19 @@ export default async function EmailSecurityPage({ params }: Props) {
                   {isFr
                     ? "Apprenez comment DMARC orchestre SPF et DKIM pour proteger votre domaine."
                     : "Learn how DMARC orchestrates SPF and DKIM to protect your domain."}
+                </p>
+              </Link>
+              <Link
+                href={`/${lang}/guides/mta-sts`}
+                className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed hover:border-zinc-700 transition-colors group"
+              >
+                <h3 className="font-semibold group-hover:text-emerald-400 transition-colors">
+                  {isFr ? "Guide MTA-STS" : "MTA-STS Guide"}
+                </h3>
+                <p className="text-sm text-zinc-400">
+                  {isFr
+                    ? "Apprenez comment MTA-STS impose le chiffrement TLS pour proteger vos emails en transit."
+                    : "Learn how MTA-STS enforces TLS encryption to protect your emails in transit."}
                 </p>
               </Link>
               <Link

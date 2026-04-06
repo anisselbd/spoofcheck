@@ -13,7 +13,7 @@ export default function MatrixRain() {
     if (!ctx) return;
 
     let animationId: number;
-    const chars = "01アイウエオカキクケコSPFDKIMDMARC{}[]<>/\\|=+-*&@#";
+    const chars = "01アイウエオカキクケコSPFDKIMDMARCMTASTS{}[]<>/\\|=+-*&@#";
     const fontSize = 14;
     let columns: number;
     let drops: number[];

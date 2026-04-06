@@ -9,7 +9,7 @@ const meta = {
   fr: {
     title: "Contact — SpoofCheck",
     description:
-      "Contactez l'équipe SpoofCheck pour toute question sur la sécurité email, SPF, DKIM ou DMARC.",
+      "Contactez l'équipe SpoofCheck pour toute question sur la sécurité email, SPF, DKIM, DMARC ou MTA-STS.",
     h1: "Contactez-nous",
     subtitle:
       "Une question sur votre configuration email ? Besoin d'aide pour sécuriser votre domaine ? N'hésitez pas à nous écrire.",
@@ -18,7 +18,7 @@ const meta = {
       "Envoyez-nous un message et nous vous répondrons dans les meilleurs délais.",
     guidesLabel: "Consultez nos guides",
     guidesText:
-      "Avant de nous contacter, consultez nos guides qui répondent aux questions les plus fréquentes sur SPF, DKIM et DMARC.",
+      "Avant de nous contacter, consultez nos guides qui répondent aux questions les plus fréquentes sur SPF, DKIM, DMARC et MTA-STS.",
     responseLabel: "Délai de réponse",
     responseText:
       "Nous répondons généralement sous 24 à 48 heures. Pour les questions techniques complexes, le délai peut être un peu plus long.",
@@ -26,7 +26,7 @@ const meta = {
   en: {
     title: "Contact — SpoofCheck",
     description:
-      "Contact the SpoofCheck team for any questions about email security, SPF, DKIM, or DMARC.",
+      "Contact the SpoofCheck team for any questions about email security, SPF, DKIM, DMARC, or MTA-STS.",
     h1: "Contact us",
     subtitle:
       "Have a question about your email configuration? Need help securing your domain? Feel free to reach out.",
@@ -35,7 +35,7 @@ const meta = {
       "Send us a message and we'll get back to you as soon as possible.",
     guidesLabel: "Check our guides",
     guidesText:
-      "Before contacting us, check our guides that answer the most common questions about SPF, DKIM, and DMARC.",
+      "Before contacting us, check our guides that answer the most common questions about SPF, DKIM, DMARC, and MTA-STS.",
     responseLabel: "Response time",
     responseText:
       "We typically respond within 24 to 48 hours. For complex technical questions, it may take a bit longer.",
@@ -63,7 +63,7 @@ export async function generateMetadata({
           url: "https://spoofchecker.online/IMG_6766.png",
           width: 1206,
           height: 630,
-          alt: "SpoofCheck — SPF, DKIM, DMARC",
+          alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS",
         },
       ],
     },

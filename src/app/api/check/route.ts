@@ -18,8 +18,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const { spf, dkim, dmarc, mx } = await checkDomain(domain, extraSelectors);
-    const result = calculateScore(domain, spf, dkim, dmarc, mx);
+    const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain, extraSelectors);
+    const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
     return Response.json(result);
   } catch {

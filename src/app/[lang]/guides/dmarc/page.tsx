@@ -75,7 +75,7 @@ export async function generateMetadata({
       description: ogDescription,
       type: "article",
       locale: lang === "fr" ? "fr_FR" : "en_US",
-      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }],
+      images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }],
     },
     twitter: {
       card: "summary_large_image",

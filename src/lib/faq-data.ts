@@ -7,7 +7,7 @@ export const faqItems = [
   {
     question: "Comment savoir si mon domaine est vuln\u00e9rable ?",
     answer:
-      "Utilisez notre outil gratuit : entrez simplement votre nom de domaine dans la barre de recherche ci-dessus. SpoofCheck analyse automatiquement vos enregistrements DNS (SPF, DKIM, DMARC) et vous indique si votre domaine est prot\u00e9g\u00e9 contre l'usurpation d'identit\u00e9 email.",
+      "Utilisez notre outil gratuit : entrez simplement votre nom de domaine dans la barre de recherche ci-dessus. SpoofCheck analyse automatiquement vos enregistrements DNS (SPF, DKIM, DMARC, MTA-STS) et vous indique si votre domaine est prot\u00e9g\u00e9 contre l'usurpation d'identit\u00e9 email.",
   },
   {
     question: "Qu'est-ce que SPF, DKIM et DMARC ?",

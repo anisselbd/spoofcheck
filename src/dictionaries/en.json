@@ -8,6 +8,7 @@
     "footerGuideSPF": "SPF Guide",
     "footerGuideDKIM": "DKIM Guide",
     "footerGuideDMARC": "DMARC Guide",
+    "footerGuideMtaSts": "MTA-STS Guide",
     "footerMadeBy": "Made by",
     "footerRights": "All rights reserved.",
     "guides": "Guides",
@@ -16,7 +17,7 @@
   "home": {
     "title": "Is your domain",
     "titleHighlight": "spoofable",
-    "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, and DMARC analysis.",
+    "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, DMARC, and MTA-STS analysis.",
     "faqTitle": "Frequently asked questions",
     "testimonialsTitle": "What users are saying",
     "domainsChecked": "domains analyzed"
@@ -102,10 +103,10 @@
   },
   "guides": {
     "title": "Email security guides",
-    "subtitle": "Understand SPF, DKIM, and DMARC to protect your domain against email spoofing and phishing.",
+    "subtitle": "Understand SPF, DKIM, DMARC, and MTA-STS to protect your domain against email spoofing and phishing.",
     "readGuide": "Read the guide",
     "ctaTitle": "Check your domain for free",
-    "ctaSubtitle": "Test your SPF, DKIM, and DMARC configuration in one click. Our tool analyzes your domain and tells you exactly what to fix.",
+    "ctaSubtitle": "Test your SPF, DKIM, DMARC, and MTA-STS configuration in one click. Our tool analyzes your domain and tells you exactly what to fix.",
     "spfTitle": "SPF (Sender Policy Framework)",
     "spfDescription": "SPF defines which servers are authorized to send emails for your domain. It's the first line of defense against email address spoofing.",
     "spfTopics": ["How SPF works", "Step-by-step configuration", "10 DNS lookup limit", "Difference between -all and ~all"],
@@ -115,6 +116,9 @@
     "dmarcTitle": "DMARC (Domain-based Message Authentication)",
     "dmarcDescription": "DMARC orchestrates SPF and DKIM by defining a clear policy for emails that fail verification. It also adds a reporting system to monitor your domain.",
     "dmarcTopics": ["Policy: none, quarantine, reject", "Domain alignment", "Aggregate and forensic reports", "Progressive deployment"],
+    "mtaStsTitle": "MTA-STS (Mail Transfer Agent Strict Transport Security)",
+    "mtaStsDescription": "MTA-STS enforces TLS encryption between mail servers, preventing downgrade attacks and email interception in transit.",
+    "mtaStsTopics": ["How MTA-STS works", "Step-by-step configuration", "Difference with STARTTLS", "TLSRPT for reports"],
     "compTitle": "SPF vs DKIM vs DMARC",
     "compDescription": "Understand the differences between SPF, DKIM, and DMARC, and how these three protocols work together to protect your domain.",
     "compTopics": ["Comparison table", "Role of each protocol", "How they work together", "Where to start"]
@@ -144,7 +148,17 @@
     "rec_harden_spf": "Harden your SPF by replacing ~all with -all (hardfail)",
     "rec_harden_spf_why": "With ~all (softfail), unauthorized senders are flagged but emails are usually still delivered. Switching to -all (hardfail) explicitly tells receiving servers to reject emails from unauthorized sources, providing much stronger protection against spoofing.",
     "rec_add_dkim": "Enable DKIM in your email provider and add the public key to your DNS zone",
-    "rec_add_dkim_why": "DKIM adds a cryptographic signature to your emails, proving they haven't been tampered with in transit and genuinely originated from your domain. Without it, attackers can forge emails that pass basic checks, and your legitimate emails are more likely to land in spam."
+    "rec_add_dkim_why": "DKIM adds a cryptographic signature to your emails, proving they haven't been tampered with in transit and genuinely originated from your domain. Without it, attackers can forge emails that pass basic checks, and your legitimate emails are more likely to land in spam.",
+    "mta_sts_no_record": "No MTA-STS record found (_mta-sts TXT)",
+    "mta_sts_policy_fetch_error": "MTA-STS policy file could not be fetched (https://mta-sts.domain/.well-known/mta-sts.txt)",
+    "mta_sts_mode_none": "MTA-STS in mode none — TLS is not enforced",
+    "mta_sts_mode_testing": "MTA-STS in testing mode — failures are reported but mail is still delivered without TLS",
+    "rec_add_mta_sts": "Add MTA-STS to enforce TLS encryption for incoming emails",
+    "rec_add_mta_sts_why": "Without MTA-STS, an attacker performing a man-in-the-middle attack can downgrade the connection between mail servers to plaintext, intercepting emails in transit. MTA-STS tells sending servers to only deliver via TLS with a valid certificate, preventing downgrade attacks.",
+    "rec_mta_sts_enforce": "Switch your MTA-STS policy from testing to enforce mode",
+    "rec_mta_sts_enforce_why": "In testing mode, MTA-STS only reports TLS failures without blocking delivery. Switching to enforce mode ensures that emails are only delivered over encrypted connections, providing real protection against interception.",
+    "rec_fix_mta_sts_policy": "Fix your MTA-STS policy file — it could not be fetched",
+    "rec_fix_mta_sts_policy_why": "Your domain has an MTA-STS DNS record, but the policy file at https://mta-sts.yourdomain/.well-known/mta-sts.txt is unreachable. Without a valid policy file, MTA-STS provides no protection. Check that the subdomain mta-sts.yourdomain resolves correctly and serves the policy over HTTPS."
   },
   "faq": [
     {
@@ -153,7 +167,7 @@
     },
     {
       "question": "How do I know if my domain is vulnerable?",
-      "answer": "Use our free tool: simply enter your domain name in the search bar above. SpoofCheck automatically analyzes your DNS records (SPF, DKIM, DMARC) and tells you if your domain is protected against email spoofing."
+      "answer": "Use our free tool: simply enter your domain name in the search bar above. SpoofCheck automatically analyzes your DNS records (SPF, DKIM, DMARC, MTA-STS) and tells you if your domain is protected against email spoofing."
     },
     {
       "question": "What are SPF, DKIM, and DMARC?",
@@ -169,8 +183,8 @@
     }
   ],
   "metadata": {
-    "homeTitle": "SpoofCheck — Free Email Spoofing Test | SPF, DKIM, DMARC",
-    "homeDescription": "Free email spoofing test. Check if your domain is vulnerable to spoofing. SPF, DKIM, DMARC analysis in one click. Protect against email impersonation.",
+    "homeTitle": "SpoofCheck — Free Email Spoofing Test | SPF, DKIM, DMARC, MTA-STS",
+    "homeDescription": "Free email spoofing test. Check if your domain is vulnerable to spoofing. SPF, DKIM, DMARC, and MTA-STS analysis in one click. Protect against email impersonation.",
     "checkTitle": "Email analysis of {domain} — SpoofCheck",
     "checkDescSpoofable": "{domain} is vulnerable to email spoofing — Score {score}/100 ({grade}). Check your domain for free.",
     "checkDescProtected": "{domain} is protected against spoofing — Score {score}/100 ({grade}). Check your domain for free."

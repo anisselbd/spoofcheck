@@ -9,10 +9,10 @@ const meta = {
   fr: {
     title: "À propos — SpoofCheck",
     description:
-      "SpoofCheck est un outil gratuit et open-source qui vérifie si votre domaine est vulnérable au spoofing email via l'analyse SPF, DKIM et DMARC.",
+      "SpoofCheck est un outil gratuit et open-source qui vérifie si votre domaine est vulnérable au spoofing email via l'analyse SPF, DKIM, DMARC et MTA-STS.",
     h1: "À propos de SpoofCheck",
     intro:
-      "SpoofCheck est un outil gratuit qui permet de vérifier en un clic si un domaine est vulnérable au spoofing email. Il analyse les enregistrements DNS (SPF, DKIM, DMARC) et fournit un score de sécurité avec des recommandations concrètes.",
+      "SpoofCheck est un outil gratuit qui permet de vérifier en un clic si un domaine est vulnérable au spoofing email. Il analyse les enregistrements DNS (SPF, DKIM, DMARC, MTA-STS) et fournit un score de sécurité avec des recommandations concrètes.",
     whyTitle: "Pourquoi SpoofCheck ?",
     whyText:
       "Le spoofing email reste l'une des techniques de phishing les plus répandues. Pourtant, la plupart des entreprises et particuliers ne savent pas si leur domaine est protégé. SpoofCheck a été créé pour rendre cette vérification accessible à tous, sans inscription, sans limites et sans frais.",
@@ -20,7 +20,7 @@ const meta = {
     howItems: [
       "Vous entrez un nom de domaine",
       "SpoofCheck interroge les serveurs DNS publics",
-      "Les enregistrements SPF, DKIM et DMARC sont analysés",
+      "Les enregistrements SPF, DKIM, DMARC et MTA-STS sont analysés",
       "Un score de sécurité et des recommandations sont générés",
     ],
     techTitle: "Techniquement",
@@ -33,10 +33,10 @@ const meta = {
   en: {
     title: "About — SpoofCheck",
     description:
-      "SpoofCheck is a free, open-source tool that checks if your domain is vulnerable to email spoofing through SPF, DKIM, and DMARC analysis.",
+      "SpoofCheck is a free, open-source tool that checks if your domain is vulnerable to email spoofing through SPF, DKIM, DMARC, and MTA-STS analysis.",
     h1: "About SpoofCheck",
     intro:
-      "SpoofCheck is a free tool that lets you check in one click whether a domain is vulnerable to email spoofing. It analyzes DNS records (SPF, DKIM, DMARC) and provides a security score with actionable recommendations.",
+      "SpoofCheck is a free tool that lets you check in one click whether a domain is vulnerable to email spoofing. It analyzes DNS records (SPF, DKIM, DMARC, MTA-STS) and provides a security score with actionable recommendations.",
     whyTitle: "Why SpoofCheck?",
     whyText:
       "Email spoofing remains one of the most common phishing techniques. Yet most businesses and individuals don't know whether their domain is protected. SpoofCheck was created to make this check accessible to everyone — no signup, no limits, no cost.",
@@ -44,7 +44,7 @@ const meta = {
     howItems: [
       "You enter a domain name",
       "SpoofCheck queries public DNS servers",
-      "SPF, DKIM, and DMARC records are analyzed",
+      "SPF, DKIM, DMARC, and MTA-STS records are analyzed",
       "A security score and recommendations are generated",
     ],
     techTitle: "Technical details",
@@ -77,7 +77,7 @@ export async function generateMetadata({
           url: "https://spoofchecker.online/IMG_6766.png",
           width: 1206,
           height: 630,
-          alt: "SpoofCheck — SPF, DKIM, DMARC",
+          alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS",
         },
       ],
     },

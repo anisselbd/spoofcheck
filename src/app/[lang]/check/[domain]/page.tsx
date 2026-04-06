@@ -29,8 +29,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   }
 
   const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
-  const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
-  const result = calculateScore(domain, spf, dkim, dmarc, mx);
+  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain, extra);
+  const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
   const descTemplate = result.spoofable
     ? dict.metadata.checkDescSpoofable
@@ -54,8 +54,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
         en: `https://spoofchecker.online/en/check/${domain}`,
       },
     },
-    openGraph: { title, description, type: "website", images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }] },
-    twitter: { card: "summary_large_image", title, description, images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC" }] },
+    openGraph: { title, description, type: "website", images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }] },
+    twitter: { card: "summary_large_image", title, description, images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }] },
   };
 }
 
@@ -72,8 +72,8 @@ export default async function CheckPage({ params, searchParams }: Props) {
   }
 
   const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
-  const { spf, dkim, dmarc, mx } = await checkDomain(domain, extra);
-  const result = calculateScore(domain, spf, dkim, dmarc, mx);
+  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain, extra);
+  const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
   const hdrs = await headers();
   const country = hdrs.get("x-vercel-ip-country") ?? undefined;

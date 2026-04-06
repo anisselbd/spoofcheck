@@ -241,7 +241,7 @@ export default function ContentEn({ lang }: { lang: string }) {
           Check your domain for free
         </h2>
         <p className="text-zinc-400 max-w-lg mx-auto">
-          Test your SPF, DKIM, and DMARC configuration in one click. Our tool analyzes your domain and tells you exactly what needs to be fixed.
+          Test your SPF, DKIM, DMARC, and MTA-STS configuration in one click. Our tool analyzes your domain and tells you exactly what needs to be fixed.
         </p>
         <Link
           href={`/${lang}`}

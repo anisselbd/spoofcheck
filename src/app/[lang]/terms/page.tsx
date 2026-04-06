@@ -21,7 +21,7 @@ const meta = {
       {
         title: "Description du service",
         content:
-          "SpoofCheck est un outil gratuit qui analyse les enregistrements DNS publics (SPF, DKIM, DMARC) d'un domaine pour évaluer sa vulnérabilité au spoofing email. Le service effectue uniquement des requêtes DNS publiques et non intrusives.",
+          "SpoofCheck est un outil gratuit qui analyse les enregistrements DNS publics (SPF, DKIM, DMARC, MTA-STS) d'un domaine pour évaluer sa vulnérabilité au spoofing email. Le service effectue uniquement des requêtes DNS publiques et non intrusives.",
       },
       {
         title: "Utilisation autorisée",
@@ -69,7 +69,7 @@ const meta = {
       {
         title: "Service description",
         content:
-          "SpoofCheck is a free tool that analyzes public DNS records (SPF, DKIM, DMARC) of a domain to assess its vulnerability to email spoofing. The service only performs public, non-intrusive DNS queries.",
+          "SpoofCheck is a free tool that analyzes public DNS records (SPF, DKIM, DMARC, MTA-STS) of a domain to assess its vulnerability to email spoofing. The service only performs public, non-intrusive DNS queries.",
       },
       {
         title: "Authorized use",
