@@ -11,9 +11,12 @@ const popularDomains = [
 
 function alternates(path: string) {
   return {
-    languages: Object.fromEntries(
-      locales.map((lang) => [lang, `${BASE}/${lang}${path}`])
-    ),
+    languages: {
+      "x-default": `${BASE}/en${path}`,
+      ...Object.fromEntries(
+        locales.map((lang) => [lang, `${BASE}/${lang}${path}`])
+      ),
+    },
   };
 }
 

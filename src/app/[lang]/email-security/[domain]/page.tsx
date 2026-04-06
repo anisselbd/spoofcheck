@@ -72,6 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/email-security/${domain}`,
       languages: {
+        "x-default": `https://spoofchecker.online/en/email-security/${domain}`,
         fr: `https://spoofchecker.online/fr/email-security/${domain}`,
         en: `https://spoofchecker.online/en/email-security/${domain}`,
       },

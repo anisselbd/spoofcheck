@@ -80,6 +80,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/guides/dkim`,
       languages: {
+        "x-default": "https://spoofchecker.online/en/guides/dkim",
         fr: "https://spoofchecker.online/fr/guides/dkim",
         en: "https://spoofchecker.online/en/guides/dkim",
       },

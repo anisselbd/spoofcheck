@@ -85,6 +85,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/guides/dmarc`,
       languages: {
+        "x-default": "https://spoofchecker.online/en/guides/dmarc",
         fr: "https://spoofchecker.online/fr/guides/dmarc",
         en: "https://spoofchecker.online/en/guides/dmarc",
       },

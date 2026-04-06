@@ -64,6 +64,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/guides/spf`,
       languages: {
+        "x-default": "https://spoofchecker.online/en/guides/spf",
         fr: "https://spoofchecker.online/fr/guides/spf",
         en: "https://spoofchecker.online/en/guides/spf",
       },

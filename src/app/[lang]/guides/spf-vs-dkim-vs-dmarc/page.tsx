@@ -62,6 +62,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/guides/spf-vs-dkim-vs-dmarc`,
       languages: {
+        "x-default": "https://spoofchecker.online/en/guides/spf-vs-dkim-vs-dmarc",
         fr: "https://spoofchecker.online/fr/guides/spf-vs-dkim-vs-dmarc",
         en: "https://spoofchecker.online/en/guides/spf-vs-dkim-vs-dmarc",
       },

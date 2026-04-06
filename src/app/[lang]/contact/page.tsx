@@ -75,6 +75,7 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://spoofchecker.online/${lang}/contact`,
       languages: {
+        "x-default": "https://spoofchecker.online/en/contact",
         fr: "https://spoofchecker.online/fr/contact",
         en: "https://spoofchecker.online/en/contact",
       },
