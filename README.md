@@ -12,6 +12,14 @@ Check in one click if your domain is protected against email spoofing.
 
 </div>
 
+<div align="center">
+
+![SpoofCheck — Home](public/screenshot-home.jpg)
+
+![SpoofCheck — Results](public/screenshot-result.jpg)
+
+</div>
+
 ---
 
 ## What is it?
