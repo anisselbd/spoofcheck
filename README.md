@@ -2,9 +2,9 @@
 
 # SpoofCheck
 
-**Votre domaine est-il usurpable ?**
+**Is your domain spoofable?**
 
-Vérifiez en un clic si votre domaine est protégé contre le spoofing email.
+Check in one click if your domain is protected against email spoofing.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://typescriptlang.org)
@@ -14,32 +14,33 @@ Vérifiez en un clic si votre domaine est protégé contre le spoofing email.
 
 ---
 
-## Qu'est-ce que c'est ?
+## What is it?
 
-SpoofCheck analyse la configuration DNS d'un domaine et détecte les failles qui permettent à n'importe qui d'envoyer des mails en se faisant passer pour vous.
+SpoofCheck analyzes a domain's DNS configuration and detects vulnerabilities that allow anyone to send emails pretending to be you.
 
-Un domaine mal configuré = n'importe qui peut envoyer un mail depuis `contact@votredomaine.fr` sans y avoir accès.
+A misconfigured domain = anyone can send an email from `contact@yourdomain.com` without having access to it.
 
-## Ce qui est vérifié
+## What's checked
 
 | Check | Description |
 |-------|-------------|
-| **SPF** | Qui est autorisé à envoyer des mails pour votre domaine |
-| **DKIM** | Signature cryptographique des mails (20 sélecteurs testés) |
-| **DMARC** | Politique de rejet des mails non authentifiés |
-| **MX** | Serveurs mail + détection du fournisseur (Google, Microsoft, OVH...) |
+| **SPF** | Who is authorized to send emails for your domain |
+| **DKIM** | Cryptographic email signatures (20+ selectors tested) |
+| **DMARC** | Policy for rejecting unauthenticated emails |
+| **MTA-STS** | Enforced TLS for inbound mail delivery |
+| **MX** | Mail servers + provider detection (Google, Microsoft, OVH...) |
 
-## Score de sécurité
+## Security score
 
-Chaque domaine reçoit un score de **0 à 100** et une note de **A à F** :
+Each domain gets a score from **0 to 100** and a grade from **A to F**:
 
-- **A (90-100)** — Domaine bien protégé
-- **B (70-89)** — Bonne base, quelques améliorations possibles
-- **C (50-69)** — Protection partielle, vulnérable dans certains cas
-- **D (30-49)** — Peu protégé, spoofing probable
-- **F (0-29)** — Aucune protection, spoofing trivial
+- **A (90-100)** — Well protected domain
+- **B (70-89)** — Good foundation, minor improvements possible
+- **C (50-69)** — Partial protection, vulnerable in some cases
+- **D (30-49)** — Poorly protected, spoofing likely
+- **F (0-29)** — No protection, trivial spoofing
 
-## Lancer en local
+## Run locally
 
 ```bash
 git clone https://github.com/anisselbd/spoofcheck.git
@@ -48,17 +49,17 @@ npm install
 npm run dev
 ```
 
-Ouvrir http://localhost:3000
+Open http://localhost:3000
 
-## Déployer sur Vercel
+## Deploy on Vercel
 
 ```bash
 vercel
 ```
 
-## Stack technique
+## Tech stack
 
 - **Next.js 16** — App Router, API Routes
-- **TypeScript** — Typage strict
-- **Tailwind CSS v4** — UI dark mode
-- **Node.js DNS** — Résolution DNS native (pas de dépendance externe)
+- **TypeScript** — Strict typing
+- **Tailwind CSS v4** — Dark mode UI
+- **Node.js DNS** — Native DNS resolution (no external dependencies)
