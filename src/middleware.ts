@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const locales = ["fr", "en"];
-const defaultLocale = "fr";
+const defaultLocale = "en";
 
 function getLocale(request: NextRequest): string {
   const acceptLang = request.headers.get("accept-language") ?? "";
@@ -16,7 +16,7 @@ function getLocale(request: NextRequest): string {
   return defaultLocale;
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip internal paths, API routes, admin, static files
