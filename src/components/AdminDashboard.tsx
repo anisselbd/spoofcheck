@@ -436,7 +436,7 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
         {/* TLD / Country distribution */}
         <div className="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-5 space-y-4">
           <h2 className="text-sm font-semibold text-zinc-300">Repartition geographique</h2>
-          <div className="space-y-3">
+          <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
             {tldDistribution.map(({ tld, country, flag, count, pct }) => (
               <div key={tld} className="space-y-1.5">
                 <div className="flex justify-between text-sm">
