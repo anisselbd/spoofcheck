@@ -106,6 +106,8 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const perPage = 50;
 
   const uniqueDomains = domains.length;
   const avgScore = uniqueDomains > 0 ? Math.round(domains.reduce((s, d) => s + d.score, 0) / uniqueDomains) : 0;
@@ -172,6 +174,13 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
       return 0;
     });
   }, [domains, search, gradeFilter, spoofFilter, sortKey, sortDir]);
+
+  // Reset page when filters change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useMemo(() => setPage(0), [search, gradeFilter, spoofFilter]);
+
+  const totalPages = Math.ceil(filtered.length / perPage);
+  const paginated = filtered.slice(page * perPage, (page + 1) * perPage);
 
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortDir(sortDir === "asc" ? "desc" : "asc");
@@ -555,7 +564,7 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
               </tr>
             </thead>
             <tbody>
-              {filtered.map((d) => (
+              {paginated.map((d) => (
                 <tr key={d.domain} className="border-b border-zinc-800/30 hover:bg-zinc-800/20 transition-colors">
                   <td className="px-4 py-3 font-mono text-zinc-200">{d.domain}</td>
                   <td className="px-4 py-3">
@@ -591,6 +600,46 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
             </tbody>
           </table>
         </div>
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t border-zinc-800">
+            <span className="text-xs text-zinc-500">
+              {page * perPage + 1}–{Math.min((page + 1) * perPage, filtered.length)} sur {filtered.length}
+            </span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setPage(0)}
+                disabled={page === 0}
+                className="h-8 px-2 rounded-lg text-xs text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                «
+              </button>
+              <button
+                onClick={() => setPage(page - 1)}
+                disabled={page === 0}
+                className="h-8 px-3 rounded-lg text-xs text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                Precedent
+              </button>
+              <span className="h-8 px-3 flex items-center text-xs text-zinc-300">
+                {page + 1} / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page >= totalPages - 1}
+                className="h-8 px-3 rounded-lg text-xs text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                Suivant
+              </button>
+              <button
+                onClick={() => setPage(totalPages - 1)}
+                disabled={page >= totalPages - 1}
+                className="h-8 px-2 rounded-lg text-xs text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                »
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
