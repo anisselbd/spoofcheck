@@ -11,7 +11,9 @@ const GRADE_COLORS: Record<string, string> = {
   F: "#ef4444",
 };
 
-function buildSvg(domain: string, grade: string, score: number): string {
+const VALID_GRADES = new Set(["A", "B", "C", "D", "F"]);
+
+function buildSvg(grade: string, score: number): string {
   const color = GRADE_COLORS[grade] || "#6b7280";
   const labelWidth = 90;
   const valueWidth = 80;
@@ -41,7 +43,7 @@ function buildSvg(domain: string, grade: string, score: number): string {
 }
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ domain: string }> }
 ) {
   const { domain: raw } = await params;
@@ -51,10 +53,24 @@ export async function GET(
     return NextResponse.json({ error: "Invalid domain" }, { status: 400 });
   }
 
-  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain);
-  const { grade, score } = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
+  const url = req.nextUrl;
+  const paramScore = url.searchParams.get("score");
+  const paramGrade = url.searchParams.get("grade");
 
-  return new NextResponse(buildSvg(domain, grade, score), {
+  let grade: string;
+  let score: number;
+
+  if (paramScore && paramGrade && VALID_GRADES.has(paramGrade.toUpperCase())) {
+    score = Math.max(0, Math.min(100, parseInt(paramScore, 10) || 0));
+    grade = paramGrade.toUpperCase();
+  } else {
+    const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain);
+    const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
+    grade = result.grade;
+    score = result.score;
+  }
+
+  return new NextResponse(buildSvg(grade, score), {
     headers: {
       "Content-Type": "image/svg+xml",
       "Cache-Control": "public, max-age=86400, s-maxage=86400",

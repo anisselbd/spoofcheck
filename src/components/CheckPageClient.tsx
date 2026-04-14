@@ -57,7 +57,7 @@ export default function CheckPageClient({ data, lang, dict }: CheckPageClientPro
     );
   }
 
-  const badgeUrl = `https://spoofchecker.online/api/badge/${data.domain}`;
+  const badgeUrl = `https://spoofchecker.online/api/badge/${data.domain}?score=${data.score}&grade=${data.grade}`;
   const embedCode = `<a href="https://spoofchecker.online/en/email-security/${data.domain}" target="_blank" rel="noopener"><img src="${badgeUrl}" alt="Email security score for ${data.domain}" height="28"></a>`;
 
   async function handleEmbedCopy() {
