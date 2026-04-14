@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { checkDomain } from "@/lib/dns-checker";
 import { calculateScore } from "@/lib/score-calculator";
-import { trackDomain } from "@/lib/redis";
+import { refreshDomainScore } from "@/lib/redis";
 import { getDictionary, hasLocale, locales } from "../../dictionaries";
 import type { Locale } from "../../dictionaries";
 import ResultsPanel from "@/components/ResultsPanel";
@@ -77,7 +77,7 @@ export default async function EmailSecurityPage({ params }: Props) {
   const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
   if (process.env.KV_REDIS_URL) {
-    await trackDomain(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable }).catch(() => {});
+    await refreshDomainScore(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable }).catch(() => {});
   }
 
   const checkedDate = new Date(result.checkedAt).toLocaleDateString(

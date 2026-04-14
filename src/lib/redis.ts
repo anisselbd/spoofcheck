@@ -61,6 +61,27 @@ export async function trackDomain(
   }
 }
 
+/** Update score/grade only — does NOT update checkedAt, checkCount, or timeline. */
+export async function refreshDomainScore(
+  domain: string,
+  data: { score: number; grade: string; spoofable: boolean }
+): Promise<void> {
+  const client = await getClient();
+  try {
+    const key = `${DOMAIN_PREFIX}${domain}`;
+    await Promise.all([
+      client.sAdd(DOMAINS_SET_KEY, domain),
+      client.hSet(key, {
+        score: data.score.toString(),
+        grade: data.grade,
+        spoofable: data.spoofable ? "1" : "0",
+      }),
+    ]);
+  } finally {
+    await client.disconnect();
+  }
+}
+
 export async function getDomainData(domain: string): Promise<DomainCheckData | null> {
   const client = await getClient();
   try {
