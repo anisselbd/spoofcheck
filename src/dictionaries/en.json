@@ -94,7 +94,11 @@
     "downloadPdf": "Download PDF report",
     "rerun": "Run analysis again",
     "shareTwitter": "Share on X",
-    "shareLinkedin": "Share on LinkedIn"
+    "shareLinkedin": "Share on LinkedIn",
+    "embedBadge": "Badge for your website",
+    "embedBadgeDesc": "Display your email security score on your website.",
+    "embedCopied": "Code copied!",
+    "embedCopy": "Copy code"
   },
   "helpBanner": {
     "title": "Need help securing your domain?",

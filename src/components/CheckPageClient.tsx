@@ -17,6 +17,7 @@ interface CheckPageClientProps {
 export default function CheckPageClient({ data, lang, dict }: CheckPageClientProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [embedCopied, setEmbedCopied] = useState(false);
   const [pageUrl, setPageUrl] = useState("");
 
   useEffect(() => {
@@ -54,6 +55,15 @@ export default function CheckPageClient({ data, lang, dict }: CheckPageClientPro
       "_blank",
       "noopener,noreferrer"
     );
+  }
+
+  const badgeUrl = `https://spoofchecker.online/api/badge/${data.domain}`;
+  const embedCode = `<a href="https://spoofchecker.online/en/email-security/${data.domain}" target="_blank" rel="noopener"><img src="${badgeUrl}" alt="Email security score for ${data.domain}" height="28"></a>`;
+
+  async function handleEmbedCopy() {
+    await navigator.clipboard.writeText(embedCode);
+    setEmbedCopied(true);
+    setTimeout(() => setEmbedCopied(false), 2000);
   }
 
   function shareLinkedin() {
@@ -143,6 +153,27 @@ export default function CheckPageClient({ data, lang, dict }: CheckPageClientPro
             >
               {t.rerun}
             </button>
+          </div>
+
+          {/* Embed badge */}
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 print:hidden">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-300">{t.embedBadge}</h3>
+                <p className="text-xs text-zinc-500 mt-0.5">{t.embedBadgeDesc}</p>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={badgeUrl} alt={`SpoofCheck badge for ${data.domain}`} height={28} />
+            </div>
+            <div className="flex gap-2">
+              <code className="flex-1 px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 overflow-x-auto whitespace-nowrap">{embedCode}</code>
+              <button
+                onClick={handleEmbedCopy}
+                className="shrink-0 h-9 px-4 rounded-lg border border-zinc-700 text-zinc-400 text-xs hover:border-zinc-500 hover:text-zinc-100 transition-colors"
+              >
+                {embedCopied ? t.embedCopied : t.embedCopy}
+              </button>
+            </div>
           </div>
 
           {pageUrl && (

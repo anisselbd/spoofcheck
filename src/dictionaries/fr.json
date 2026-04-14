@@ -94,7 +94,11 @@
     "downloadPdf": "Télécharger le rapport PDF",
     "rerun": "Relancer l'analyse",
     "shareTwitter": "Partager sur X",
-    "shareLinkedin": "Partager sur LinkedIn"
+    "shareLinkedin": "Partager sur LinkedIn",
+    "embedBadge": "Badge pour votre site",
+    "embedBadgeDesc": "Affichez votre score de sécurité email sur votre site.",
+    "embedCopied": "Code copié !",
+    "embedCopy": "Copier le code"
   },
   "helpBanner": {
     "title": "Besoin d'aide pour sécuriser votre domaine ?",
