@@ -8,26 +8,10 @@ import type { Locale } from "../../dictionaries";
 import ResultsPanel from "@/components/ResultsPanel";
 import Footer from "@/components/Footer";
 
-export const revalidate = 86400;
-export const dynamicParams = false;
+import { POPULAR_DOMAINS } from "@/lib/popular-domains";
 
-const POPULAR_DOMAINS = [
-  "gmail.com",
-  "outlook.com",
-  "yahoo.com",
-  "protonmail.com",
-  "icloud.com",
-  "orange.fr",
-  "free.fr",
-  "sfr.fr",
-  "laposte.net",
-  "ovh.net",
-  "hotmail.com",
-  "aol.com",
-  "zoho.com",
-  "gmx.com",
-  "fastmail.com",
-];
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return locales.flatMap((lang) =>
@@ -83,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function EmailSecurityPage({ params }: Props) {
   const { lang, domain } = await params;
   if (!hasLocale(lang)) notFound();
-  if (!POPULAR_DOMAINS.includes(domain)) notFound();
+  if (!/^[a-z0-9]([a-z0-9-]*\.)+[a-z]{2,}$/i.test(domain)) notFound();
 
   const dict = await getDictionary(lang as Locale);
   const isFr = lang === "fr";

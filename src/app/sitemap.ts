@@ -1,13 +1,11 @@
 import type { MetadataRoute } from "next";
+import { POPULAR_DOMAINS } from "@/lib/popular-domains";
+import { getTestedDomains } from "@/lib/redis";
+
+export const revalidate = 86400;
 
 const BASE = "https://spoofchecker.online";
 const locales = ["fr", "en"];
-
-const popularDomains = [
-  "gmail.com", "outlook.com", "yahoo.com", "protonmail.com", "icloud.com",
-  "orange.fr", "free.fr", "sfr.fr", "laposte.net", "ovh.net",
-  "hotmail.com", "aol.com", "zoho.com", "gmx.com", "fastmail.com",
-];
 
 function alternates(path: string) {
   return {
@@ -20,7 +18,7 @@ function alternates(path: string) {
   };
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = [
     { path: "", changeFrequency: "weekly" as const, priority: 1 },
     { path: "/guides", changeFrequency: "monthly" as const, priority: 0.9 },
@@ -45,7 +43,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  const domainPages = popularDomains.flatMap((domain) =>
+  // Merge curated domains + all user-tested domains from Redis
+  let testedDomains: string[] = [];
+  if (process.env.KV_REDIS_URL) {
+    try {
+      testedDomains = await getTestedDomains();
+    } catch {
+      // Redis unavailable at build time — fall back to curated list only
+    }
+  }
+
+  const allDomains = [
+    ...new Set([...POPULAR_DOMAINS, ...testedDomains]),
+  ];
+
+  const domainPages = allDomains.flatMap((domain) =>
     locales.map((lang) => ({
       url: `${BASE}/${lang}/email-security/${domain}`,
       lastModified: new Date(),

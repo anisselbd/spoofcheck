@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import type { DomainCheckData, CheckEvent } from "@/lib/redis";
 import WorldMap, { COUNTRY_NAMES as MAP_COUNTRY_NAMES } from "./WorldMap";
+import { POPULAR_DOMAINS } from "@/lib/popular-domains";
 
 type DomainEntry = { domain: string } & DomainCheckData;
 
@@ -227,7 +228,7 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-5">
           <div className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Total checks</div>
           <div className="text-3xl font-bold mt-2 text-zinc-100">{totalChecks.toLocaleString()}</div>
@@ -252,6 +253,11 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
             <div className="h-full bg-emerald-500 rounded-l-full" style={{ width: `${protectedPct}%` }} />
             <div className="h-full bg-red-500 rounded-r-full" style={{ width: `${spoofablePct}%` }} />
           </div>
+        </div>
+        <div className="rounded-xl border border-blue-800/50 bg-gradient-to-br from-blue-950/30 to-zinc-900/50 p-5">
+          <div className="text-xs font-medium text-blue-400 uppercase tracking-wider">Pages SEO</div>
+          <div className="text-3xl font-bold mt-2 text-blue-300">{(new Set([...POPULAR_DOMAINS, ...domains.map(d => d.domain)]).size * 2).toLocaleString()}</div>
+          <div className="text-xs text-zinc-500 mt-1">{POPULAR_DOMAINS.length} curatees + {Math.max(0, new Set([...POPULAR_DOMAINS, ...domains.map(d => d.domain)]).size - POPULAR_DOMAINS.length)} via Redis</div>
         </div>
       </div>
 
