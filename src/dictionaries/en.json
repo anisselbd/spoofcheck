@@ -20,7 +20,11 @@
     "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, DMARC, and MTA-STS analysis.",
     "faqTitle": "Frequently asked questions",
     "testimonialsTitle": "What users are saying",
-    "domainsChecked": "domains analyzed"
+    "domainsChecked": "domains analyzed",
+    "statsTitle": "Global Statistics",
+    "recentScans": "Recent Scans",
+    "hallOfFame": "Hall of Fame",
+    "hallOfShame": "Hall of Shame"
   },
   "testimonials": [
     {

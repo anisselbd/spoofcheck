@@ -8,7 +8,8 @@ import HomeClient from "@/components/HomeClient";
 import FaqAccordion from "@/components/FaqAccordion";
 import MatrixRain from "@/components/MatrixRain";
 import Footer from "@/components/Footer";
-import { getDomainsChecked } from "@/lib/redis";
+import { getDomainsChecked, getHomeStats } from "@/lib/redis";
+import type { HomeStats } from "@/lib/redis";
 
 export default async function Home({
   params,
@@ -18,10 +19,16 @@ export default async function Home({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang as Locale);
-  const domainsChecked = await getDomainsChecked().catch((e) => {
-    console.error("[redis:get]", e instanceof Error ? e.message : e);
-    return 0;
-  });
+  const [domainsChecked, homeStats] = await Promise.all([
+    getDomainsChecked().catch((e) => {
+      console.error("[redis:get]", e instanceof Error ? e.message : e);
+      return 0;
+    }),
+    getHomeStats().catch((e) => {
+      console.error("[redis:stats]", e instanceof Error ? e.message : e);
+      return null as HomeStats | null;
+    }),
+  ]);
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -114,6 +121,69 @@ export default async function Home({
           </div>
 
           <HomeClient lang={lang} dict={{ domainInput: dict.domainInput }} />
+
+          {/* Stats section */}
+          {homeStats && homeStats.recentScans.length > 0 && (
+            <section className="pt-8">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {/* Grand Totals */}
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3">
+                  <h3 className="text-sm font-semibold text-zinc-300">{dict.home.statsTitle}</h3>
+                  <div className="space-y-1.5">
+                    {(["A", "B", "C", "D", "F"] as const).map((g) => {
+                      const count = homeStats.grades[g] || 0;
+                      const colors: Record<string, string> = { A: "text-emerald-400", B: "text-green-400", C: "text-yellow-400", D: "text-orange-400", F: "text-red-400" };
+                      return (
+                        <div key={g} className="flex items-center justify-between text-sm">
+                          <span className={`font-bold ${colors[g]}`}>{g}</span>
+                          <span className="text-zinc-500 tabular-nums">{count.toLocaleString(lang === "fr" ? "fr-FR" : "en-US")}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Recent Scans */}
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3">
+                  <h3 className="text-sm font-semibold text-zinc-300">{dict.home.recentScans}</h3>
+                  <div className="space-y-1.5">
+                    {homeStats.recentScans.map((d) => (
+                      <Link key={d.domain} href={`/${lang}/email-security/${d.domain}`} className="flex items-center justify-between text-sm group">
+                        <span className="text-zinc-400 group-hover:text-zinc-100 transition-colors truncate mr-2">{d.domain}</span>
+                        <span className={`shrink-0 text-xs font-bold ${d.grade === "A" ? "text-emerald-400" : d.grade === "B" ? "text-green-400" : d.grade === "C" ? "text-yellow-400" : d.grade === "D" ? "text-orange-400" : "text-red-400"}`}>{d.grade}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Hall of Fame */}
+                <div className="rounded-xl border border-emerald-800/30 bg-emerald-950/10 p-5 space-y-3">
+                  <h3 className="text-sm font-semibold text-emerald-400">{dict.home.hallOfFame}</h3>
+                  <div className="space-y-1.5">
+                    {homeStats.hallOfFame.map((d) => (
+                      <Link key={d.domain} href={`/${lang}/email-security/${d.domain}`} className="flex items-center justify-between text-sm group">
+                        <span className="text-zinc-400 group-hover:text-zinc-100 transition-colors truncate mr-2">{d.domain}</span>
+                        <span className="shrink-0 text-xs text-emerald-400 tabular-nums">{d.score}/100</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Hall of Shame */}
+                <div className="rounded-xl border border-red-800/30 bg-red-950/10 p-5 space-y-3">
+                  <h3 className="text-sm font-semibold text-red-400">{dict.home.hallOfShame}</h3>
+                  <div className="space-y-1.5">
+                    {homeStats.hallOfShame.map((d) => (
+                      <Link key={d.domain} href={`/${lang}/email-security/${d.domain}`} className="flex items-center justify-between text-sm group">
+                        <span className="text-zinc-400 group-hover:text-zinc-100 transition-colors truncate mr-2">{d.domain}</span>
+                        <span className="shrink-0 text-xs text-red-400 tabular-nums">{d.score}/100</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
 
           <section className="space-y-6 pt-8">
             <h2 className="text-2xl font-bold tracking-tight text-center">

@@ -156,6 +156,52 @@ export async function getChecksTimeline(since: number): Promise<CheckEvent[]> {
   }
 }
 
+export interface HomeStats {
+  grades: Record<string, number>;
+  recentScans: Array<{ domain: string; grade: string; score: number }>;
+  hallOfFame: Array<{ domain: string; grade: string; score: number }>;
+  hallOfShame: Array<{ domain: string; grade: string; score: number }>;
+}
+
+export async function getHomeStats(): Promise<HomeStats> {
+  const client = await getClient();
+  try {
+    const domains = await client.sMembers(DOMAINS_SET_KEY);
+    if (domains.length === 0)
+      return { grades: {}, recentScans: [], hallOfFame: [], hallOfShame: [] };
+
+    const pipeline = client.multi();
+    for (const d of domains) pipeline.hGetAll(`${DOMAIN_PREFIX}${d}`);
+    const results = await pipeline.exec();
+
+    const all: Array<{ domain: string; grade: string; score: number; checkedAt: string }> = [];
+    const grades: Record<string, number> = { A: 0, B: 0, C: 0, D: 0, F: 0 };
+
+    for (let i = 0; i < domains.length; i++) {
+      const raw = results[i] as unknown as Record<string, string> | null;
+      if (!raw?.score) continue;
+      const grade = raw.grade;
+      const score = parseInt(raw.score, 10);
+      grades[grade] = (grades[grade] || 0) + 1;
+      all.push({ domain: domains[i], grade, score, checkedAt: raw.checkedAt });
+    }
+
+    const byDate = [...all].sort((a, b) => b.checkedAt.localeCompare(a.checkedAt));
+    const byScore = [...all].sort((a, b) => b.score - a.score);
+
+    const pick = (arr: typeof all) => arr.slice(0, 10).map(({ domain, grade, score }) => ({ domain, grade, score }));
+
+    return {
+      grades,
+      recentScans: pick(byDate),
+      hallOfFame: pick(byScore),
+      hallOfShame: pick(byScore.reverse()),
+    };
+  } finally {
+    await client.disconnect();
+  }
+}
+
 export async function getDomainsChecked(): Promise<number> {
   const client = await getClient();
   try {
