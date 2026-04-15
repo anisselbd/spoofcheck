@@ -204,10 +204,10 @@ export async function getHomeStats(): Promise<HomeStats> {
       const grade = raw.grade;
       const score = parseInt(raw.score, 10);
       grades[grade] = (grades[grade] || 0) + 1;
-      all.push({ domain: domains[i], grade, score, checkedAt: raw.checkedAt });
+      all.push({ domain: domains[i], grade, score, checkedAt: raw.checkedAt || "" });
     }
 
-    const byDate = [...all].sort((a, b) => b.checkedAt.localeCompare(a.checkedAt));
+    const byDate = [...all].filter((d) => d.checkedAt).sort((a, b) => b.checkedAt.localeCompare(a.checkedAt));
     const byScore = [...all].sort((a, b) => b.score - a.score);
 
     const pick = (arr: typeof all) => arr.slice(0, 10).map(({ domain, grade, score }) => ({ domain, grade, score }));

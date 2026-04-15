@@ -123,7 +123,7 @@ export default async function Home({
           <HomeClient lang={lang} dict={{ domainInput: dict.domainInput }} />
 
           {/* Stats section */}
-          {homeStats && homeStats.recentScans.length > 0 && (
+          {homeStats && (homeStats.recentScans.length > 0 || homeStats.hallOfFame.length > 0) && (
             <section className="pt-8">
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Grand Totals */}
@@ -144,6 +144,7 @@ export default async function Home({
                 </div>
 
                 {/* Recent Scans */}
+                {homeStats.recentScans.length > 0 && (
                 <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 space-y-3">
                   <h3 className="text-sm font-semibold text-zinc-300">{dict.home.recentScans}</h3>
                   <div className="space-y-1.5">
@@ -155,6 +156,7 @@ export default async function Home({
                     ))}
                   </div>
                 </div>
+                )}
 
                 {/* Hall of Fame */}
                 <div className="rounded-xl border border-emerald-800/30 bg-emerald-950/10 p-5 space-y-3">
