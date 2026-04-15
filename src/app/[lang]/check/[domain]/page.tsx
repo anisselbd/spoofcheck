@@ -76,15 +76,20 @@ export default async function CheckPage({ params, searchParams }: Props) {
   const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
   const hdrs = await headers();
-  const country = hdrs.get("x-vercel-ip-country") ?? undefined;
-  const city = hdrs.get("x-vercel-ip-city") ? decodeURIComponent(hdrs.get("x-vercel-ip-city")!) : undefined;
+  const ua = hdrs.get("user-agent") ?? "";
+  const isBot = /bot|crawl|spider|slurp|facebookexternalhit|bingpreview|googlebot|yandex|baidu|semrush|ahrefs|mj12bot|dotbot|petalbot|bytespider/i.test(ua);
 
-  await Promise.all([
-    incrementDomainsChecked(),
-    trackDomain(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable, country, city }),
-  ]).catch((e) =>
-    console.error("[redis]", e instanceof Error ? e.message : e)
-  );
+  if (!isBot) {
+    const country = hdrs.get("x-vercel-ip-country") ?? undefined;
+    const city = hdrs.get("x-vercel-ip-city") ? decodeURIComponent(hdrs.get("x-vercel-ip-city")!) : undefined;
+
+    await Promise.all([
+      incrementDomainsChecked(),
+      trackDomain(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable, country, city }),
+    ]).catch((e) =>
+      console.error("[redis]", e instanceof Error ? e.message : e)
+    );
+  }
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
