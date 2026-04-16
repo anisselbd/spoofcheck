@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { POPULAR_DOMAINS } from "@/lib/popular-domains";
-import { getTestedDomains } from "@/lib/redis";
 
 export const revalidate = 86400;
 
@@ -43,21 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   );
 
-  // Merge curated domains + all user-tested domains from Redis
-  let testedDomains: string[] = [];
-  if (process.env.KV_REDIS_URL) {
-    try {
-      testedDomains = await getTestedDomains();
-    } catch {
-      // Redis unavailable at build time — fall back to curated list only
-    }
-  }
-
-  const allDomains = [
-    ...new Set([...POPULAR_DOMAINS, ...testedDomains]),
-  ];
-
-  const domainPages = allDomains.flatMap((domain) =>
+  const domainPages = POPULAR_DOMAINS.flatMap((domain) =>
     locales.map((lang) => ({
       url: `${BASE}/${lang}/email-security/${domain}`,
       lastModified: new Date(),
