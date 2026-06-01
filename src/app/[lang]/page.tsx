@@ -220,6 +220,10 @@ export default async function Home({
                     <img
                       src={t.avatar}
                       alt={t.author}
+                      width={32}
+                      height={32}
+                      loading="lazy"
+                      decoding="async"
                       className="shrink-0 w-8 h-8 rounded-full object-cover"
                     />
                     <div>

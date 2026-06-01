@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { hasLocale, getDictionary, locales } from "./dictionaries";
@@ -8,6 +8,11 @@ import "../globals.css";
 export async function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
+
+export const viewport: Viewport = {
+  themeColor: "#09090b",
+  colorScheme: "dark",
+};
 
 export async function generateMetadata({
   params,
