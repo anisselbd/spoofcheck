@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = lang === "fr";
 
   const title = isFr
-    ? `Securite email de ${domain} — Analyse SPF, DKIM, DMARC, MTA-STS | SpoofCheck`
-    : `Email Security of ${domain} — SPF, DKIM, DMARC, MTA-STS Analysis | SpoofCheck`;
+    ? `${domain} est-il spoofable ? Analyse SPF, DKIM, DMARC | SpoofCheck`
+    : `Is ${domain} spoofable? SPF, DKIM & DMARC check | SpoofCheck`;
 
   const description = isFr
-    ? `Analyse complete de la securite email de ${domain}. Verifiez la configuration SPF, DKIM, DMARC et MTA-STS de ${domain} et decouvrez si ce domaine est vulnerable au spoofing.`
-    : `Complete email security analysis of ${domain}. Check ${domain}'s SPF, DKIM, DMARC, and MTA-STS configuration and find out if this domain is vulnerable to spoofing.`;
+    ? `Enregistrements SPF, DKIM, DMARC et MTA-STS de ${domain}. ${domain} est-il usurpable ? Découvrez son score de sécurité email, gratuitement et instantanément.`
+    : `Check ${domain}'s SPF, DKIM, DMARC & MTA-STS records. Is ${domain} spoofable? See its email security score — free, instant, no signup.`;
 
   return {
     title,
@@ -45,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: "article",
+      url: `https://spoofchecker.online/${lang}/email-security/${domain}`,
       locale: isFr ? "fr_FR" : "en_US",
       images: [{ url: "https://spoofchecker.online/IMG_6766.png", width: 1206, height: 630, alt: "SpoofCheck — SPF, DKIM, DMARC, MTA-STS" }],
     },
@@ -85,15 +86,80 @@ export default async function EmailSecurityPage({ params }: Props) {
     { year: "numeric", month: "long", day: "numeric" }
   );
 
+  // Dynamic FAQ — unique per domain, captures "is {domain} spoofable",
+  // "{domain} dmarc record", "{domain} spf record" search patterns.
+  const faqs = isFr
+    ? [
+        {
+          q: `${domain} est-il usurpable (spoofable) ?`,
+          a: result.spoofable
+            ? `Oui. ${domain} n'applique pas de politique DMARC stricte : des attaquants peuvent potentiellement envoyer des emails qui semblent provenir de ${domain}. Score de sécurité email : ${result.score}/100 (note ${result.grade}).`
+            : `Non. ${domain} est protégé contre l'usurpation d'identité grâce à une configuration email robuste. Score de sécurité email : ${result.score}/100 (note ${result.grade}).`,
+        },
+        {
+          q: `${domain} a-t-il un enregistrement SPF ?`,
+          a: result.spf.found
+            ? `Oui, ${domain} publie un enregistrement SPF${result.spf.qualifier ? ` (qualificateur ${result.spf.qualifier})` : ""}.`
+            : `Non, aucun enregistrement SPF n'a été trouvé pour ${domain}, ce qui facilite l'usurpation.`,
+        },
+        {
+          q: `Quel est l'enregistrement DMARC de ${domain} ?`,
+          a: result.dmarc.found
+            ? `${domain} publie un enregistrement DMARC (_dmarc.${domain}) avec une politique p=${result.dmarc.policy ?? "non précisée"}.`
+            : `Aucun enregistrement DMARC (_dmarc.${domain}) n'a été trouvé pour ${domain}.`,
+        },
+        {
+          q: `${domain} utilise-t-il DKIM ?`,
+          a: result.dkim.found
+            ? `Oui, des signatures DKIM ont été détectées pour ${domain}.`
+            : `Aucun sélecteur DKIM courant n'a été détecté pour ${domain} parmi ceux vérifiés.`,
+        },
+      ]
+    : [
+        {
+          q: `Is ${domain} spoofable?`,
+          a: result.spoofable
+            ? `Yes. ${domain} does not enforce a strong DMARC policy, so attackers may be able to send emails that appear to come from ${domain}. Email security score: ${result.score}/100 (grade ${result.grade}).`
+            : `No. ${domain} is protected against email spoofing with a robust configuration. Email security score: ${result.score}/100 (grade ${result.grade}).`,
+        },
+        {
+          q: `Does ${domain} have an SPF record?`,
+          a: result.spf.found
+            ? `Yes, ${domain} publishes an SPF record${result.spf.qualifier ? ` (${result.spf.qualifier} qualifier)` : ""}.`
+            : `No SPF record was found for ${domain}, which makes it easier to spoof.`,
+        },
+        {
+          q: `What is ${domain}'s DMARC record?`,
+          a: result.dmarc.found
+            ? `${domain} publishes a DMARC record (_dmarc.${domain}) with a p=${result.dmarc.policy ?? "unspecified"} policy.`
+            : `No DMARC record (_dmarc.${domain}) was found for ${domain}.`,
+        },
+        {
+          q: `Does ${domain} use DKIM?`,
+          a: result.dkim.found
+            ? `Yes, DKIM signatures were detected for ${domain}.`
+            : `No common DKIM selector was detected for ${domain} among those checked.`,
+        },
+      ];
+
+  // Internal-link ring: each domain page links to the next ones in the list,
+  // so all programmatic pages are discoverable and share crawl/link equity.
+  const list = POPULAR_DOMAINS as readonly string[];
+  const idx = list.indexOf(domain);
+  const start = idx >= 0 ? idx : 0;
+  const otherDomains = Array.from({ length: 6 }, (_, i) => list[(start + i + 1) % list.length]).filter(
+    (d) => d !== domain
+  );
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: isFr
-      ? `Analyse de securite email de ${domain}`
-      : `Email Security Analysis of ${domain}`,
+      ? `Sécurité email de ${domain} : analyse SPF, DKIM, DMARC et MTA-STS`
+      : `${domain} email security: SPF, DKIM, DMARC and MTA-STS analysis`,
     description: isFr
-      ? `Analyse complete de la securite email de ${domain}. Configuration SPF, DKIM, DMARC et MTA-STS.`
-      : `Complete email security analysis of ${domain}. SPF, DKIM, DMARC, and MTA-STS configuration.`,
+      ? `Analyse complète de la sécurité email de ${domain}. Configuration SPF, DKIM, DMARC et MTA-STS, et risque d'usurpation.`
+      : `Complete email security analysis of ${domain}. SPF, DKIM, DMARC and MTA-STS configuration, and spoofing risk.`,
     author: {
       "@type": "Organization",
       name: "SpoofCheck",
@@ -110,12 +176,28 @@ export default async function EmailSecurityPage({ params }: Props) {
     dateModified: result.checkedAt,
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c"),
         }}
       />
 
@@ -148,17 +230,17 @@ export default async function EmailSecurityPage({ params }: Props) {
           <section className="space-y-4 text-center">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
               {isFr
-                ? `Analyse de securite email de ${domain}`
-                : `Email Security Analysis of ${domain}`}
+                ? `Sécurité email de ${domain} : SPF, DKIM et DMARC`
+                : `${domain} email security: SPF, DKIM & DMARC`}
             </h1>
             <p className="text-lg text-zinc-400 max-w-xl mx-auto">
               {isFr
-                ? `Verification complete des enregistrements SPF, DKIM, DMARC et MTA-STS de ${domain}. Decouvrez si ce domaine est protege contre l'usurpation d'identite email.`
-                : `Complete verification of ${domain}'s SPF, DKIM, DMARC, and MTA-STS records. Find out if this domain is protected against email spoofing.`}
+                ? `${domain} est-il usurpable ? Consultez les enregistrements SPF, DKIM, DMARC et MTA-STS de ${domain} et découvrez si ce domaine est protégé contre l'usurpation d'identité email.`
+                : `Is ${domain} spoofable? See ${domain}'s SPF, DKIM, DMARC and MTA-STS records and find out if this domain is protected against email spoofing.`}
             </p>
             <p className="text-sm text-zinc-500">
               {isFr
-                ? `Derniere mise a jour : ${checkedDate}`
+                ? `Dernière mise à jour : ${checkedDate}`
                 : `Last updated: ${checkedDate}`}
             </p>
           </section>
@@ -172,12 +254,12 @@ export default async function EmailSecurityPage({ params }: Props) {
           <section className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center space-y-4">
             <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
               {isFr
-                ? "Lancez une analyse en temps reel"
+                ? "Lancez une analyse en temps réel"
                 : "Run a live analysis"}
             </h2>
             <p className="text-zinc-400 max-w-lg mx-auto">
               {isFr
-                ? `Les resultats ci-dessus sont mis a jour quotidiennement. Pour une verification instantanee de ${domain}, lancez une analyse en direct.`
+                ? `Les résultats ci-dessus sont mis à jour quotidiennement. Pour une vérification instantanée de ${domain}, lancez une analyse en direct.`
                 : `The results above are updated daily. For an instant check of ${domain}, run a live analysis.`}
             </p>
             <Link
@@ -190,11 +272,58 @@ export default async function EmailSecurityPage({ params }: Props) {
             </Link>
           </section>
 
+          {/* FAQ — dynamic, unique per domain */}
+          <section className="space-y-4">
+            <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
+              {isFr
+                ? `Questions fréquentes sur ${domain}`
+                : `Frequently asked questions about ${domain}`}
+            </h2>
+            <div className="space-y-3">
+              {faqs.map((f) => (
+                <div
+                  key={f.q}
+                  className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5"
+                >
+                  <h3 className="font-semibold text-zinc-100">{f.q}</h3>
+                  <p className="mt-2 text-sm text-zinc-400 leading-relaxed">
+                    {f.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-zinc-500 text-center pt-2">
+              {isFr ? (
+                <>
+                  Vous voulez tester un autre domaine ? Lancez un{" "}
+                  <Link
+                    href={`/${lang}`}
+                    className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+                  >
+                    test de spoofing email gratuit
+                  </Link>
+                  .
+                </>
+              ) : (
+                <>
+                  Want to test another domain? Run a free{" "}
+                  <Link
+                    href={`/${lang}`}
+                    className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+                  >
+                    email spoofing test
+                  </Link>
+                  .
+                </>
+              )}
+            </p>
+          </section>
+
           {/* Related guides */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
               {isFr
-                ? "Guides pour comprendre ces resultats"
+                ? "Guides pour comprendre ces résultats"
                 : "Guides to understand these results"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -207,7 +336,7 @@ export default async function EmailSecurityPage({ params }: Props) {
                 </h3>
                 <p className="text-sm text-zinc-400">
                   {isFr
-                    ? "Comprenez comment le SPF definit les serveurs autorises a envoyer des emails pour un domaine."
+                    ? "Comprenez comment le SPF définit les serveurs autorisés à envoyer des emails pour un domaine."
                     : "Understand how SPF defines which servers are authorized to send emails for a domain."}
                 </p>
               </Link>
@@ -220,7 +349,7 @@ export default async function EmailSecurityPage({ params }: Props) {
                 </h3>
                 <p className="text-sm text-zinc-400">
                   {isFr
-                    ? "Decouvrez comment DKIM signe cryptographiquement vos emails pour en garantir l'authenticite."
+                    ? "Découvrez comment DKIM signe cryptographiquement vos emails pour en garantir l'authenticité."
                     : "Discover how DKIM cryptographically signs your emails to guarantee their authenticity."}
                 </p>
               </Link>
@@ -233,7 +362,7 @@ export default async function EmailSecurityPage({ params }: Props) {
                 </h3>
                 <p className="text-sm text-zinc-400">
                   {isFr
-                    ? "Apprenez comment DMARC orchestre SPF et DKIM pour proteger votre domaine."
+                    ? "Apprenez comment DMARC orchestre SPF et DKIM pour protéger votre domaine."
                     : "Learn how DMARC orchestrates SPF and DKIM to protect your domain."}
                 </p>
               </Link>
@@ -246,7 +375,7 @@ export default async function EmailSecurityPage({ params }: Props) {
                 </h3>
                 <p className="text-sm text-zinc-400">
                   {isFr
-                    ? "Apprenez comment MTA-STS impose le chiffrement TLS pour proteger vos emails en transit."
+                    ? "Apprenez comment MTA-STS impose le chiffrement TLS pour protéger vos emails en transit."
                     : "Learn how MTA-STS enforces TLS encryption to protect your emails in transit."}
                 </p>
               </Link>
@@ -265,6 +394,26 @@ export default async function EmailSecurityPage({ params }: Props) {
               </Link>
             </div>
           </section>
+
+          {/* Cross-links to other domains */}
+          {otherDomains.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
+                {isFr ? "Vérifier d'autres domaines" : "Check other domains"}
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {otherDomains.map((d) => (
+                  <Link
+                    key={d}
+                    href={`/${lang}/email-security/${d}`}
+                    className="inline-flex items-center px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900/50 text-sm text-zinc-400 hover:border-zinc-700 hover:text-zinc-100 transition-colors"
+                  >
+                    {d}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
 

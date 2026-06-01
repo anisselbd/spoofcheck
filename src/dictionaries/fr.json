@@ -17,7 +17,7 @@
   "home": {
     "title": "Votre domaine est-il",
     "titleHighlight": "usurpable",
-    "subtitle": "Vérifiez en un clic si votre domaine est protégé contre le spoofing email. Analyse SPF, DKIM, DMARC et MTA-STS.",
+    "subtitle": "Lancez un test de spoofing email gratuit en un clic et découvrez si votre domaine peut être usurpé. Analyse SPF, DKIM, DMARC et MTA-STS.",
     "faqTitle": "Questions fréquentes",
     "testimonialsTitle": "Ce qu'en disent les utilisateurs",
     "domainsChecked": "domaines analysés",
@@ -191,8 +191,8 @@
     }
   ],
   "metadata": {
-    "homeTitle": "SpoofCheck — Test de spoofing email gratuit | SPF, DKIM, DMARC, MTA-STS",
-    "homeDescription": "Testez gratuitement si votre domaine est vulnérable au spoofing email. Vérification SPF, DKIM, DMARC et MTA-STS en un clic. Protégez-vous contre l'usurpation d'identité.",
+    "homeTitle": "Test de spoofing email gratuit — SPF, DKIM, DMARC | SpoofCheck",
+    "homeDescription": "Lancez un test de spoofing email gratuit en un clic. Votre domaine est-il usurpable ? Analyse SPF, DKIM, DMARC et MTA-STS contre l'usurpation.",
     "checkTitle": "Analyse email de {domain} — SpoofCheck",
     "checkDescSpoofable": "{domain} est vulnérable au spoofing email — Score {score}/100 ({grade}). Vérifiez votre domaine gratuitement.",
     "checkDescProtected": "{domain} est protégé contre le spoofing — Score {score}/100 ({grade}). Vérifiez votre domaine gratuitement."

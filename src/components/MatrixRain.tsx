@@ -9,6 +9,13 @@ export default function MatrixRain() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Purely decorative background. Skip the continuous rAF animation when
+    // the user prefers reduced motion or on small screens — saves CPU and
+    // battery and improves mobile INP/TBT (the canvas stays transparent).
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+    if (reduceMotion || isSmallScreen) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 

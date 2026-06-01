@@ -130,11 +130,32 @@ export default async function DmarcGuidePage({ params }: { params: Promise<{ lan
   const { lang } = await params;
   const articleJsonLd = getArticleJsonLd(lang);
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: (lang === "fr"
+      ? [
+          { q: "Quelle politique DMARC choisir ?", a: "L'objectif final est toujours p=reject, qui offre la meilleure protection. Mais commencez par p=none pour collecter des rapports et identifier tous les services qui envoient des emails avec votre domaine. Passez ensuite à p=quarantine puis à p=reject progressivement." },
+          { q: "Qu'est-ce que l'alignement DMARC ?", a: "L'alignement vérifie que le domaine utilisé dans le header From (visible par le destinataire) correspond au domaine vérifié par SPF (domaine de l'enveloppe) ou DKIM (domaine du tag d=). En mode relaxed (par défaut), les sous-domaines sont acceptés. En mode strict, les domaines doivent correspondre exactement." },
+          { q: "DMARC est-il obligatoire en 2025 ?", a: "Techniquement non, mais en pratique oui. Depuis février 2024, Google et Yahoo exigent un enregistrement DMARC pour les expéditeurs envoyant plus de 5 000 emails par jour. Même pour les petits volumes, l'absence de DMARC dégrade sérieusement la délivrabilité de vos emails. C'est devenu un standard incontournable de la sécurité email." },
+        ]
+      : [
+          { q: "Which DMARC policy should I choose?", a: "The ultimate goal is always p=reject, which provides the best protection. But start with p=none to collect reports and identify all services sending emails with your domain. Then gradually move to p=quarantine and finally p=reject." },
+          { q: "What is DMARC alignment?", a: "Alignment verifies that the domain used in the From header (visible to the recipient) matches the domain verified by SPF (envelope domain) or DKIM (d= tag domain). In relaxed mode (default), subdomains are accepted. In strict mode, domains must match exactly." },
+          { q: "Is DMARC mandatory in 2025?", a: "Technically no, but in practice yes. Since February 2024, Google and Yahoo require a DMARC record for senders sending more than 5,000 emails per day. Even for smaller volumes, the absence of DMARC seriously degrades your email deliverability. It has become an essential standard for email security." },
+        ]
+    ).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
       />
 
       <header className="py-6 px-6 border-b border-zinc-800/50">

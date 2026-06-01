@@ -17,7 +17,7 @@
   "home": {
     "title": "Is your domain",
     "titleHighlight": "spoofable",
-    "subtitle": "Check in one click if your domain is protected against email spoofing. SPF, DKIM, DMARC, and MTA-STS analysis.",
+    "subtitle": "Run a free email spoofing test in one click and find out if your domain can be spoofed. SPF, DKIM, DMARC and MTA-STS analysis.",
     "faqTitle": "Frequently asked questions",
     "testimonialsTitle": "What users are saying",
     "domainsChecked": "domains analyzed",
@@ -191,8 +191,8 @@
     }
   ],
   "metadata": {
-    "homeTitle": "SpoofCheck — Free Email Spoofing Test | SPF, DKIM, DMARC, MTA-STS",
-    "homeDescription": "Free email spoofing test. Check if your domain is vulnerable to spoofing. SPF, DKIM, DMARC, and MTA-STS analysis in one click. Protect against email impersonation.",
+    "homeTitle": "Free Email Spoofing Test — SPF, DKIM, DMARC | SpoofCheck",
+    "homeDescription": "Run a free email spoofing test in one click. Is your domain spoofable? SPF, DKIM, DMARC & MTA-STS check to protect against email impersonation.",
     "checkTitle": "Email analysis of {domain} — SpoofCheck",
     "checkDescSpoofable": "{domain} is vulnerable to email spoofing — Score {score}/100 ({grade}). Check your domain for free.",
     "checkDescProtected": "{domain} is protected against spoofing — Score {score}/100 ({grade}). Check your domain for free."
