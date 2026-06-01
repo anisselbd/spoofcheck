@@ -99,11 +99,32 @@ export default async function MtaStsGuidePage({ params }: { params: Promise<{ la
     dateModified: "2026-04-06",
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: (isFr
+      ? [
+          { q: "Quelle est la différence entre MTA-STS et STARTTLS ?", a: "STARTTLS est le mécanisme de négociation TLS entre serveurs mail. Le problème est qu'il est opportuniste : si un attaquant supprime l'annonce STARTTLS du serveur (attaque par stripping), la connexion se fait en clair sans que personne ne soit prévenu. MTA-STS résout ce problème en déclarant de manière indépendante (via HTTPS) que le TLS est obligatoire." },
+          { q: "MTA-STS protège-t-il contre le spoofing ?", a: "Non. MTA-STS protège la confidentialité des emails en transit (chiffrement), pas l'authenticité de l'expéditeur. Pour se protéger contre le spoofing, vous devez configurer SPF, DKIM et DMARC." },
+          { q: "Quels fournisseurs supportent MTA-STS ?", a: "Google (Gmail / Google Workspace), Microsoft (Outlook / Microsoft 365) et Yahoo supportent MTA-STS côté expéditeur. Cela signifie qu'ils respecteront votre politique MTA-STS lors de l'envoi d'emails vers votre domaine. Côté réception, vous devez le configurer vous-même sur votre domaine." },
+        ]
+      : [
+          { q: "What's the difference between MTA-STS and STARTTLS?", a: "STARTTLS is the TLS negotiation mechanism between mail servers. The problem is that it's opportunistic: if an attacker strips the STARTTLS announcement from the server (stripping attack), the connection falls back to plaintext without anyone being notified. MTA-STS solves this by independently declaring (via HTTPS) that TLS is mandatory." },
+          { q: "Does MTA-STS protect against spoofing?", a: "No. MTA-STS protects the confidentiality of emails in transit (encryption), not the authenticity of the sender. To protect against spoofing, you need to configure SPF, DKIM and DMARC." },
+          { q: "Which providers support MTA-STS?", a: "Google (Gmail / Google Workspace), Microsoft (Outlook / Microsoft 365), and Yahoo support MTA-STS on the sending side. This means they will respect your MTA-STS policy when sending emails to your domain. On the receiving side, you need to configure it yourself on your domain." },
+        ]
+    ).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
       />
 
       <header className="py-6 px-6 border-b border-zinc-800/50">

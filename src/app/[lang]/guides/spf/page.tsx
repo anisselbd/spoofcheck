@@ -101,11 +101,32 @@ export default async function SpfGuidePage({ params }: { params: Promise<{ lang:
     dateModified: "2025-06-01",
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: (isFr
+      ? [
+          { q: "Le SPF suffit-il à protéger mon domaine contre le spoofing ?", a: "Non. Le SPF vérifie uniquement l'adresse d'enveloppe (MAIL FROM), pas l'adresse affichée au destinataire (le header From). Un attaquant peut contourner le SPF en utilisant un domaine d'enveloppe différent. C'est pourquoi vous devez obligatoirement combiner le SPF avec DKIM et DMARC pour une protection complète." },
+          { q: "Que se passe-t-il si je dépasse les 10 lookups DNS ?", a: "Si votre enregistrement SPF nécessite plus de 10 résolutions DNS, le résultat sera un permerror (erreur permanente). Les serveurs récepteurs traiteront alors votre SPF comme s'il n'existait pas. Pour rester sous la limite, vous pouvez remplacer certains include par des adresses IP directes ou utiliser un service de flattening SPF." },
+          { q: "Quelle est la différence entre -all et ~all ?", a: "-all (hard fail) indique que les emails provenant de serveurs non autorisés doivent être rejetés. ~all (soft fail) indique qu'ils doivent être acceptés mais marqués comme suspects. En pratique, avec une politique DMARC correcte, la différence est minime. Néanmoins, -all est recommandé pour une sécurité maximale." },
+        ]
+      : [
+          { q: "Is SPF enough to protect my domain against spoofing?", a: "No. SPF only verifies the envelope address (MAIL FROM), not the address displayed to the recipient (the From header). An attacker can bypass SPF by using a different envelope domain. That is why you must combine SPF with DKIM and DMARC for complete protection." },
+          { q: "What happens if I exceed the 10 DNS lookups?", a: "If your SPF record requires more than 10 DNS lookups, the result will be a permerror (permanent error). Receiving servers will then treat your SPF as if it did not exist. To stay under the limit, you can replace some include directives with direct IP addresses or use an SPF flattening service." },
+          { q: "What is the difference between -all and ~all?", a: "-all (hard fail) indicates that emails from unauthorized servers should be rejected. ~all (soft fail) indicates they should be accepted but flagged as suspicious. In practice, with a proper DMARC policy, the difference is minimal. However, -all is recommended for maximum security." },
+        ]
+    ).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
       />
 
       <header className="py-6 px-6 border-b border-zinc-800/50">

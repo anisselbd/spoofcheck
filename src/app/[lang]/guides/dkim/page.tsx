@@ -125,11 +125,32 @@ export default async function DkimGuidePage({ params }: { params: Promise<{ lang
   const { lang } = await params;
   const articleJsonLd = buildArticleJsonLd(lang);
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: (lang === "fr"
+      ? [
+          { q: "Quelle est la différence entre SPF et DKIM ?", a: "SPF vérifie que le serveur d'envoi est autorisé à envoyer pour votre domaine (vérification de l'IP). DKIM vérifie que le contenu de l'email n'a pas été modifié et qu'il est bien signé par votre domaine (vérification cryptographique). Les deux sont complémentaires : SPF authentifie le serveur, DKIM authentifie le message." },
+          { q: "Peut-on avoir plusieurs enregistrements DKIM ?", a: "Oui, contrairement au SPF qui n'accepte qu'un seul enregistrement, vous pouvez avoir autant d'enregistrements DKIM que nécessaire. Chaque service d'envoi utilise un sélecteur différent, ce qui crée des enregistrements DNS distincts. C'est la pratique recommandée." },
+          { q: "Le DKIM ralentit-il l'envoi d'emails ?", a: "L'impact sur les performances est négligeable. La signature cryptographique prend quelques millisecondes par email. Côté réception, la vérification DKIM ajoute une requête DNS et un calcul de hash, mais cela n'a aucun impact perceptible pour l'utilisateur final. Les bénéfices en termes de délivrabilité et de sécurité dépassent largement ce coût minimal." },
+        ]
+      : [
+          { q: "What is the difference between SPF and DKIM?", a: "SPF verifies that the sending server is authorized to send on behalf of your domain (IP verification). DKIM verifies that the email content has not been modified and that it is genuinely signed by your domain (cryptographic verification). The two are complementary: SPF authenticates the server, DKIM authenticates the message." },
+          { q: "Can you have multiple DKIM records?", a: "Yes, unlike SPF which only allows a single record, you can have as many DKIM records as needed. Each sending service uses a different selector, creating distinct DNS records. This is the recommended practice." },
+          { q: "Does DKIM slow down email sending?", a: "The performance impact is negligible. Cryptographic signing takes only a few milliseconds per email. On the receiving side, DKIM verification adds a DNS lookup and a hash calculation, but this has no perceptible impact for the end user. The benefits in terms of deliverability and security far outweigh this minimal cost." },
+        ]
+    ).map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
       />
 
       <header className="py-6 px-6 border-b border-zinc-800/50">

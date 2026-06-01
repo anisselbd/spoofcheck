@@ -51,6 +51,15 @@ export default async function Home({
     description: dict.metadata.homeDescription,
     applicationCategory: "SecurityApplication",
     operatingSystem: "Any web browser",
+    browserRequirements: "Requires JavaScript",
+    featureList: [
+      "SPF record check",
+      "DKIM record check",
+      "DMARC record check",
+      "MTA-STS check",
+      "Email spoofing test",
+      "Email security score",
+    ],
     offers: {
       "@type": "Offer",
       price: "0",
@@ -76,10 +85,10 @@ export default async function Home({
 
       <header className="relative z-10 py-6 px-6 border-b border-zinc-800/50">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold tracking-tight">
+          <div className="text-xl font-bold tracking-tight">
             <span className="text-white">Spoof</span>
             <span className="text-shimmer">Check</span>
-          </h1>
+          </div>
           <nav className="flex items-center gap-4">
             <Link
               href={`/${lang}/guides`}
@@ -103,10 +112,10 @@ export default async function Home({
       <main className="relative z-10 flex-1 flex flex-col items-center px-6 py-16">
         <div className="max-w-3xl w-full space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
               {dict.home.title}{" "}
               <span className="text-red-400 animate-glow-red">{dict.home.titleHighlight}</span> ?
-            </h2>
+            </h1>
             <p className="text-zinc-400 text-lg max-w-xl mx-auto">
               {dict.home.subtitle}
             </p>
