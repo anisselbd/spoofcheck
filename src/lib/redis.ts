@@ -17,7 +17,8 @@ export interface DomainCheckData {
   score: number;
   grade: string;
   spoofable: boolean;
-  checkedAt: string;
+  /** Absent pour les domaines decouverts uniquement via les pages SEO (refreshDomainScore). */
+  checkedAt?: string;
   checkCount: number;
 }
 
