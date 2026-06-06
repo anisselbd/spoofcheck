@@ -168,6 +168,12 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
       const dir = sortDir === "asc" ? 1 : -1;
       const av = a[sortKey];
       const bv = b[sortKey];
+      // Domaines sans checkedAt (decouverts via pages SEO, jamais checkes) :
+      // toujours en fin de liste, sinon le comparateur retourne 0 face aux
+      // valeurs definies et casse la transitivite du tri.
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1;
+      if (bv == null) return -1;
       if (typeof av === "string" && typeof bv === "string") return av.localeCompare(bv) * dir;
       if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
       if (typeof av === "boolean" && typeof bv === "boolean") return (Number(av) - Number(bv)) * dir;
@@ -195,7 +201,7 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
   function exportCsv() {
     const header = "Domaine,Score,Grade,Spoofable,Dernier check,Checks\n";
     const rows = filtered
-      .map((d) => `${d.domain},${d.score},${d.grade},${d.spoofable ? "Oui" : "Non"},${d.checkedAt},${d.checkCount}`)
+      .map((d) => `${d.domain},${d.score},${d.grade},${d.spoofable ? "Oui" : "Non"},${d.checkedAt ?? ""},${d.checkCount}`)
       .join("\n");
     const blob = new Blob([header + rows], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -578,14 +584,16 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
                     </span>
                   </td>
                   <td className="px-4 py-3 text-zinc-500 tabular-nums">
-                    {new Date(d.checkedAt).toLocaleString("fr-FR", {
-                      timeZone: "Europe/Paris",
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {d.checkedAt
+                      ? new Date(d.checkedAt).toLocaleString("fr-FR", {
+                          timeZone: "Europe/Paris",
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : "—"}
                   </td>
                   <td className="px-4 py-3 text-center text-zinc-400 tabular-nums">{d.checkCount}</td>
                   <td className="px-4 py-3 text-center">
