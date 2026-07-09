@@ -101,6 +101,8 @@
     "shareLinkedin": "Partager sur LinkedIn",
     "embedBadge": "Badge pour votre site",
     "embedBadgeDesc": "Affichez votre score de sécurité email sur votre site.",
+    "embedBadgeTitleProtected": "Affichez fièrement votre score",
+    "embedBadgeDescProtected": "Montrez à vos visiteurs que {domain} est protégé contre l'usurpation d'email — le badge renvoie vers votre rapport en direct.",
     "embedCopied": "Code copié !",
     "embedCopy": "Copier le code"
   },

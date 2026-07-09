@@ -101,6 +101,8 @@
     "shareLinkedin": "Share on LinkedIn",
     "embedBadge": "Badge for your website",
     "embedBadgeDesc": "Display your email security score on your website.",
+    "embedBadgeTitleProtected": "Show off your score",
+    "embedBadgeDescProtected": "Show visitors that {domain} is protected against email spoofing — the badge links to your live report.",
     "embedCopied": "Code copied!",
     "embedCopy": "Copy code"
   },

@@ -7,6 +7,7 @@ import { refreshDomainScore } from "@/lib/redis";
 import { getDictionary, hasLocale, locales } from "../../dictionaries";
 import type { Locale } from "../../dictionaries";
 import ResultsPanel from "@/components/ResultsPanel";
+import BadgeEmbed from "@/components/BadgeEmbed";
 import Footer from "@/components/Footer";
 
 import { POPULAR_DOMAINS } from "@/lib/popular-domains";
@@ -270,6 +271,18 @@ export default async function EmailSecurityPage({ params }: Props) {
                 ? `Analyser ${domain} en direct`
                 : `Analyze ${domain} live`}
             </Link>
+          </section>
+
+          {/* Embed badge — backlink loop */}
+          <section>
+            <BadgeEmbed
+              domain={domain}
+              score={result.score}
+              grade={result.grade}
+              spoofable={result.spoofable}
+              lang={lang}
+              t={dict.check}
+            />
           </section>
 
           {/* FAQ — dynamic, unique per domain */}
