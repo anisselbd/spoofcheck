@@ -8,7 +8,12 @@ const COUNTRIES_KEY = "visitors_by_country";
 const CITIES_KEY = "visitors_by_city";
 
 function getClient() {
-  return createClient({ url: process.env.KV_REDIS_URL })
+  // Connexion à usage unique : pas de reconnexion (sinon connect() ne rejette
+  // jamais quand Redis est injoignable et les appelants restent suspendus).
+  return createClient({
+    url: process.env.KV_REDIS_URL,
+    socket: { connectTimeout: 2000, reconnectStrategy: false },
+  })
     .on("error", (err) => console.error("[redis]", err.message))
     .connect();
 }
@@ -221,6 +226,40 @@ export async function getHomeStats(): Promise<HomeStats> {
     };
   } finally {
     await client.disconnect();
+  }
+}
+
+export interface RateLimitVerdict {
+  allowed: boolean;
+  retryAfterSeconds: number;
+}
+
+/**
+ * Fenêtre fixe par clé. Fail-open : toute erreur Redis laisse passer la requête
+ * plutôt que de bloquer un check légitime.
+ */
+export async function checkRateLimit(
+  key: string,
+  limit: number,
+  windowSeconds: number
+): Promise<RateLimitVerdict> {
+  try {
+    const client = await getClient();
+    try {
+      const bucket = Math.floor(Date.now() / (windowSeconds * 1000));
+      const redisKey = `ratelimit:${key}:${bucket}`;
+      const count = await client.incr(redisKey);
+      if (count === 1) await client.expire(redisKey, windowSeconds);
+      return {
+        allowed: count <= limit,
+        retryAfterSeconds: (bucket + 1) * windowSeconds - Math.floor(Date.now() / 1000),
+      };
+    } finally {
+      await client.disconnect();
+    }
+  } catch (e) {
+    console.error("[rate-limit]", e instanceof Error ? e.message : e);
+    return { allowed: true, retryAfterSeconds: 0 };
   }
 }
 

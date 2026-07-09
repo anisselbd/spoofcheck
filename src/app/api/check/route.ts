@@ -1,10 +1,24 @@
 import { cleanDomain, isValidDomain } from "@/lib/validators";
 import { checkDomain } from "@/lib/dns-checker";
 import { calculateScore } from "@/lib/score-calculator";
+import { rateLimitByIp } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
+const LIMIT_PER_MINUTE = 10;
+
 export async function POST(request: Request) {
+  const verdict = await rateLimitByIp(request.headers, "api-check", LIMIT_PER_MINUTE);
+  if (!verdict.allowed) {
+    return Response.json(
+      { error: "Trop de requêtes. Réessayez dans une minute." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(verdict.retryAfterSeconds) },
+      }
+    );
+  }
+
   try {
     const body = await request.json();
     const domain = cleanDomain(body.domain || "");

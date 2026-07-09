@@ -104,6 +104,11 @@
     "embedCopied": "Code copied!",
     "embedCopy": "Copy code"
   },
+  "rateLimit": {
+    "title": "Slow down a little",
+    "message": "You've run a lot of checks in a short time. Wait a minute, then try again.",
+    "backHome": "Back to home"
+  },
   "helpBanner": {
     "title": "Need help securing your domain?",
     "subtitle": "If you're not sure how to apply these fixes, get in touch and we'll help you out.",

@@ -104,6 +104,11 @@
     "embedCopied": "Code copié !",
     "embedCopy": "Copier le code"
   },
+  "rateLimit": {
+    "title": "Doucement !",
+    "message": "Vous avez lancé beaucoup d'analyses en peu de temps. Patientez une minute puis réessayez.",
+    "backHome": "Retour à l'accueil"
+  },
   "helpBanner": {
     "title": "Besoin d'aide pour sécuriser votre domaine ?",
     "subtitle": "Si vous ne savez pas comment appliquer ces corrections, contactez-nous et nous vous aiderons.",

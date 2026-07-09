@@ -1,20 +1,38 @@
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
+import { cache } from "react";
 import { cleanDomain, isValidDomain } from "@/lib/validators";
 import { checkDomain } from "@/lib/dns-checker";
 import { calculateScore } from "@/lib/score-calculator";
 import { headers } from "next/headers";
 import { incrementDomainsChecked, trackDomain } from "@/lib/redis";
+import { rateLimitByIp } from "@/lib/rate-limit";
 import { getDictionary, hasLocale } from "../../dictionaries";
-import type { Locale } from "../../dictionaries";
+import type { Dictionary, Locale } from "../../dictionaries";
 import CheckPageClient from "@/components/CheckPageClient";
 
 type Props = {
   params: Promise<{ lang: string; domain: string }>;
   searchParams: Promise<{ dkim?: string }>;
 };
+
+const CHECKS_PER_MINUTE = 15;
+
+// cache() : un seul verdict et une seule analyse DNS par requête,
+// partagés entre generateMetadata et la page.
+const getRateLimitVerdict = cache(async () => {
+  const hdrs = await headers();
+  return rateLimitByIp(hdrs, "check-page", CHECKS_PER_MINUTE);
+});
+
+const runCheck = cache(async (domain: string, dkimSelector?: string) => {
+  const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
+  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain, extra);
+  return calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
+});
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { lang, domain: rawDomain } = await params;
@@ -28,9 +46,12 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     return { title: "SpoofCheck" };
   }
 
-  const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
-  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain, extra);
-  const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
+  const { allowed } = await getRateLimitVerdict();
+  if (!allowed) {
+    return { title: dict.metadata.checkTitle.replace("{domain}", domain) };
+  }
+
+  const result = await runCheck(domain, dkimSelector);
 
   const descTemplate = result.spoofable
     ? dict.metadata.checkDescSpoofable
@@ -71,9 +92,12 @@ export default async function CheckPage({ params, searchParams }: Props) {
     redirect(`/${lang}`);
   }
 
-  const extra = dkimSelector ? [dkimSelector.trim()] : undefined;
-  const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain, extra);
-  const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
+  const { allowed } = await getRateLimitVerdict();
+  if (!allowed) {
+    return <RateLimitedPage lang={lang} dict={dict} />;
+  }
+
+  const result = await runCheck(domain, dkimSelector);
 
   const hdrs = await headers();
   const ua = hdrs.get("user-agent") ?? "";
@@ -119,5 +143,21 @@ export default async function CheckPage({ params, searchParams }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
       <CheckPageClient data={result} lang={lang} dict={dict} />
     </>
+  );
+}
+
+function RateLimitedPage({ lang, dict }: { lang: string; dict: Dictionary }) {
+  const t = dict.rateLimit;
+  return (
+    <div className="flex flex-col min-h-screen items-center justify-center px-6 text-center">
+      <h1 className="text-3xl font-bold tracking-tight">{t.title}</h1>
+      <p className="mt-3 text-zinc-400 max-w-md">{t.message}</p>
+      <Link
+        href={`/${lang}`}
+        className="mt-8 h-11 px-6 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-200 transition-colors inline-flex items-center"
+      >
+        {t.backHome}
+      </Link>
+    </div>
   );
 }
