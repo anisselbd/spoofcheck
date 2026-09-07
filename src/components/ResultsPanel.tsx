@@ -4,6 +4,8 @@ import type { DnsCheckResponse } from "@/lib/types";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import ScoreGauge from "./ScoreGauge";
 import ResultCard from "./ResultCard";
+import PartnerCta from "./PartnerCta";
+import { buildPartnerUrl } from "@/lib/partner";
 
 interface ResultsPanelProps {
   data: DnsCheckResponse;
@@ -47,6 +49,8 @@ function t(dict: Dictionary, key: string): string {
 
 export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
   const r = dict.results;
+  // null until NEXT_PUBLIC_PARTNER_URL is set; the contact banner covers that case
+  const partnerHref = buildPartnerUrl(data.grade);
 
   const mxDetails: string[] = [];
   if (data.mx.provider) mxDetails.push(`${r.providerDetected} ${data.mx.provider}`);
@@ -172,17 +176,26 @@ export default function ResultsPanel({ data, lang, dict }: ResultsPanelProps) {
         </div>
       )}
 
-      {(data.spoofable || data.score < 70) && (
-        <div className="animate-fade-up rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center space-y-3" style={{ animationDelay: "600ms" }}>
-          <h3 className="text-lg font-semibold">{dict.helpBanner.title}</h3>
-          <p className="text-sm text-zinc-400">{dict.helpBanner.subtitle}</p>
-          <a
-            href="mailto:contact@spoofcheck.fr"
-            className="inline-flex items-center h-11 px-6 rounded-xl border border-zinc-700 text-zinc-300 font-medium text-sm hover:border-zinc-500 hover:text-zinc-100 transition-colors"
-          >
-            {dict.helpBanner.button}
-          </a>
-        </div>
+      {partnerHref ? (
+        <PartnerCta
+          grade={data.grade}
+          score={data.score}
+          spoofable={data.spoofable}
+          dict={dict.partnerCta}
+        />
+      ) : (
+        (data.spoofable || data.score < 70) && (
+          <div className="animate-fade-up rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center space-y-3" style={{ animationDelay: "600ms" }}>
+            <h3 className="text-lg font-semibold">{dict.helpBanner.title}</h3>
+            <p className="text-sm text-zinc-400">{dict.helpBanner.subtitle}</p>
+            <a
+              href="mailto:contact@spoofchecker.online"
+              className="inline-flex items-center h-11 px-6 rounded-xl border border-zinc-700 text-zinc-300 font-medium text-sm hover:border-zinc-500 hover:text-zinc-100 transition-colors"
+            >
+              {dict.helpBanner.button}
+            </a>
+          </div>
+        )
       )}
     </div>
   );

@@ -59,6 +59,14 @@ npm run dev
 
 Open http://localhost:3000
 
+## Environment variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `KV_REDIS_URL` | no | Redis connection used for stats and per-IP rate limiting. Checks stay available if it is unset (fail-open). |
+| `ADMIN_TOKEN` | no | Token guarding `/admin`. |
+| `NEXT_PUBLIC_PARTNER_URL` | no | Destination of the partner CTA on the results page. Paste the raw affiliate link — attribution parameters (including `utm_content=<grade>`) are appended without overwriting the existing query string. Unset means no CTA is rendered: the plain contact banner is shown instead. Inlined at build time, so changing it requires a redeploy. |
+
 ## Deploy on Vercel
 
 ```bash

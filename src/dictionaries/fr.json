@@ -116,6 +116,24 @@
     "subtitle": "Si vous ne savez pas comment appliquer ces corrections, contactez-nous et nous vous aiderons.",
     "button": "Nous contacter"
   },
+  "partnerCta": {
+    "critical": {
+      "title": "Votre domaine peut être usurpé aujourd'hui",
+      "subtitle": "N'importe qui peut envoyer des e-mails en se faisant passer pour vous. Corrigez ces failles avec un outil qui configure SPF, DKIM et DMARC et maintient la protection active.",
+      "button": "Protéger mon domaine"
+    },
+    "warning": {
+      "title": "Votre configuration est incomplète",
+      "subtitle": "Il manque des protections à votre domaine. Un outil dédié applique les corrections et vérifie qu'elles tiennent dans le temps.",
+      "button": "Compléter ma configuration"
+    },
+    "monitor": {
+      "title": "Gardez un œil sur votre domaine",
+      "subtitle": "Une configuration correcte peut se dégrader : nouveau prestataire, enregistrement modifié. La surveillance DMARC vous alerte avant que cela ne pose problème.",
+      "button": "Surveiller mon domaine"
+    },
+    "disclosure": "Lien partenaire — nous pouvons percevoir une commission."
+  },
   "guides": {
     "title": "Guides sécurité email",
     "subtitle": "Tout comprendre sur SPF, DKIM, DMARC et MTA-STS pour protéger votre domaine contre le spoofing email et le phishing.",

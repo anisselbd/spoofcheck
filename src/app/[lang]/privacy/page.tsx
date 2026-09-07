@@ -41,7 +41,7 @@ const meta = {
       {
         title: "Contact",
         content:
-          "Pour toute question concernant cette politique de confidentialité, contactez-nous à contact@spoofcheck.fr.",
+          "Pour toute question concernant cette politique de confidentialité, contactez-nous à contact@spoofchecker.online.",
       },
     ],
   },
@@ -80,7 +80,7 @@ const meta = {
       {
         title: "Contact",
         content:
-          "For any questions about this privacy policy, contact us at contact@spoofcheck.fr.",
+          "For any questions about this privacy policy, contact us at contact@spoofchecker.online.",
       },
     ],
   },

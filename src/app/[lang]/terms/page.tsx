@@ -51,7 +51,7 @@ const meta = {
       {
         title: "Contact",
         content:
-          "Pour toute question concernant ces conditions, contactez-nous à contact@spoofcheck.fr.",
+          "Pour toute question concernant ces conditions, contactez-nous à contact@spoofchecker.online.",
       },
     ],
   },
@@ -99,7 +99,7 @@ const meta = {
       {
         title: "Contact",
         content:
-          "For any questions about these terms, contact us at contact@spoofcheck.fr.",
+          "For any questions about these terms, contact us at contact@spoofchecker.online.",
       },
     ],
   },

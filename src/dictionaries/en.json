@@ -116,6 +116,24 @@
     "subtitle": "If you're not sure how to apply these fixes, get in touch and we'll help you out.",
     "button": "Contact us"
   },
+  "partnerCta": {
+    "critical": {
+      "title": "Your domain can be spoofed today",
+      "subtitle": "Anyone can send email pretending to be you. Fix it with a tool that sets up SPF, DKIM and DMARC and keeps the protection enforced.",
+      "button": "Protect my domain"
+    },
+    "warning": {
+      "title": "Your setup is incomplete",
+      "subtitle": "Your domain is missing protections. A dedicated tool applies the fixes and checks they hold over time.",
+      "button": "Complete my setup"
+    },
+    "monitor": {
+      "title": "Keep an eye on your domain",
+      "subtitle": "A correct setup can drift: a new provider, an edited record. DMARC monitoring warns you before it becomes a problem.",
+      "button": "Monitor my domain"
+    },
+    "disclosure": "Partner link — we may earn a commission."
+  },
   "guides": {
     "title": "Email security guides",
     "subtitle": "Understand SPF, DKIM, DMARC, and MTA-STS to protect your domain against email spoofing and phishing.",
