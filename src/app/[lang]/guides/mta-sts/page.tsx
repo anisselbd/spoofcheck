@@ -96,7 +96,7 @@ export default async function MtaStsGuidePage({ params }: { params: Promise<{ la
     mainEntityOfPage: `https://spoofchecker.online/${lang}/guides/mta-sts`,
     inLanguage: lang,
     datePublished: "2026-04-06",
-    dateModified: "2026-04-06",
+    dateModified: "2026-09-09",
   };
 
   const faqJsonLd = {

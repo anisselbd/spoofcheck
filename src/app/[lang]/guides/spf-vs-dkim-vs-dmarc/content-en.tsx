@@ -235,6 +235,59 @@ export default function ContentEn({ lang }: { lang: string }) {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
+          Frequently asked questions
+        </h2>
+        <div className="space-y-4">
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
+            <h3 className="text-lg font-semibold text-zinc-100">
+              What is the difference between SPF and DKIM?
+            </h3>
+            <p className="text-zinc-300 leading-relaxed">
+              SPF checks <strong className="text-zinc-100">where the email comes from</strong>: it compares the sending server&apos;s IP address against the list of authorized servers published in your DNS. DKIM checks <strong className="text-zinc-100">what the email contains</strong>: a cryptographic signature proves the message was not altered in transit and genuinely comes from your domain. SPF authenticates the server, DKIM authenticates the message. They are complementary, not interchangeable.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
+            <h3 className="text-lg font-semibold text-zinc-100">
+              What is the difference between DKIM and DMARC?
+            </h3>
+            <p className="text-zinc-300 leading-relaxed">
+              DKIM signs your emails but tells the receiving server nothing: if the signature is invalid, nothing indicates whether to deliver the message, send it to spam, or reject it. DMARC fills that gap. It adds two things: a <strong className="text-zinc-100">policy</strong> (none, quarantine, reject) and an <strong className="text-zinc-100">alignment</strong> check between the signing domain and the domain shown to the recipient. DKIM is an authentication mechanism; DMARC is the decision rule built on top of it.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
+            <h3 className="text-lg font-semibold text-zinc-100">
+              SPF, DKIM or DMARC: which one matters most?
+            </h3>
+            <p className="text-zinc-300 leading-relaxed">
+              DMARC, but it does not work alone. SPF and DKIM each produce a verdict, and DMARC is the only one of the three that protects the address your recipient actually sees — the From header. Without DMARC, an attacker can pass SPF using their own envelope domain while displaying yours. The three form a set: two proof mechanisms, and one policy that acts on them.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
+            <h3 className="text-lg font-semibold text-zinc-100">
+              In which order should I set up SPF, DKIM and DMARC?
+            </h3>
+            <p className="text-zinc-300 leading-relaxed">
+              Always SPF, then DKIM, then DMARC. SPF is the fastest to publish and breaks nothing. DKIM requires enabling signing at every service that sends on your behalf. DMARC comes last, and must start at <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=none</code>: that monitoring phase shows you who is sending email with your domain before you block anything.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
+            <h3 className="text-lg font-semibold text-zinc-100">
+              Can I use DMARC without SPF or DKIM?
+            </h3>
+            <p className="text-zinc-300 leading-relaxed">
+              Technically yes, but it is pointless and dangerous. DMARC has no verdict to act on if neither SPF nor DKIM is configured: every one of your emails will fail alignment. With <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code>, you would block your own legitimate mail. Publish SPF and DKIM first, confirm they pass, and only then roll out DMARC.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">

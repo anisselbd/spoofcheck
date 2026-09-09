@@ -15,7 +15,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
           SPF (Sender Policy Framework) : Le guide complet
         </h1>
         <p className="text-lg text-zinc-400">
-          Tout comprendre sur l'enregistrement SPF pour proteger votre domaine contre l'usurpation d'email.
+          Tout comprendre sur l'enregistrement SPF pour protéger votre domaine contre l'usurpation d'email.
         </p>
       </div>
 
@@ -26,17 +26,17 @@ export default function SpfContentFr({ lang }: { lang: string }) {
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            Le <strong className="text-zinc-100">SPF (Sender Policy Framework)</strong> est un protocole d'authentification email defini dans la{" "}
-            <strong className="text-zinc-100">RFC 7208</strong>. Il permet au proprietaire d'un domaine de specifier quels serveurs de messagerie sont autorises a envoyer des emails en son nom.
+            Le <strong className="text-zinc-100">SPF (Sender Policy Framework)</strong> est un protocole d'authentification email défini dans la{" "}
+            <strong className="text-zinc-100">RFC 7208</strong>. Il permet au propriétaire d'un domaine de spécifier quels serveurs de messagerie sont autorisés à envoyer des emails en son nom.
           </p>
           <p>
-            Concretement, le SPF fonctionne via un enregistrement DNS de type TXT. Quand un serveur de messagerie recoit un email pretendant venir de votre domaine, il consulte cet enregistrement pour verifier si le serveur expediteur est bien autorise. Si ce n'est pas le cas, l'email peut etre rejete ou marque comme suspect.
+            Concrètement, le SPF fonctionne via un enregistrement DNS de type TXT. Quand un serveur de messagerie reçoit un email prétendant venir de votre domaine, il consulte cet enregistrement pour vérifier si le serveur expéditeur est bien autorisé. Si ce n'est pas le cas, l'email peut être rejeté ou marqué comme suspect.
           </p>
           <p>
-            Sans SPF, n'importe qui peut envoyer un email en se faisant passer pour votre domaine. C'est ce qu'on appelle le <strong className="text-zinc-100">spoofing email</strong>, une technique massivement utilisee dans les attaques de phishing. Le SPF est donc la premiere ligne de defense contre ce type d'usurpation.
+            Sans SPF, n'importe qui peut envoyer un email en se faisant passer pour votre domaine. C'est ce qu'on appelle le <strong className="text-zinc-100">spoofing email</strong>, une technique massivement utilisée dans les attaques de phishing. Le SPF est donc la première ligne de défense contre ce type d'usurpation.
           </p>
           <p>
-            Le SPF seul ne suffit pas : il doit etre combine avec{" "}
+            Le SPF seul ne suffit pas : il doit être combiné avec{" "}
             <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               DKIM (DomainKeys Identified Mail)
             </Link>{" "}
@@ -44,7 +44,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
             <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               DMARC (Domain-based Message Authentication)
             </Link>{" "}
-            pour une protection complete de votre domaine.
+            pour une protection complète de votre domaine.
           </p>
         </div>
       </section>
@@ -56,30 +56,30 @@ export default function SpfContentFr({ lang }: { lang: string }) {
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            Le fonctionnement du SPF repose sur une verification en plusieurs etapes lors de la reception d'un email :
+            Le fonctionnement du SPF repose sur une vérification en plusieurs étapes lors de la réception d'un email :
           </p>
           <ol className="list-decimal list-inside space-y-3 pl-2">
             <li>
-              <strong className="text-zinc-100">Envoi de l'email</strong> — Un serveur de messagerie envoie un email avec votre domaine dans l'adresse de l'expediteur (le champ <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">MAIL FROM</code> de l'enveloppe SMTP).
+              <strong className="text-zinc-100">Envoi de l'email</strong> — Un serveur de messagerie envoie un email avec votre domaine dans l'adresse de l'expéditeur (le champ <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">MAIL FROM</code> de l'enveloppe SMTP).
             </li>
             <li>
-              <strong className="text-zinc-100">Requete DNS</strong> — Le serveur recepteur extrait le domaine de l'adresse <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">MAIL FROM</code> et interroge le DNS pour recuperer l'enregistrement SPF (TXT) associe.
+              <strong className="text-zinc-100">Requête DNS</strong> — Le serveur récepteur extrait le domaine de l'adresse <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">MAIL FROM</code> et interroge le DNS pour récupérer l'enregistrement SPF (TXT) associé.
             </li>
             <li>
-              <strong className="text-zinc-100">Comparaison de l'IP</strong> — Le serveur recepteur compare l'adresse IP du serveur expediteur avec la liste des IP et mecanismes autorises dans l'enregistrement SPF.
+              <strong className="text-zinc-100">Comparaison de l'IP</strong> — Le serveur récepteur compare l'adresse IP du serveur expéditeur avec la liste des IP et mécanismes autorisés dans l'enregistrement SPF.
             </li>
             <li>
-              <strong className="text-zinc-100">Verdict</strong> — Selon le resultat, le serveur recepteur applique une action : accepter (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">pass</code>), rejeter (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">fail</code>), marquer comme douteux (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">softfail</code>) ou considerer comme neutre (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">neutral</code>).
+              <strong className="text-zinc-100">Verdict</strong> — Selon le résultat, le serveur récepteur applique une action : accepter (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">pass</code>), rejeter (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">fail</code>), marquer comme douteux (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">softfail</code>) ou considérer comme neutre (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">neutral</code>).
             </li>
           </ol>
           <p>
-            Un enregistrement SPF typique ressemble a ceci :
+            Un enregistrement SPF typique ressemble à ceci :
           </p>
           <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto">
             v=spf1 include:_spf.google.com include:sendgrid.net ip4:203.0.113.0/24 -all
           </div>
           <p>
-            Chaque element a une signification precise :
+            Chaque élément a une signification précise :
           </p>
           <ul className="space-y-2 pl-2">
             <li className="flex gap-2">
@@ -88,15 +88,15 @@ export default function SpfContentFr({ lang }: { lang: string }) {
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">include:</code>
-              <span>— Autorise les serveurs definis dans le SPF d'un autre domaine (ex: Google, SendGrid).</span>
+              <span>— Autorise les serveurs définis dans le SPF d'un autre domaine (ex: Google, SendGrid).</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">ip4:</code>
-              <span>— Autorise une adresse IPv4 ou un bloc d'adresses specifique.</span>
+              <span>— Autorise une adresse IPv4 ou un bloc d'adresses spécifique.</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code>
-              <span>— Rejette tous les serveurs non explicitement autorises (hard fail).</span>
+              <span>— Rejette tous les serveurs non explicitement autorisés (hard fail).</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">~all</code>
@@ -109,15 +109,15 @@ export default function SpfContentFr({ lang }: { lang: string }) {
       {/* Configuration step by step */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Comment configurer le SPF etape par etape
+          Comment configurer le SPF étape par étape
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-6 text-zinc-300 leading-relaxed">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 1 : Identifier vos serveurs d'envoi
+              Étape 1 : Identifier vos serveurs d'envoi
             </h3>
             <p>
-              Listez tous les services qui envoient des emails pour votre domaine. Cela inclut generalement :
+              Listez tous les services qui envoient des emails pour votre domaine. Cela inclut généralement :
             </p>
             <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
               <li>Votre fournisseur de messagerie (Google Workspace, Microsoft 365, OVH, etc.)</li>
@@ -129,10 +129,10 @@ export default function SpfContentFr({ lang }: { lang: string }) {
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 2 : Construire votre enregistrement SPF
+              Étape 2 : Construire votre enregistrement SPF
             </h3>
             <p>
-              Commencez toujours par <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">v=spf1</code> et terminez par un mecanisme <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> ou <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">~all</code>. Entre les deux, ajoutez vos serveurs autorises. Exemple pour Google Workspace + Brevo :
+              Commencez toujours par <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">v=spf1</code> et terminez par un mécanisme <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> ou <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">~all</code>. Entre les deux, ajoutez vos serveurs autorisés. Exemple pour Google Workspace + Brevo :
             </p>
             <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto">
               v=spf1 include:_spf.google.com include:sendinblue.com -all
@@ -141,27 +141,27 @@ export default function SpfContentFr({ lang }: { lang: string }) {
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 3 : Ajouter l'enregistrement dans votre DNS
+              Étape 3 : Ajouter l'enregistrement dans votre DNS
             </h3>
             <p>
-              Connectez-vous a l'interface de gestion DNS de votre registrar ou hebergeur (OVH, Cloudflare, Gandi, etc.) et creez un enregistrement TXT :
+              Connectez-vous à l'interface de gestion DNS de votre registrar ou hébergeur (OVH, Cloudflare, Gandi, etc.) et créez un enregistrement TXT :
             </p>
             <ul className="space-y-2 pl-2 text-sm">
               <li><strong className="text-zinc-100">Type :</strong> TXT</li>
               <li><strong className="text-zinc-100">Nom / Host :</strong> @ (ou laissez vide selon le fournisseur)</li>
               <li><strong className="text-zinc-100">Valeur :</strong> votre enregistrement SPF complet</li>
-              <li><strong className="text-zinc-100">TTL :</strong> 3600 (1 heure) ou la valeur par defaut</li>
+              <li><strong className="text-zinc-100">TTL :</strong> 3600 (1 heure) ou la valeur par défaut</li>
             </ul>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 4 : Verifier votre configuration
+              Étape 4 : Vérifier votre configuration
             </h3>
             <p>
-              Apres la propagation DNS (quelques minutes a 48 heures), testez votre enregistrement SPF. Vous pouvez utiliser{" "}
+              Après la propagation DNS (quelques minutes à 48 heures), testez votre enregistrement SPF. Vous pouvez utiliser{" "}
               <Link href={`/${lang}`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
-                notre outil de verification gratuit
+                notre outil de vérification gratuit
               </Link>{" "}
               pour valider que tout fonctionne correctement.
             </p>
@@ -172,15 +172,15 @@ export default function SpfContentFr({ lang }: { lang: string }) {
       {/* Common mistakes */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Erreurs courantes a eviter
+          Erreurs courantes à éviter
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              1. Depasser la limite de 10 lookups DNS
+              1. Dépasser la limite de 10 lookups DNS
             </h3>
             <p>
-              La specification SPF impose un maximum de 10 resolutions DNS (include, a, mx, redirect). Chaque <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">include</code> peut lui-meme contenir d'autres includes. Depassez cette limite et votre SPF sera automatiquement invalide avec un resultat <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">permerror</code>.
+              La spécification SPF impose un maximum de 10 résolutions DNS (include, a, mx, redirect). Chaque <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">include</code> peut lui-même contenir d'autres includes. Dépassez cette limite et votre SPF sera automatiquement invalide avec un résultat <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">permerror</code>.
             </p>
           </div>
 
@@ -189,7 +189,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               2. Avoir plusieurs enregistrements SPF
             </h3>
             <p>
-              Un domaine ne doit avoir qu'<strong className="text-zinc-100">un seul</strong> enregistrement SPF. Si vous en avez plusieurs, la verification echouera. Fusionnez tous vos mecanismes dans un seul enregistrement TXT.
+              Un domaine ne doit avoir qu'<strong className="text-zinc-100">un seul</strong> enregistrement SPF. Si vous en avez plusieurs, la vérification échouera. Fusionnez tous vos mécanismes dans un seul enregistrement TXT.
             </p>
           </div>
 
@@ -198,7 +198,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               3. Utiliser +all au lieu de -all ou ~all
             </h3>
             <p>
-              Le mecanisme <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">+all</code> autorise <strong className="text-zinc-100">tous</strong> les serveurs a envoyer des emails pour votre domaine, ce qui revient a n'avoir aucune protection. Utilisez toujours <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> (hard fail) pour une protection maximale.
+              Le mécanisme <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">+all</code> autorisé <strong className="text-zinc-100">tous</strong> les serveurs à envoyer des emails pour votre domaine, ce qui revient à n'avoir aucune protection. Utilisez toujours <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> (hard fail) pour une protection maximale.
             </p>
           </div>
 
@@ -207,13 +207,13 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               4. Oublier un service d'envoi
             </h3>
             <p>
-              Si vous oubliez d'inclure un service legitime (par exemple votre outil de newsletter), ses emails seront rejetes ou classes en spam. Faites un inventaire complet avant de configurer votre SPF.
+              Si vous oubliez d'inclure un service légitime (par exemple votre outil de newsletter), ses emails seront rejetés ou classés en spam. Faites un inventaire complet avant de configurer votre SPF.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              5. Ne pas configurer DKIM et DMARC en complement
+              5. Ne pas configurer DKIM et DMARC en complément
             </h3>
             <p>
               Le SPF seul est insuffisant. Sans{" "}
@@ -224,7 +224,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DMARC
               </Link>
-              , un attaquant peut toujours contourner le SPF en utilisant un domaine d'enveloppe different du domaine visible dans le champ "From".
+              , un attaquant peut toujours contourner le SPF en utilisant un domaine d'enveloppe différent du domaine visible dans le champ "From".
             </p>
           </div>
         </div>
@@ -233,15 +233,15 @@ export default function SpfContentFr({ lang }: { lang: string }) {
       {/* FAQ */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Questions frequentes sur le SPF
+          Questions fréquentes sur le SPF
         </h2>
         <div className="space-y-4">
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Le SPF suffit-il a proteger mon domaine contre le spoofing ?
+              Le SPF suffit-il à protéger mon domaine contre le spoofing ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              Non. Le SPF verifie uniquement l'adresse d'enveloppe (MAIL FROM), pas l'adresse affichee au destinataire (le header "From"). Un attaquant peut contourner le SPF en utilisant un domaine d'enveloppe different. C'est pourquoi vous devez obligatoirement combiner le SPF avec{" "}
+              Non. Le SPF vérifie uniquement l'adresse d'enveloppe (MAIL FROM), pas l'adresse affichée au destinataire (le header "From"). Un attaquant peut contourner le SPF en utilisant un domaine d'enveloppe différent. C'est pourquoi vous devez obligatoirement combiner le SPF avec{" "}
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}
@@ -249,29 +249,29 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DMARC
               </Link>{" "}
-              pour une protection complete.
+              pour une protection complète.
             </p>
           </div>
 
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Que se passe-t-il si je depasse les 10 lookups DNS ?
+              Que se passe-t-il si je dépasse les 10 lookups DNS ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              Si votre enregistrement SPF necessite plus de 10 resolutions DNS, le resultat sera un <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">permerror</code> (erreur permanente). Les serveurs recepteurs traiteront alors votre SPF comme s'il n'existait pas. Pour rester sous la limite, vous pouvez remplacer certains <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">include</code> par des adresses IP directes ou utiliser un service de "flattening" SPF.
+              Si votre enregistrement SPF nécessite plus de 10 résolutions DNS, le résultat sera un <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">permerror</code> (erreur permanente). Les serveurs récepteurs traiteront alors votre SPF comme s'il n'existait pas. Pour rester sous la limite, vous pouvez remplacer certains <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">include</code> par des adresses IP directes ou utiliser un service de "flattening" SPF.
             </p>
           </div>
 
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Quelle est la difference entre -all et ~all ?
+              Quelle est la différence entre -all et ~all ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> (hard fail) indique que les emails provenant de serveurs non autorises doivent etre rejetes. <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">~all</code> (soft fail) indique qu'ils doivent etre acceptes mais marques comme suspects. En pratique, avec une politique{" "}
+              <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> (hard fail) indique que les emails provenant de serveurs non autorisés doivent être rejetés. <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">~all</code> (soft fail) indique qu'ils doivent être acceptés mais marqués comme suspects. En pratique, avec une politique{" "}
               <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DMARC
               </Link>{" "}
-              correcte, la difference est minime. Neanmoins, <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> est recommande pour une securite maximale.
+              correcte, la différence est minime. Néanmoins, <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">-all</code> est recommandé pour une sécurité maximale.
             </p>
           </div>
         </div>
@@ -280,7 +280,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
       {/* CTA */}
       <section className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">
-          Verifiez votre domaine gratuitement
+          Vérifiez votre domaine gratuitement
         </h2>
         <p className="text-zinc-400 max-w-lg mx-auto">
           Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
@@ -296,7 +296,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
       {/* Related guides */}
       <section className="space-y-4">
         <h2 className="text-xl font-bold tracking-tight text-zinc-400">
-          Guides complementaires
+          Guides complémentaires
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <Link
@@ -307,7 +307,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               Guide DKIM
             </h3>
             <p className="text-sm text-zinc-400">
-              Apprenez a configurer la signature DKIM pour authentifier vos emails.
+              Apprenez à configurer la signature DKIM pour authentifier vos emails.
             </p>
           </Link>
           <Link
@@ -318,7 +318,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               Guide DMARC
             </h3>
             <p className="text-sm text-zinc-400">
-              Decouvrez comment DMARC orchestre SPF et DKIM pour une protection complete.
+              Découvrez comment DMARC orchestre SPF et DKIM pour une protection complète.
             </p>
           </Link>
           <Link
@@ -329,7 +329,7 @@ export default function SpfContentFr({ lang }: { lang: string }) {
               Guide MTA-STS
             </h3>
             <p className="text-sm text-zinc-400">
-              Apprenez comment MTA-STS impose le chiffrement TLS pour proteger vos emails en transit.
+              Apprenez comment MTA-STS impose le chiffrement TLS pour protéger vos emails en transit.
             </p>
           </Link>
         </div>

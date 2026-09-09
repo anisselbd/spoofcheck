@@ -116,8 +116,8 @@ function buildArticleJsonLd(lang: string) {
     },
     mainEntityOfPage: `https://spoofchecker.online/${lang}/guides/dkim`,
     inLanguage: lang === "fr" ? "fr" : "en",
-    datePublished: "2025-01-15",
-    dateModified: "2025-06-01",
+    datePublished: "2026-04-06",
+    dateModified: "2026-09-09",
   };
 }
 

@@ -97,8 +97,8 @@ export default async function SpfGuidePage({ params }: { params: Promise<{ lang:
     },
     mainEntityOfPage: `https://spoofchecker.online/${lang}/guides/spf`,
     inLanguage: lang,
-    datePublished: "2025-01-15",
-    dateModified: "2025-06-01",
+    datePublished: "2026-04-06",
+    dateModified: "2026-09-09",
   };
 
   const faqJsonLd = {

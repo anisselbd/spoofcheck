@@ -15,7 +15,7 @@ export default function DkimContentFr({ lang }: { lang: string }) {
           DKIM (DomainKeys Identified Mail) : Le guide complet
         </h1>
         <p className="text-lg text-zinc-400">
-          Tout comprendre sur la signature DKIM pour authentifier vos emails et garantir qu'ils n'ont pas ete modifies en transit.
+          Tout comprendre sur la signature DKIM pour authentifier vos emails et garantir qu'ils n'ont pas été modifiés en transit.
         </p>
       </div>
 
@@ -26,21 +26,21 @@ export default function DkimContentFr({ lang }: { lang: string }) {
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            Le <strong className="text-zinc-100">DKIM (DomainKeys Identified Mail)</strong> est un protocole d'authentification email defini dans la{" "}
-            <strong className="text-zinc-100">RFC 6376</strong>. Il permet de signer cryptographiquement les emails sortants afin de prouver deux choses : que l'email provient bien du domaine revendique, et que son contenu n'a pas ete altere pendant le transport.
+            Le <strong className="text-zinc-100">DKIM (DomainKeys Identified Mail)</strong> est un protocole d'authentification email défini dans la{" "}
+            <strong className="text-zinc-100">RFC 6376</strong>. Il permet de signer cryptographiquement les emails sortants afin de prouver deux choses : que l'email provient bien du domaine revendiqué, et que son contenu n'a pas été altéré pendant le transport.
           </p>
           <p>
-            Le DKIM utilise un systeme de <strong className="text-zinc-100">cryptographie asymetrique</strong> (cle publique / cle privee). Le serveur d'envoi signe chaque email avec une cle privee, et la cle publique correspondante est publiee dans un enregistrement DNS. Le serveur recepteur peut alors verifier la signature en comparant les deux.
+            Le DKIM utilise un système de <strong className="text-zinc-100">cryptographie asymétrique</strong> (clé publique / clé privée). Le serveur d'envoi signe chaque email avec une clé privée, et la clé publique correspondante est publiée dans un enregistrement DNS. Le serveur récepteur peut alors vérifier la signature en comparant les deux.
           </p>
           <p>
             Contrairement au{" "}
             <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               SPF
             </Link>{" "}
-            qui verifie uniquement l'IP de l'expediteur, le DKIM garantit l'<strong className="text-zinc-100">integrite du message</strong> lui-meme. Meme si un email est relaie par plusieurs serveurs, la signature DKIM permet de prouver que le contenu n'a pas ete modifie.
+            qui vérifie uniquement l'IP de l'expéditeur, le DKIM garantit l'<strong className="text-zinc-100">intégrité du message</strong> lui-même. Même si un email est relayé par plusieurs serveurs, la signature DKIM permet de prouver que le contenu n'a pas été modifié.
           </p>
           <p>
-            Le DKIM est un composant essentiel de la securite email. Combine avec{" "}
+            Le DKIM est un composant essentiel de la sécurité email. Combiné avec{" "}
             <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               SPF
             </Link>{" "}
@@ -48,7 +48,7 @@ export default function DkimContentFr({ lang }: { lang: string }) {
             <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               DMARC
             </Link>
-            , il constitue le triptyque de base pour proteger un domaine contre l'usurpation d'identite email.
+            , il constitue le triptyque de base pour protéger un domaine contre l'usurpation d'identité email.
           </p>
         </div>
       </section>
@@ -60,35 +60,35 @@ export default function DkimContentFr({ lang }: { lang: string }) {
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            Le processus DKIM se deroule en deux phases : la signature a l'envoi et la verification a la reception.
+            Le processus DKIM se déroule en deux phases : la signature à l'envoi et la vérification à la réception.
           </p>
 
           <h3 className="text-lg font-semibold text-zinc-100">Phase de signature (envoi)</h3>
           <ol className="list-decimal list-inside space-y-3 pl-2">
             <li>
-              <strong className="text-zinc-100">Selection des en-tetes</strong> — Le serveur d'envoi choisit les en-tetes a inclure dans la signature (From, To, Subject, Date, etc.).
+              <strong className="text-zinc-100">Sélection des en-têtes</strong> — Le serveur d'envoi choisit les en-têtes à inclure dans la signature (From, To, Subject, Date, etc.).
             </li>
             <li>
-              <strong className="text-zinc-100">Hachage du contenu</strong> — Le corps du message et les en-tetes selectionnes sont haches (generalement avec SHA-256).
+              <strong className="text-zinc-100">Hachage du contenu</strong> — Le corps du message et les en-têtes sélectionnés sont hachés (généralement avec SHA-256).
             </li>
             <li>
-              <strong className="text-zinc-100">Signature cryptographique</strong> — Le hash est chiffre avec la cle privee DKIM du domaine, creant la signature numerique.
+              <strong className="text-zinc-100">Signature cryptographique</strong> — Le hash est chiffré avec la clé privée DKIM du domaine, créant la signature numérique.
             </li>
             <li>
-              <strong className="text-zinc-100">Ajout de l'en-tete</strong> — La signature est ajoutee a l'email via l'en-tete <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code>.
+              <strong className="text-zinc-100">Ajout de l'en-tête</strong> — La signature est ajoutée à l'email via l'en-tête <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code>.
             </li>
           </ol>
 
-          <h3 className="text-lg font-semibold text-zinc-100 pt-2">Phase de verification (reception)</h3>
+          <h3 className="text-lg font-semibold text-zinc-100 pt-2">Phase de vérification (réception)</h3>
           <ol className="list-decimal list-inside space-y-3 pl-2">
             <li>
-              <strong className="text-zinc-100">Lecture de la signature</strong> — Le serveur recepteur extrait l'en-tete <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code> et identifie le domaine et le selecteur.
+              <strong className="text-zinc-100">Lecture de la signature</strong> — Le serveur récepteur extrait l'en-tête <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code> et identifie le domaine et le sélecteur.
             </li>
             <li>
-              <strong className="text-zinc-100">Requete DNS</strong> — Il interroge le DNS pour obtenir la cle publique a l'adresse <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">selecteur._domainkey.domaine.com</code>.
+              <strong className="text-zinc-100">Requête DNS</strong> — Il interroge le DNS pour obtenir la clé publique à l'adresse <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">sélecteur._domainkey.domaine.com</code>.
             </li>
             <li>
-              <strong className="text-zinc-100">Verification</strong> — Il dechiffre la signature avec la cle publique et compare le resultat au hash recalcule du message recu.
+              <strong className="text-zinc-100">Vérification</strong> — Il déchiffre la signature avec la clé publique et compare le résultat au hash recalculé du message reçu.
             </li>
             <li>
               <strong className="text-zinc-100">Verdict</strong> — Si les hash correspondent, la signature est valide : l'email est authentique et intact.
@@ -96,7 +96,7 @@ export default function DkimContentFr({ lang }: { lang: string }) {
           </ol>
 
           <p className="pt-2">
-            Un en-tete DKIM-Signature ressemble a ceci :
+            Un en-tête DKIM-Signature ressemble à ceci :
           </p>
           <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto whitespace-pre">
 {`DKIM-Signature: v=1; a=rsa-sha256; d=exemple.fr;
@@ -110,7 +110,7 @@ export default function DkimContentFr({ lang }: { lang: string }) {
             Et l'enregistrement DNS correspondant (de type TXT) :
           </p>
           <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto">
-            selector1._domainkey.exemple.fr IN TXT "v=DKIM1; k=rsa; p=cle_publique_base64"
+            selector1._domainkey.exemple.fr IN TXT "v=DKIM1; k=rsa; p=clé_publique_base64"
           </div>
         </div>
       </section>
@@ -118,15 +118,15 @@ export default function DkimContentFr({ lang }: { lang: string }) {
       {/* Configuration step by step */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Comment configurer le DKIM etape par etape
+          Comment configurer le DKIM étape par étape
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-6 text-zinc-300 leading-relaxed">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 1 : Generer les cles DKIM
+              Étape 1 : Générer les clés DKIM
             </h3>
             <p>
-              La plupart des fournisseurs de messagerie (Google Workspace, Microsoft 365, etc.) generent automatiquement les cles DKIM. Vous n'avez qu'a activer la fonctionnalite dans l'interface d'administration. Si vous gerez votre propre serveur, vous pouvez generer les cles avec OpenSSL :
+              La plupart des fournisseurs de messagerie (Google Workspace, Microsoft 365, etc.) génèrent automatiquement les clés DKIM. Vous n'avez qu'à activer la fonctionnalité dans l'interface d'administration. Si vous gérez votre propre serveur, vous pouvez générer les clés avec OpenSSL :
             </p>
             <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto whitespace-pre">
 {`openssl genrsa -out dkim_private.pem 2048
@@ -136,46 +136,46 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 2 : Publier la cle publique dans le DNS
+              Étape 2 : Publier la clé publique dans le DNS
             </h3>
             <p>
-              Creez un enregistrement TXT dans votre zone DNS avec le nom <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">selecteur._domainkey.votredomaine.com</code>. Le selecteur est un identifiant libre (ex: "google", "selector1", "mail") :
+              Créez un enregistrement TXT dans votre zone DNS avec le nom <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">sélecteur._domainkey.votredomaine.com</code>. Le sélecteur est un identifiant libre (ex: "google", "selector1", "mail") :
             </p>
             <ul className="space-y-2 pl-2 text-sm">
               <li><strong className="text-zinc-100">Type :</strong> TXT</li>
               <li><strong className="text-zinc-100">Nom :</strong> selector1._domainkey</li>
-              <li><strong className="text-zinc-100">Valeur :</strong> v=DKIM1; k=rsa; p=votre_cle_publique_base64</li>
+              <li><strong className="text-zinc-100">Valeur :</strong> v=DKIM1; k=rsa; p=votre_clé_publique_base64</li>
             </ul>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 3 : Configurer le serveur d'envoi
+              Étape 3 : Configurer le serveur d'envoi
             </h3>
             <p>
-              Configurez votre serveur de messagerie ou service d'envoi pour signer les emails sortants avec la cle privee. Chez les fournisseurs cloud, cette etape se resume generalement a un bouton "Activer DKIM" dans la console d'administration.
+              Configurez votre serveur de messagerie ou service d'envoi pour signer les emails sortants avec la clé privée. Chez les fournisseurs cloud, cette étape se résume généralement à un bouton "Activer DKIM" dans la console d'administration.
             </p>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 4 : Verifier la configuration
+              Étape 4 : Vérifier la configuration
             </h3>
             <p>
-              Envoyez un email de test et verifiez les en-tetes pour confirmer la presence d'un en-tete <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code> valide. Utilisez{" "}
+              Envoyez un email de test et vérifiez les en-têtes pour confirmer la présence d'un en-tête <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code> valide. Utilisez{" "}
               <Link href={`/${lang}`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
-                notre outil de verification gratuit
+                notre outil de vérification gratuit
               </Link>{" "}
-              pour valider que l'enregistrement DNS est correctement publie.
+              pour valider que l'enregistrement DNS est correctement publié.
             </p>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Etape 5 : Configurer DKIM pour chaque service d'envoi
+              Étape 5 : Configurer DKIM pour chaque service d'envoi
             </h3>
             <p>
-              Si vous utilisez plusieurs services (messagerie principale, newsletter, emails transactionnels), chacun doit avoir sa propre configuration DKIM avec un selecteur distinct. Par exemple : <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">google._domainkey</code> pour Google Workspace et <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">brevo._domainkey</code> pour Brevo.
+              Si vous utilisez plusieurs services (messagerie principale, newsletter, emails transactionnels), chacun doit avoir sa propre configuration DKIM avec un sélecteur distinct. Par exemple : <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">google._domainkey</code> pour Google Workspace et <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">brevo._domainkey</code> pour Brevo.
             </p>
           </div>
         </div>
@@ -184,33 +184,33 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
       {/* Common mistakes */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Erreurs courantes a eviter
+          Erreurs courantes à éviter
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              1. Utiliser des cles RSA trop courtes
+              1. Utiliser des clés RSA trop courtes
             </h3>
             <p>
-              Les cles RSA de 1024 bits sont desormais considerees comme faibles. Utilisez des cles de <strong className="text-zinc-100">2048 bits minimum</strong>. La plupart des fournisseurs modernes utilisent deja cette taille par defaut.
+              Les clés RSA de 1024 bits sont désormais considérées comme faibles. Utilisez des clés de <strong className="text-zinc-100">2048 bits minimum</strong>. La plupart des fournisseurs modernes utilisent déjà cette taille par défaut.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              2. Ne pas faire tourner les cles regulierement
+              2. Ne pas faire tourner les clés régulièrement
             </h3>
             <p>
-              Les cles DKIM devraient etre changees (rotation) au moins tous les 6 a 12 mois. Gardez l'ancienne cle publique dans le DNS pendant quelques jours apres la rotation pour que les emails en transit puissent encore etre verifies.
+              Les clés DKIM devraient être changées (rotation) au moins tous les 6 à 12 mois. Gardez l'ancienne clé publique dans le DNS pendant quelques jours après la rotation pour que les emails en transit puissent encore être vérifiés.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              3. Erreur de formatage de la cle publique
+              3. Erreur de formatage de la clé publique
             </h3>
             <p>
-              Certains registrars coupent les enregistrements TXT longs. Assurez-vous que votre cle publique est complete et correctement formatee. La valeur ne doit contenir aucun espace ni saut de ligne indesire.
+              Certains registrars coupent les enregistrements TXT longs. Assurez-vous que votre clé publique est complète et correctement formatée. La valeur ne doit contenir aucun espace ni saut de ligne indésiré.
             </p>
           </div>
 
@@ -219,7 +219,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               4. Oublier de configurer DKIM pour les services tiers
             </h3>
             <p>
-              Chaque service qui envoie des emails en votre nom (newsletter, CRM, support) doit avoir son propre enregistrement DKIM. Sans cela, leurs emails ne passeront pas la verification{" "}
+              Chaque service qui envoie des emails en votre nom (newsletter, CRM, support) doit avoir son propre enregistrement DKIM. Sans cela, leurs emails ne passeront pas la vérification{" "}
               <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DMARC
               </Link>.
@@ -228,10 +228,10 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
 
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              5. Ne pas tester apres la configuration
+              5. Ne pas tester après la configuration
             </h3>
             <p>
-              Une erreur dans l'enregistrement DNS ou la configuration du serveur peut rendre le DKIM non fonctionnel sans que vous ne vous en rendiez compte. Testez systematiquement avec un email de verification.
+              Une erreur dans l'enregistrement DNS ou la configuration du serveur peut rendre le DKIM non fonctionnel sans que vous ne vous en rendiez compte. Testez systématiquement avec un email de vérification.
             </p>
           </div>
         </div>
@@ -240,18 +240,18 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
       {/* FAQ */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Questions frequentes sur le DKIM
+          Questions fréquentes sur le DKIM
         </h2>
         <div className="space-y-4">
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Quelle est la difference entre SPF et DKIM ?
+              Quelle est la différence entre SPF et DKIM ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
-              verifie que le serveur d'envoi est autorise a envoyer pour votre domaine (verification de l'IP). DKIM verifie que le contenu de l'email n'a pas ete modifie et qu'il est bien signe par votre domaine (verification cryptographique). Les deux sont complementaires : SPF authentifie le serveur, DKIM authentifie le message.
+              vérifie que le serveur d'envoi est autorisé à envoyer pour votre domaine (vérification de l'IP). DKIM vérifie que le contenu de l'email n'a pas été modifié et qu'il est bien signé par votre domaine (vérification cryptographique). Les deux sont complémentaires : SPF authentifie le serveur, DKIM authentifie le message.
             </p>
           </div>
 
@@ -264,7 +264,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
-              qui n'accepte qu'un seul enregistrement, vous pouvez avoir autant d'enregistrements DKIM que necessaire. Chaque service d'envoi utilise un selecteur different, ce qui cree des enregistrements DNS distincts. C'est la pratique recommandee.
+              qui n'accepte qu'un seul enregistrement, vous pouvez avoir autant d'enregistrements DKIM que nécessaire. Chaque service d'envoi utilise un sélecteur différent, ce qui crée des enregistrements DNS distincts. C'est la pratique recommandée.
             </p>
           </div>
 
@@ -273,7 +273,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Le DKIM ralentit-il l'envoi d'emails ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              L'impact sur les performances est negligeable. La signature cryptographique prend quelques millisecondes par email. Cote reception, la verification DKIM ajoute une requete DNS et un calcul de hash, mais cela n'a aucun impact perceptible pour l'utilisateur final. Les benefices en termes de delivrabilite et de securite depassent largement ce cout minimal.
+              L'impact sur les performances est négligeable. La signature cryptographique prend quelques millisecondes par email. Côté réception, la vérification DKIM ajoute une requête DNS et un calcul de hash, mais cela n'a aucun impact perceptible pour l'utilisateur final. Les bénéfices en termes de délivrabilité et de sécurité dépassent largement ce coût minimal.
             </p>
           </div>
         </div>
@@ -282,7 +282,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
       {/* CTA */}
       <section className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">
-          Verifiez votre domaine gratuitement
+          Vérifiez votre domaine gratuitement
         </h2>
         <p className="text-zinc-400 max-w-lg mx-auto">
           Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
@@ -298,7 +298,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
       {/* Related guides */}
       <section className="space-y-4">
         <h2 className="text-xl font-bold tracking-tight text-zinc-400">
-          Guides complementaires
+          Guides complémentaires
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <Link
@@ -309,7 +309,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Guide SPF
             </h3>
             <p className="text-sm text-zinc-400">
-              Apprenez a configurer un enregistrement SPF pour autoriser vos serveurs d'envoi.
+              Apprenez à configurer un enregistrement SPF pour autoriser vos serveurs d'envoi.
             </p>
           </Link>
           <Link
@@ -320,7 +320,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Guide DMARC
             </h3>
             <p className="text-sm text-zinc-400">
-              Decouvrez comment DMARC orchestre SPF et DKIM pour une protection complete.
+              Découvrez comment DMARC orchestre SPF et DKIM pour une protection complète.
             </p>
           </Link>
           <Link
@@ -331,7 +331,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Guide MTA-STS
             </h3>
             <p className="text-sm text-zinc-400">
-              Apprenez comment MTA-STS impose le chiffrement TLS pour proteger vos emails en transit.
+              Apprenez comment MTA-STS impose le chiffrement TLS pour protéger vos emails en transit.
             </p>
           </Link>
         </div>
