@@ -16,7 +16,7 @@ export async function generateMetadata({
       ? "Guide MTA-STS : Imposer le chiffrement TLS sur vos emails — SpoofCheck"
       : "MTA-STS Guide: Enforce TLS Encryption on Your Emails — SpoofCheck",
     description: isFr
-      ? "Guide complet sur MTA-STS (Mail Transfer Agent Strict Transport Security) : comment configurer MTA-STS pour imposer le chiffrement TLS et proteger vos emails contre les attaques man-in-the-middle."
+      ? "Guide complet sur MTA-STS (Mail Transfer Agent Strict Transport Security) : comment configurer MTA-STS pour imposer le chiffrement TLS et protéger vos emails contre les attaques man-in-the-middle."
       : "Complete guide to MTA-STS (Mail Transfer Agent Strict Transport Security): how to configure MTA-STS to enforce TLS encryption and protect your emails against man-in-the-middle attacks.",
     keywords: isFr
       ? [
@@ -44,7 +44,7 @@ export async function generateMetadata({
         ? "Guide MTA-STS : Imposer le chiffrement TLS sur vos emails"
         : "MTA-STS Guide: Enforce TLS Encryption on Your Emails",
       description: isFr
-        ? "Guide complet sur MTA-STS : configuration, fonctionnement et deploiement. Protegez vos emails en transit."
+        ? "Guide complet sur MTA-STS : configuration, fonctionnement et déploiement. Protégez vos emails en transit."
         : "Complete guide to MTA-STS: configuration, how it works, and deployment. Protect your emails in transit.",
       type: "article",
       locale: isFr ? "fr_FR" : "en_US",
@@ -56,7 +56,7 @@ export async function generateMetadata({
         ? "Guide MTA-STS : Imposer le chiffrement TLS sur vos emails"
         : "MTA-STS Guide: Enforce TLS Encryption on Your Emails",
       description: isFr
-        ? "Guide complet sur MTA-STS : configuration, fonctionnement et deploiement."
+        ? "Guide complet sur MTA-STS : configuration, fonctionnement et déploiement."
         : "Complete guide to MTA-STS: configuration, how it works, and deployment.",
     },
     alternates: {
@@ -81,7 +81,7 @@ export default async function MtaStsGuidePage({ params }: { params: Promise<{ la
       ? "Guide MTA-STS : Imposer le chiffrement TLS sur vos emails"
       : "MTA-STS Guide: Enforce TLS Encryption on Your Emails",
     description: isFr
-      ? "Guide complet sur MTA-STS (Mail Transfer Agent Strict Transport Security) : comment configurer MTA-STS pour imposer le chiffrement TLS et proteger vos emails contre les attaques man-in-the-middle."
+      ? "Guide complet sur MTA-STS (Mail Transfer Agent Strict Transport Security) : comment configurer MTA-STS pour imposer le chiffrement TLS et protéger vos emails contre les attaques man-in-the-middle."
       : "Complete guide to MTA-STS (Mail Transfer Agent Strict Transport Security): how to configure MTA-STS to enforce TLS encryption and protect your emails against man-in-the-middle attacks.",
     author: {
       "@type": "Organization",

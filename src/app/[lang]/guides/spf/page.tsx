@@ -16,7 +16,7 @@ export async function generateMetadata({
       ? "Guide SPF : Configurer et comprendre le SPF email — SpoofCheck"
       : "SPF Guide: Configure and Understand Email SPF — SpoofCheck",
     description: isFr
-      ? "Guide complet sur le SPF (Sender Policy Framework) : comment configurer un enregistrement SPF, proteger votre domaine contre le spoofing email et eviter les erreurs courantes."
+      ? "Guide complet sur le SPF (Sender Policy Framework) : comment configurer un enregistrement SPF, protéger votre domaine contre le spoofing email et éviter les erreurs courantes."
       : "Complete guide to SPF (Sender Policy Framework): how to configure an SPF record, protect your domain against email spoofing, and avoid common mistakes.",
     keywords: isFr
       ? [
@@ -46,7 +46,7 @@ export async function generateMetadata({
         ? "Guide SPF : Configurer et comprendre le SPF email"
         : "SPF Guide: Configure and Understand Email SPF",
       description: isFr
-        ? "Guide complet sur le SPF : configuration, fonctionnement et erreurs courantes. Protegez votre domaine contre le spoofing."
+        ? "Guide complet sur le SPF : configuration, fonctionnement et erreurs courantes. Protégez votre domaine contre le spoofing."
         : "Complete guide to SPF: configuration, how it works, and common mistakes. Protect your domain against spoofing.",
       type: "article",
       locale: isFr ? "fr_FR" : "en_US",
@@ -83,7 +83,7 @@ export default async function SpfGuidePage({ params }: { params: Promise<{ lang:
       ? "Guide SPF : Configurer et comprendre le SPF email"
       : "SPF Guide: Configure and Understand Email SPF",
     description: isFr
-      ? "Guide complet sur le SPF (Sender Policy Framework) : comment configurer un enregistrement SPF, proteger votre domaine contre le spoofing email et eviter les erreurs courantes."
+      ? "Guide complet sur le SPF (Sender Policy Framework) : comment configurer un enregistrement SPF, protéger votre domaine contre le spoofing email et éviter les erreurs courantes."
       : "Complete guide to SPF (Sender Policy Framework): how to configure an SPF record, protect your domain against email spoofing, and avoid common mistakes.",
     author: {
       "@type": "Organization",

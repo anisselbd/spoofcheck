@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   const description =
     lang === "fr"
-      ? "Guide complet sur le DMARC (Domain-based Message Authentication) : comment configurer une politique DMARC, proteger votre domaine contre le phishing et recevoir des rapports."
+      ? "Guide complet sur le DMARC (Domain-based Message Authentication) : comment configurer une politique DMARC, protéger votre domaine contre le phishing et recevoir des rapports."
       : "Complete guide to DMARC (Domain-based Message Authentication): how to configure a DMARC policy, protect your domain against phishing, and receive reports.";
 
   const ogTitle =
@@ -28,7 +28,7 @@ export async function generateMetadata({
 
   const ogDescription =
     lang === "fr"
-      ? "Guide complet sur le DMARC : configuration, politique et rapports pour proteger votre domaine contre le phishing."
+      ? "Guide complet sur le DMARC : configuration, politique et rapports pour protéger votre domaine contre le phishing."
       : "Complete guide to DMARC: configuration, policy, and reports to protect your domain against phishing.";
 
   const twitterTitle =
@@ -101,7 +101,7 @@ function getArticleJsonLd(lang: string) {
 
   const description =
     lang === "fr"
-      ? "Guide complet sur le DMARC (Domain-based Message Authentication) : comment configurer une politique DMARC, proteger votre domaine contre le phishing et recevoir des rapports."
+      ? "Guide complet sur le DMARC (Domain-based Message Authentication) : comment configurer une politique DMARC, protéger votre domaine contre le phishing et recevoir des rapports."
       : "Complete guide to DMARC (Domain-based Message Authentication): how to configure a DMARC policy, protect your domain against phishing, and receive reports.";
 
   return {
