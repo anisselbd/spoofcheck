@@ -12,7 +12,9 @@ import Footer from "@/components/Footer";
 
 import { POPULAR_DOMAINS } from "@/lib/popular-domains";
 
-export const revalidate = 86400;
+const CURATED = new Set<string>(POPULAR_DOMAINS);
+
+export const revalidate = 604800; // 7 jours : SPF/DKIM/DMARC ne bougent quasiment jamais
 export const dynamicParams = true;
 
 export function generateStaticParams() {
@@ -64,6 +66,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         en: `https://spoofchecker.online/en/email-security/${domain}`,
       },
     },
+    // Hors liste curee : la page reste accessible et partageable, mais on ne
+    // l'indexe pas. Un domaine que personne ne recherche n'apporte aucun
+    // trafic, et en masse ces pages exposent le site entier au "scaled
+    // content abuse" de Google.
+    robots: CURATED.has(domain.toLowerCase())
+      ? undefined
+      : { index: false, follow: true },
   };
 }
 
@@ -78,7 +87,7 @@ export default async function EmailSecurityPage({ params }: Props) {
   const { spf, dkim, dmarc, mx, mtaSts } = await checkDomain(domain);
   const result = calculateScore(domain, spf, dkim, dmarc, mx, mtaSts);
 
-  if (process.env.KV_REDIS_URL) {
+  if (process.env.KV_REDIS_URL && CURATED.has(domain.toLowerCase())) {
     await refreshDomainScore(domain, { score: result.score, grade: result.grade, spoofable: result.spoofable }).catch(() => {});
   }
 
