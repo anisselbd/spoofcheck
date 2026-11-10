@@ -6,6 +6,10 @@
 
 Check in one click if your domain is protected against email spoofing.
 
+### [Try it live → spoofchecker.online](https://spoofchecker.online)
+
+Free, no sign-up. Available in English and French.
+
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://typescriptlang.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
