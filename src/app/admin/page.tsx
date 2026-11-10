@@ -4,33 +4,36 @@ import AdminDashboard from "@/components/AdminDashboard";
 
 export const dynamic = "force-dynamic";
 
+const TIMELINE_WINDOW_MS = 48 * 3600000;
+
+// L'instant de référence est fixé une seule fois par requête : il borne la
+// lecture Redis et sert au découpage horaire de la frise côté client.
+async function loadDashboard() {
+  const now = Date.now();
+  const [totalChecks, domains, timeline, geo] = await Promise.all([
+    getDomainsChecked(),
+    getAllDomainData(),
+    getChecksTimeline(now - TIMELINE_WINDOW_MS),
+    getGeoData(),
+  ]);
+  return { now, totalChecks, domains, timeline, geo };
+}
+
 export default async function AdminPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { token } = await searchParams;
+  const adminToken = process.env.ADMIN_TOKEN;
 
-  if (token !== process.env.ADMIN_TOKEN) {
+  // Sans ADMIN_TOKEN configuré, `undefined !== undefined` laisserait passer
+  // une requête sans jeton : on refuse explicitement.
+  if (!adminToken || token !== adminToken) {
     return <AdminLogin />;
   }
 
-  const since48h = Date.now() - 48 * 3600000;
+  const data = await loadDashboard();
 
-  const [totalChecks, domains, timeline, geo] = await Promise.all([
-    getDomainsChecked(),
-    getAllDomainData(),
-    getChecksTimeline(since48h),
-    getGeoData(),
-  ]);
-
-  return (
-    <AdminDashboard
-      totalChecks={totalChecks}
-      domains={domains}
-      timeline={timeline}
-      geo={geo}
-      token={token as string}
-    />
-  );
+  return <AdminDashboard {...data} />;
 }

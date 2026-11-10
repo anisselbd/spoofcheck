@@ -1,13 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import type { DnsCheckResponse } from "@/lib/types";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import ResultsPanel from "./ResultsPanel";
 import BadgeEmbed from "./BadgeEmbed";
 import Footer from "./Footer";
+
+// L'URL ne change pas sans nouveau rendu : aucun abonnement nécessaire.
+// Côté serveur, elle est inconnue (chaîne vide), comme avant l'hydratation.
+const subscribeNoop = () => () => {};
+const getHref = () => window.location.href;
+const getServerHref = () => "";
 
 interface CheckPageClientProps {
   data: DnsCheckResponse;
@@ -18,11 +24,7 @@ interface CheckPageClientProps {
 export default function CheckPageClient({ data, lang, dict }: CheckPageClientProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
-  const [pageUrl, setPageUrl] = useState("");
-
-  useEffect(() => {
-    setPageUrl(window.location.href);
-  }, []);
+  const pageUrl = useSyncExternalStore(subscribeNoop, getHref, getServerHref);
 
   async function handleCopy() {
     await navigator.clipboard.writeText(window.location.href);

@@ -17,7 +17,7 @@ interface Props {
   domains: DomainEntry[];
   timeline: CheckEvent[];
   geo: GeoData;
-  token: string;
+  now: number;
 }
 
 const GRADE_COLORS: Record<string, string> = {
@@ -63,42 +63,9 @@ function getTld(domain: string): string {
   return parts.pop()!;
 }
 
-// Mercator projection: country code -> [x%, y%] on a 800x400 map
-const COUNTRY_COORDS: Record<string, [number, number]> = {
-  US: [18, 38], CA: [17, 28], MX: [15, 45], BR: [32, 62], AR: [28, 72],
-  CL: [25, 72], CO: [24, 52], GB: [47, 27], FR: [48, 33], DE: [50, 29],
-  NL: [49, 27], BE: [49, 29], CH: [49, 32], IT: [51, 35], ES: [46, 36],
-  PT: [44, 36], IE: [45, 26], PL: [53, 28], CZ: [52, 30], AT: [51, 31],
-  SE: [52, 20], NO: [50, 18], DK: [50, 24], FI: [55, 18], RO: [55, 33],
-  HU: [53, 31], BG: [55, 34], GR: [54, 37], RU: [65, 22], UA: [57, 30],
-  TR: [58, 36], IN: [72, 44], JP: [86, 36], CN: [78, 38], KR: [84, 37],
-  AU: [84, 68], NZ: [90, 75], ZA: [55, 70], NG: [49, 50], EG: [56, 42],
-  IL: [58, 40], AE: [64, 44], SA: [62, 44], SG: [78, 52], PH: [82, 48],
-  ID: [80, 55], TH: [77, 48], VN: [78, 48], MY: [78, 52], PK: [68, 42],
-  BD: [73, 44], LK: [72, 50], KE: [58, 54], MA: [44, 40], TN: [50, 38],
-  DZ: [48, 40], PE: [23, 60], VE: [26, 50], EC: [22, 54],
-};
-
-const COUNTRY_NAMES: Record<string, string> = {
-  US: "USA", CA: "Canada", MX: "Mexique", BR: "Bresil", AR: "Argentine",
-  GB: "Royaume-Uni", FR: "France", DE: "Allemagne", NL: "Pays-Bas",
-  BE: "Belgique", CH: "Suisse", IT: "Italie", ES: "Espagne", PT: "Portugal",
-  IE: "Irlande", PL: "Pologne", CZ: "Tchequie", AT: "Autriche",
-  SE: "Suede", NO: "Norvege", DK: "Danemark", FI: "Finlande",
-  RO: "Roumanie", HU: "Hongrie", BG: "Bulgarie", GR: "Grece",
-  RU: "Russie", UA: "Ukraine", TR: "Turquie", IN: "Inde", JP: "Japon",
-  CN: "Chine", KR: "Coree du Sud", AU: "Australie", NZ: "Nouvelle-Zelande",
-  ZA: "Afrique du Sud", NG: "Nigeria", EG: "Egypte", IL: "Israel",
-  AE: "Emirats", SA: "Arabie Saoudite", SG: "Singapour", PH: "Philippines",
-  ID: "Indonesie", TH: "Thailande", VN: "Vietnam", MY: "Malaisie",
-  PK: "Pakistan", BD: "Bangladesh", LK: "Sri Lanka", KE: "Kenya",
-  MA: "Maroc", TN: "Tunisie", DZ: "Algerie", PE: "Perou",
-  VE: "Venezuela", EC: "Equateur", CL: "Chili", CO: "Colombie",
-};
-
 type SortKey = "domain" | "score" | "grade" | "checkedAt" | "checkCount";
 
-export default function AdminDashboard({ totalChecks, domains, timeline, geo, token }: Props) {
+export default function AdminDashboard({ totalChecks, domains, timeline, geo, now }: Props) {
   const [search, setSearch] = useState("");
   const [gradeFilter, setGradeFilter] = useState<string>("");
   const [spoofFilter, setSpoofFilter] = useState<string>("");
@@ -118,7 +85,6 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
   for (const d of domains) grades[d.grade] = (grades[d.grade] || 0) + 1;
 
   const timelineData = useMemo(() => {
-    const now = Date.now();
     const hours: { label: string; count: number }[] = [];
     for (let i = 47; i >= 0; i--) {
       const start = now - (i + 1) * 3600000;
@@ -131,7 +97,7 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
       });
     }
     return hours;
-  }, [timeline]);
+  }, [timeline, now]);
 
   const maxTimelineCount = Math.max(...timelineData.map((h) => h.count), 1);
   const totalTimelineChecks = timeline.length;
@@ -180,10 +146,6 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
       return 0;
     });
   }, [domains, search, gradeFilter, spoofFilter, sortKey, sortDir]);
-
-  // Reset page when filters change
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useMemo(() => setPage(0), [search, gradeFilter, spoofFilter]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice(page * perPage, (page + 1) * perPage);
@@ -509,13 +471,19 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
             type="text"
             placeholder="Rechercher un domaine..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(0);
+            }}
             className="w-full h-10 pl-10 pr-4 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-all"
           />
         </div>
         <select
           value={gradeFilter}
-          onChange={(e) => setGradeFilter(e.target.value)}
+          onChange={(e) => {
+            setGradeFilter(e.target.value);
+            setPage(0);
+          }}
           className="h-10 px-3 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-300 text-sm cursor-pointer hover:border-zinc-600 transition-colors"
         >
           <option value="">Tous grades</option>
@@ -525,7 +493,10 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, to
         </select>
         <select
           value={spoofFilter}
-          onChange={(e) => setSpoofFilter(e.target.value)}
+          onChange={(e) => {
+            setSpoofFilter(e.target.value);
+            setPage(0);
+          }}
           className="h-10 px-3 rounded-lg border border-zinc-700 bg-zinc-800/50 text-zinc-300 text-sm cursor-pointer hover:border-zinc-600 transition-colors"
         >
           <option value="">Spoofable: tous</option>

@@ -111,8 +111,6 @@ export default function WorldMap({
   const zoom = selectedCountry ? 4 : defaultZoom;
 
   // Cities for the selected country
-  const maxCityCount = Math.max(...Object.values(cities), 1);
-
   const getCityName = (cityKey: string) => cityKey.split(",")[0].trim();
   const getCityCountry = (cityKey: string) => cityKey.split(",")[1]?.trim() || "";
 

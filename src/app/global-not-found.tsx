@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import "./globals.css";
 
@@ -17,14 +17,16 @@ const t = {
   },
 };
 
-export default function GlobalNotFound() {
-  const [lang, setLang] = useState<"fr" | "en">("fr");
+type Lang = keyof typeof t;
 
-  useEffect(() => {
-    if (window.location.pathname.startsWith("/en")) {
-      setLang("en");
-    }
-  }, []);
+// La langue se lit dans l'URL, qui ne change pas tant que la page est affichée.
+// Côté serveur, le chemin est inconnu : on garde le français par défaut, comme avant.
+const subscribeNoop = () => () => {};
+const getLang = (): Lang => (window.location.pathname.startsWith("/en") ? "en" : "fr");
+const getServerLang = (): Lang => "fr";
+
+export default function GlobalNotFound() {
+  const lang = useSyncExternalStore(subscribeNoop, getLang, getServerLang);
 
   const d = t[lang];
 
