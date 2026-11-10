@@ -15,7 +15,7 @@ export default function DkimContentEn({ lang }: { lang: string }) {
           DKIM (DomainKeys Identified Mail): The Complete Guide
         </h1>
         <p className="text-lg text-zinc-400">
-          Everything you need to know about DKIM signatures to authenticate your emails and ensure they haven't been tampered with in transit.
+          Everything you need to know about DKIM signatures to authenticate your emails and ensure they haven’t been tampered with in transit.
         </p>
       </div>
 
@@ -37,7 +37,7 @@ export default function DkimContentEn({ lang }: { lang: string }) {
             <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               SPF
             </Link>{" "}
-            which only verifies the sender's IP address, DKIM guarantees the <strong className="text-zinc-100">integrity of the message</strong> itself. Even if an email is relayed through multiple servers, the DKIM signature proves that the content has not been modified.
+            which only verifies the sender’s IP address, DKIM guarantees the <strong className="text-zinc-100">integrity of the message</strong> itself. Even if an email is relayed through multiple servers, the DKIM signature proves that the content has not been modified.
           </p>
           <p>
             DKIM is an essential component of email security. Combined with{" "}
@@ -72,7 +72,7 @@ export default function DkimContentEn({ lang }: { lang: string }) {
               <strong className="text-zinc-100">Content hashing</strong> — The message body and selected headers are hashed (typically using SHA-256).
             </li>
             <li>
-              <strong className="text-zinc-100">Cryptographic signing</strong> — The hash is encrypted with the domain's DKIM private key, creating the digital signature.
+              <strong className="text-zinc-100">Cryptographic signing</strong> — The hash is encrypted with the domain’s DKIM private key, creating the digital signature.
             </li>
             <li>
               <strong className="text-zinc-100">Header insertion</strong> — The signature is added to the email via the <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">DKIM-Signature</code> header.
@@ -110,7 +110,7 @@ export default function DkimContentEn({ lang }: { lang: string }) {
             And the corresponding DNS record (TXT type):
           </p>
           <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto">
-            selector1._domainkey.example.com IN TXT "v=DKIM1; k=rsa; p=base64_public_key"
+            selector1._domainkey.example.com IN TXT &quot;v=DKIM1; k=rsa; p=base64_public_key&quot;
           </div>
         </div>
       </section>
@@ -139,7 +139,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Step 2: Publish the public key in DNS
             </h3>
             <p>
-              Create a TXT record in your DNS zone with the name <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">selector._domainkey.yourdomain.com</code>. The selector is a free-form identifier (e.g., "google", "selector1", "mail"):
+              Create a TXT record in your DNS zone with the name <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">selector._domainkey.yourdomain.com</code>. The selector is a free-form identifier (e.g., “google”, “selector1”, “mail”):
             </p>
             <ul className="space-y-2 pl-2 text-sm">
               <li><strong className="text-zinc-100">Type:</strong> TXT</li>
@@ -153,7 +153,7 @@ openssl rsa -in dkim_private.pem -pubout -out dkim_public.pem`}
               Step 3: Configure the sending server
             </h3>
             <p>
-              Configure your mail server or sending service to sign outgoing emails with the private key. With cloud providers, this step usually comes down to an "Enable DKIM" button in the admin console.
+              Configure your mail server or sending service to sign outgoing emails with the private key. With cloud providers, this step usually comes down to an “Enable DKIM” button in the admin console.
             </p>
           </div>
 

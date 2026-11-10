@@ -106,7 +106,7 @@ export default function ContentEn({ lang }: { lang: string }) {
             <strong className="text-zinc-100">SPF (Sender Policy Framework)</strong> is the first layer of protection. It lets you declare in DNS which servers are authorized to send emails on behalf of your domain.
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2">
-            <li>Works by comparing the sending server's IP against authorized IPs</li>
+            <li>Works by comparing the sending server’s IP against authorized IPs</li>
             <li>Protects against sending from unauthorized servers</li>
             <li>Limitation: only checks the envelope address (MAIL FROM), not the visible From header</li>
             <li>Maximum of 10 DNS lookups per record</li>
@@ -126,7 +126,7 @@ export default function ContentEn({ lang }: { lang: string }) {
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            <strong className="text-zinc-100">DKIM (DomainKeys Identified Mail)</strong> adds a cryptographic signature to every outgoing email. The receiving server can verify this signature using the public key published in the sender's DNS.
+            <strong className="text-zinc-100">DKIM (DomainKeys Identified Mail)</strong> adds a cryptographic signature to every outgoing email. The receiving server can verify this signature using the public key published in the sender’s DNS.
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>Ensures the message content has not been tampered with in transit</li>
@@ -176,7 +176,7 @@ export default function ContentEn({ lang }: { lang: string }) {
           </p>
           <ol className="list-decimal list-inside space-y-3 pl-2">
             <li>
-              <strong className="text-zinc-100">SPF check</strong> — The receiving server extracts the domain from the MAIL FROM address and checks whether the sender's IP is authorized in the SPF record. Result: pass or fail.
+              <strong className="text-zinc-100">SPF check</strong> — The receiving server extracts the domain from the MAIL FROM address and checks whether the sender’s IP is authorized in the SPF record. Result: pass or fail.
             </li>
             <li>
               <strong className="text-zinc-100">DKIM check</strong> — The receiving server looks for a DKIM signature in the message headers, retrieves the public key from DNS, and verifies that the signature is valid. Result: pass or fail.

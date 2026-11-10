@@ -22,11 +22,11 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
       {/* Introduction */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Qu'est-ce que le DMARC ?
+          Qu’est-ce que le DMARC ?
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            Le <strong className="text-zinc-100">DMARC (Domain-based Message Authentication, Reporting and Conformance)</strong> est un protocole d'authentification email défini dans la{" "}
+            Le <strong className="text-zinc-100">DMARC (Domain-based Message Authentication, Reporting and Conformance)</strong> est un protocole d’authentification email défini dans la{" "}
             <strong className="text-zinc-100">RFC 7489</strong>. Il a été créé pour résoudre une faiblesse majeure de{" "}
             <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               SPF
@@ -35,16 +35,16 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
             <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               DKIM
             </Link>{" "}
-            : ces protocoles, seuls, ne disent pas au serveur récepteur quoi faire en cas d'échec.
+            : ces protocoles, seuls, ne disent pas au serveur récepteur quoi faire en cas d’échec.
           </p>
           <p>
-            DMARC agit comme un <strong className="text-zinc-100">chef d'orchestre</strong> qui définit une politique claire : que doit faire le serveur récepteur lorsqu'un email échoue aux vérifications SPF et DKIM ? Le rejeter, le mettre en quarantaine ou ne rien faire ? DMARC apporte également un système de <strong className="text-zinc-100">rapports</strong> qui vous permet de voir exactement qui envoie des emails avec votre domaine.
+            DMARC agit comme un <strong className="text-zinc-100">chef d’orchestre</strong> qui définit une politique claire : que doit faire le serveur récepteur lorsqu’un email échoue aux vérifications SPF et DKIM ? Le rejeter, le mettre en quarantaine ou ne rien faire ? DMARC apporte également un système de <strong className="text-zinc-100">rapports</strong> qui vous permet de voir exactement qui envoie des emails avec votre domaine.
           </p>
           <p>
-            Le concept clé de DMARC est l'<strong className="text-zinc-100">alignement</strong> : le domaine utilisé dans le header "From" (visible par le destinataire) doit correspondre au domaine vérifié par SPF ou DKIM. Sans cet alignement, un attaquant pourrait passer le SPF avec son propre domaine d'enveloppe tout en affichant votre domaine dans le "From" visible.
+            Le concept clé de DMARC est l’<strong className="text-zinc-100">alignement</strong> : le domaine utilisé dans le header « From » (visible par le destinataire) doit correspondre au domaine vérifié par SPF ou DKIM. Sans cet alignement, un attaquant pourrait passer le SPF avec son propre domaine d’enveloppe tout en affichant votre domaine dans le « From » visible.
           </p>
           <p>
-            DMARC est aujourd'hui considéré comme indispensable. De nombreux fournisseurs de messagerie (Google, Yahoo, Microsoft) exigent désormais un enregistrement DMARC valide pour accepter les emails en volume. Sans DMARC, vos emails risquent d'atterrir en spam ou d'être rejetés.
+            DMARC est aujourd’hui considéré comme indispensable. De nombreux fournisseurs de messagerie (Google, Yahoo, Microsoft) exigent désormais un enregistrement DMARC valide pour accepter les emails en volume. Sans DMARC, vos emails risquent d’atterrir en spam ou d’être rejetés.
           </p>
         </div>
       </section>
@@ -56,28 +56,28 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            DMARC combine les résultats de SPF et DKIM avec une vérification supplémentaire d'alignement :
+            DMARC combine les résultats de SPF et DKIM avec une vérification supplémentaire d’alignement :
           </p>
           <ol className="list-decimal list-inside space-y-3 pl-2">
             <li>
-              <strong className="text-zinc-100">Réception de l'email</strong> — Le serveur récepteur reçoit un email et extrait le domaine du header "From".
+              <strong className="text-zinc-100">Réception de l’email</strong> — Le serveur récepteur reçoit un email et extrait le domaine du header « From ».
             </li>
             <li>
-              <strong className="text-zinc-100">Requête DNS DMARC</strong> — Il interroge le DNS pour trouver un enregistrement DMARC à l'adresse <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">_dmarc.domaine.com</code>.
+              <strong className="text-zinc-100">Requête DNS DMARC</strong> — Il interroge le DNS pour trouver un enregistrement DMARC à l’adresse <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">_dmarc.domaine.com</code>.
             </li>
             <li>
               <strong className="text-zinc-100">Vérification SPF + alignement</strong> — Le serveur vérifie si le{" "}
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
-              passe ET si le domaine de l'enveloppe (MAIL FROM) est aligné avec le domaine du header "From".
+              passe ET si le domaine de l’enveloppe (MAIL FROM) est aligné avec le domaine du header « From ».
             </li>
             <li>
               <strong className="text-zinc-100">Vérification DKIM + alignement</strong> — Le serveur vérifie si le{" "}
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}
-              passe ET si le domaine de la signature DKIM (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>) est aligné avec le domaine du header "From".
+              passe ET si le domaine de la signature DKIM (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>) est aligné avec le domaine du header « From ».
             </li>
             <li>
               <strong className="text-zinc-100">Application de la politique</strong> — Si ni SPF ni DKIM ne passent avec alignement, le serveur applique la politique DMARC définie par le propriétaire du domaine.
@@ -100,7 +100,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
           <ul className="space-y-2 pl-2">
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">v=DMARC1</code>
-              <span>— Identifie l'enregistrement comme DMARC version 1 (obligatoire).</span>
+              <span>— Identifie l’enregistrement comme DMARC version 1 (obligatoire).</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=</code>
@@ -116,15 +116,15 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">adkim=</code>
-              <span>— Mode d'alignement DKIM : <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">s</code> (strict) ou <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">r</code> (relaxed, par défaut).</span>
+              <span>— Mode d’alignement DKIM : <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">s</code> (strict) ou <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">r</code> (relaxed, par défaut).</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">aspf=</code>
-              <span>— Mode d'alignement SPF : <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">s</code> (strict) ou <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">r</code> (relaxed, par défaut).</span>
+              <span>— Mode d’alignement SPF : <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">s</code> (strict) ou <code className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">r</code> (relaxed, par défaut).</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">pct=</code>
-              <span>— Pourcentage d'emails auxquels la politique s'applique (utile pour un déploiement progressif).</span>
+              <span>— Pourcentage d’emails auxquels la politique s’applique (utile pour un déploiement progressif).</span>
             </li>
           </ul>
         </div>
@@ -149,7 +149,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}
-              sont correctement configurés. DMARC s'appuie sur ces deux protocoles — s'ils ne fonctionnent pas, DMARC ne pourra pas fonctionner efficacement.
+              sont correctement configurés. DMARC s’appuie sur ces deux protocoles — s’ils ne fonctionnent pas, DMARC ne pourra pas fonctionner efficacement.
             </p>
           </div>
 
@@ -178,12 +178,12 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               Étape 3 : Analyser les rapports (2 à 4 semaines)
             </h3>
             <p>
-              Les rapports DMARC sont des fichiers XML. Vous pouvez les lire manuellement ou utiliser un service d'analyse (comme Postmark, dmarcian ou Valimail). Identifiez :
+              Les rapports DMARC sont des fichiers XML. Vous pouvez les lire manuellement ou utiliser un service d’analyse (comme Postmark, dmarcian ou Valimail). Identifiez :
             </p>
             <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
               <li>Les services légitimes qui échouent (SPF ou DKIM manquant)</li>
               <li>Les sources suspectes qui usurpent votre domaine</li>
-              <li>Le volume d'emails concernés</li>
+              <li>Le volume d’emails concernés</li>
             </ul>
           </div>
 
@@ -198,7 +198,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@votredomaine.com; pct=50
             </div>
             <p>
-              Le tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">pct=50</code> permet d'appliquer la politique à seulement 50% des emails dans un premier temps, pour limiter les risques.
+              Le tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">pct=50</code> permet d’appliquer la politique à seulement 50% des emails dans un premier temps, pour limiter les risques.
             </p>
           </div>
 
@@ -213,7 +213,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               v=DMARC1; p=reject; rua=mailto:dmarc-reports@votredomaine.com; adkim=s; aspf=s
             </div>
             <p>
-              Avec <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code>, tout email qui échoue aux vérifications DMARC est rejeté par le serveur récepteur. C'est la protection maximale contre le spoofing et le phishing. L'alignement strict (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">adkim=s; aspf=s</code>) exige une correspondance exacte des domaines.
+              Avec <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code>, tout email qui échoue aux vérifications DMARC est rejeté par le serveur récepteur. C’est la protection maximale contre le spoofing et le phishing. L’alignement strict (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">adkim=s; aspf=s</code>) exige une correspondance exacte des domaines.
             </p>
           </div>
         </div>
@@ -230,7 +230,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               1. Passer directement à p=reject
             </h3>
             <p>
-              C'est l'erreur la plus dangereuse. Si vous passez directement à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code> sans phase de surveillance, vous risquez de bloquer vos propres emails légitimes. Suivez toujours la progression : <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">none</code> → <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">quarantine</code> → <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">reject</code>.
+              C’est l’erreur la plus dangereuse. Si vous passez directement à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code> sans phase de surveillance, vous risquez de bloquer vos propres emails légitimes. Suivez toujours la progression : <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">none</code> → <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">quarantine</code> → <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">reject</code>.
             </p>
           </div>
 
@@ -239,16 +239,16 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               2. Rester indefiniment en p=none
             </h3>
             <p>
-              La politique <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=none</code> n'offre aucune protection réelle : elle collecte des rapports mais ne bloque rien. Beaucoup de domaines restent en mode surveillance pendant des années. Fixez-vous un objectif de 1 à 3 mois maximum avant de passer à quarantine.
+              La politique <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=none</code> n’offre aucune protection réelle : elle collecte des rapports mais ne bloque rien. Beaucoup de domaines restent en mode surveillance pendant des années. Fixez-vous un objectif de 1 à 3 mois maximum avant de passer à quarantine.
             </p>
           </div>
 
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-red-400">
-              3. Ne pas configurer d'adresse de rapports (rua)
+              3. Ne pas configurer d’adresse de rapports (rua)
             </h3>
             <p>
-              Sans le tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">rua</code>, vous ne recevrez aucun rapport. Vous serez aveugle sur ce qui se passe avec votre domaine. Les rapports sont essentiels pour détecter les problèmes de configuration et les tentatives d'usurpation.
+              Sans le tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">rua</code>, vous ne recevrez aucun rapport. Vous serez aveugle sur ce qui se passe avec votre domaine. Les rapports sont essentiels pour détecter les problèmes de configuration et les tentatives d’usurpation.
             </p>
           </div>
 
@@ -257,7 +257,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               4. Ignorer les sous-domaines
             </h3>
             <p>
-              Par défaut, la politique DMARC du domaine principal ne s'applique pas aux sous-domaines. Utilisez le tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">sp=reject</code> pour définir explicitement une politique pour les sous-domaines, sinon un attaquant pourrait envoyer depuis <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">fake.votredomaine.com</code>.
+              Par défaut, la politique DMARC du domaine principal ne s’applique pas aux sous-domaines. Utilisez le tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">sp=reject</code> pour définir explicitement une politique pour les sous-domaines, sinon un attaquant pourrait envoyer depuis <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-sm">fake.votredomaine.com</code>.
             </p>
           </div>
 
@@ -266,7 +266,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               5. Oublier de configurer SPF et DKIM au préalable
             </h3>
             <p>
-              DMARC ne fonctionne pas de manière isolée. Il s'appuie sur les résultats de{" "}
+              DMARC ne fonctionne pas de manière isolée. Il s’appuie sur les résultats de{" "}
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
@@ -274,7 +274,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>
-              . Sans ces protocoles correctement configurés, DMARC n'a rien à vérifier et tous vos emails échoueront.
+              . Sans ces protocoles correctement configurés, DMARC n’a rien à vérifier et tous vos emails échoueront.
             </p>
           </div>
         </div>
@@ -291,24 +291,24 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               Quelle politique DMARC choisir ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              L'objectif final est toujours <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code>, qui offre la meilleure protection. Mais commencez par <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=none</code> pour collecter des rapports et identifier tous les services qui envoient des emails avec votre domaine. Passez ensuite à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=quarantine</code> puis à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code> progressivement.
+              L’objectif final est toujours <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code>, qui offre la meilleure protection. Mais commencez par <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=none</code> pour collecter des rapports et identifier tous les services qui envoient des emails avec votre domaine. Passez ensuite à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=quarantine</code> puis à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">p=reject</code> progressivement.
             </p>
           </div>
 
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Qu'est-ce que l'alignement DMARC ?
+              Qu’est-ce que l’alignement DMARC ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              L'alignement vérifie que le domaine utilisé dans le header "From" (visible par le destinataire) correspond au domaine vérifié par{" "}
+              L’alignement vérifie que le domaine utilisé dans le header « From » (visible par le destinataire) correspond au domaine vérifié par{" "}
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
-              (domaine de l'enveloppe) ou{" "}
+              (domaine de l’enveloppe) ou{" "}
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}
-              (domaine du tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>). En mode "relaxed" (par défaut), les sous-domaines sont acceptés. En mode "strict", les domaines doivent correspondre exactement.
+              (domaine du tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>). En mode « relaxed » (par défaut), les sous-domaines sont acceptés. En mode « strict », les domaines doivent correspondre exactement.
             </p>
           </div>
 
@@ -317,7 +317,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               DMARC est-il obligatoire en 2025 ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              Techniquement non, mais en pratique oui. Depuis février 2024, Google et Yahoo exigent un enregistrement DMARC pour les expéditeurs envoyant plus de 5 000 emails par jour. Même pour les petits volumes, l'absence de DMARC dégrade sérieusement la délivrabilité de vos emails. C'est devenu un standard incontournable de la sécurité email.
+              Techniquement non, mais en pratique oui. Depuis février 2024, Google et Yahoo exigent un enregistrement DMARC pour les expéditeurs envoyant plus de 5 000 emails par jour. Même pour les petits volumes, l’absence de DMARC dégrade sérieusement la délivrabilité de vos emails. C’est devenu un standard incontournable de la sécurité email.
             </p>
           </div>
         </div>
@@ -329,7 +329,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
           Vérifiez votre domaine gratuitement
         </h2>
         <p className="text-zinc-400 max-w-lg mx-auto">
-          Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
+          Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu’il faut corriger.
         </p>
         <Link
           href={`/${lang}`}
@@ -353,7 +353,7 @@ export default function DmarcContentFr({ lang }: { lang: string }) {
               Guide SPF
             </h3>
             <p className="text-sm text-zinc-400">
-              Apprenez à configurer un enregistrement SPF pour autoriser vos serveurs d'envoi.
+              Apprenez à configurer un enregistrement SPF pour autoriser vos serveurs d’envoi.
             </p>
           </Link>
           <Link

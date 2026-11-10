@@ -66,7 +66,7 @@ export default function SpfContentEn({ lang }: { lang: string }) {
               <strong className="text-zinc-100">DNS query</strong> — The receiving server extracts the domain from the <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">MAIL FROM</code> address and queries DNS to retrieve the associated SPF (TXT) record.
             </li>
             <li>
-              <strong className="text-zinc-100">IP comparison</strong> — The receiving server compares the sending server's IP address against the list of authorized IPs and mechanisms in the SPF record.
+              <strong className="text-zinc-100">IP comparison</strong> — The receiving server compares the sending server’s IP address against the list of authorized IPs and mechanisms in the SPF record.
             </li>
             <li>
               <strong className="text-zinc-100">Verdict</strong> — Based on the result, the receiving server takes action: accept (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">pass</code>), reject (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">fail</code>), flag as suspicious (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">softfail</code>), or treat as neutral (<code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">neutral</code>).
@@ -88,7 +88,7 @@ export default function SpfContentEn({ lang }: { lang: string }) {
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">include:</code>
-              <span>— Authorizes the servers defined in another domain's SPF record (e.g., Google, SendGrid).</span>
+              <span>— Authorizes the servers defined in another domain’s SPF record (e.g., Google, SendGrid).</span>
             </li>
             <li className="flex gap-2">
               <code className="shrink-0 px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">ip4:</code>
@@ -224,7 +224,7 @@ export default function SpfContentEn({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DMARC
               </Link>
-              , an attacker can still bypass SPF by using an envelope domain different from the visible domain in the "From" header.
+              , an attacker can still bypass SPF by using an envelope domain different from the visible domain in the “From” header.
             </p>
           </div>
         </div>
@@ -241,7 +241,7 @@ export default function SpfContentEn({ lang }: { lang: string }) {
               Is SPF enough to protect my domain against spoofing?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              No. SPF only verifies the envelope address (MAIL FROM), not the address displayed to the recipient (the "From" header). An attacker can bypass SPF by using a different envelope domain. That is why you must combine SPF with{" "}
+              No. SPF only verifies the envelope address (MAIL FROM), not the address displayed to the recipient (the “From” header). An attacker can bypass SPF by using a different envelope domain. That is why you must combine SPF with{" "}
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}

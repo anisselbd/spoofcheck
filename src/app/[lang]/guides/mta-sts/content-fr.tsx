@@ -22,18 +22,18 @@ export default function MtaStsContentFr({ lang }: { lang: string }) {
       {/* Introduction */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-400">
-          Qu'est-ce que MTA-STS ?
+          Qu’est-ce que MTA-STS ?
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
             <strong className="text-zinc-100">MTA-STS (Mail Transfer Agent Strict Transport Security)</strong> est un protocole défini dans la{" "}
-            <strong className="text-zinc-100">RFC 8461</strong>. Il permet à un domaine de déclarer que ses serveurs mail supportent le chiffrement TLS et d'exiger que les serveurs expéditeurs utilisent une connexion chiffrée avec un certificat valide.
+            <strong className="text-zinc-100">RFC 8461</strong>. Il permet à un domaine de déclarer que ses serveurs mail supportent le chiffrement TLS et d’exiger que les serveurs expéditeurs utilisent une connexion chiffrée avec un certificat valide.
           </p>
           <p>
-            Sans MTA-STS, même si vos serveurs supportent TLS, un attaquant effectuant une attaque <strong className="text-zinc-100">man-in-the-middle (MITM)</strong> peut forcer une dégradation de la connexion vers du texte clair (attaque par downgrade). L'attaquant peut alors intercepter et lire vos emails en transit.
+            Sans MTA-STS, même si vos serveurs supportent TLS, un attaquant effectuant une attaque <strong className="text-zinc-100">man-in-the-middle (MITM)</strong> peut forcer une dégradation de la connexion vers du texte clair (attaque par downgrade). L’attaquant peut alors intercepter et lire vos emails en transit.
           </p>
           <p>
-            MTA-STS résout ce problème en publiant une politique qui ordonne aux serveurs expéditeurs : "vous <strong className="text-zinc-100">devez</strong> utiliser TLS avec un certificat valide pour m'envoyer des emails, sinon ne les envoyez pas du tout."
+            MTA-STS résout ce problème en publiant une politique qui ordonne aux serveurs expéditeurs : « vous <strong className="text-zinc-100">devez</strong> utiliser TLS avec un certificat valide pour m’envoyer des emails, sinon ne les envoyez pas du tout. »
           </p>
           <p>
             MTA-STS est complémentaire à{" "}
@@ -47,7 +47,7 @@ export default function MtaStsContentFr({ lang }: { lang: string }) {
             <Link href={`/${lang}/guides/dmarc`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
               DMARC
             </Link>{" "}
-            : ces derniers protègent contre l'usurpation d'identité, tandis que MTA-STS protège la <strong className="text-zinc-100">confidentialité</strong> des emails en transit.
+            : ces derniers protègent contre l’usurpation d’identité, tandis que MTA-STS protège la <strong className="text-zinc-100">confidentialité</strong> des emails en transit.
           </p>
         </div>
       </section>
@@ -65,7 +65,7 @@ export default function MtaStsContentFr({ lang }: { lang: string }) {
             <li>
               <strong className="text-zinc-100">Enregistrement DNS TXT</strong> — Le domaine publie un enregistrement TXT à{" "}
               <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">_mta-sts.votredomaine</code>{" "}
-              pour signaler qu'il supporte MTA-STS.
+              pour signaler qu’il supporte MTA-STS.
             </li>
             <li>
               <strong className="text-zinc-100">Fichier de politique HTTPS</strong> — Le domaine héberge un fichier à{" "}
@@ -73,14 +73,14 @@ export default function MtaStsContentFr({ lang }: { lang: string }) {
               qui définit la politique (mode, serveurs MX autorisés, durée de validité).
             </li>
             <li>
-              <strong className="text-zinc-100">Vérification par le serveur expéditeur</strong> — Avant d'envoyer un email, le serveur expéditeur vérifie l'enregistrement DNS et télécharge la politique. Si le mode est "enforce", il refuse d'envoyer l'email sans TLS valide.
+              <strong className="text-zinc-100">Vérification par le serveur expéditeur</strong> — Avant d’envoyer un email, le serveur expéditeur vérifie l’enregistrement DNS et télécharge la politique. Si le mode est « enforce », il refuse d’envoyer l’email sans TLS valide.
             </li>
           </ol>
           <p>
-            L'enregistrement DNS ressemble à ceci :
+            L’enregistrement DNS ressemble à ceci :
           </p>
           <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto">
-            _mta-sts.votredomaine TXT "v=STSv1; id=20260406T000000;"
+            _mta-sts.votredomaine TXT &quot;v=STSv1; id=20260406T000000;&quot;
           </div>
           <p>
             Le fichier de politique ressemble à ceci :
@@ -127,7 +127,7 @@ max_age: 86400`}
               Étape 1 : Créer le sous-domaine mta-sts
             </h3>
             <p>
-              Créez un sous-domaine <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">mta-sts.votredomaine</code> qui pointe vers un serveur web capable de servir du contenu en HTTPS avec un certificat valide. Vous pouvez utiliser GitHub Pages, Cloudflare Pages, ou n'importe quel hébergement statique.
+              Créez un sous-domaine <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">mta-sts.votredomaine</code> qui pointe vers un serveur web capable de servir du contenu en HTTPS avec un certificat valide. Vous pouvez utiliser GitHub Pages, Cloudflare Pages, ou n’importe quel hébergement statique.
             </p>
           </div>
 
@@ -151,7 +151,7 @@ max_age: 86400`}
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              Étape 3 : Ajouter l'enregistrement DNS
+              Étape 3 : Ajouter l’enregistrement DNS
             </h3>
             <p>
               Ajoutez un enregistrement TXT dans votre zone DNS :
@@ -163,7 +163,7 @@ max_age: 86400`}
               <li><strong className="text-zinc-100">TTL :</strong> 3600</li>
             </ul>
             <p className="text-sm text-zinc-500">
-              L'identifiant (id) doit être change à chaque modification de la politique pour invalider le cache des serveurs expéditeurs.
+              L’identifiant (id) doit être change à chaque modification de la politique pour invalider le cache des serveurs expéditeurs.
             </p>
           </div>
 
@@ -176,7 +176,7 @@ max_age: 86400`}
               <Link href={`/${lang}`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 notre outil de vérification gratuit
               </Link>
-              . Une fois que tout fonctionne correctement en mode testing, changez le mode en <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">enforce</code> et mettez à jour l'identifiant dans l'enregistrement DNS.
+              . Une fois que tout fonctionne correctement en mode testing, changez le mode en <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">enforce</code> et mettez à jour l’identifiant dans l’enregistrement DNS.
             </p>
           </div>
         </div>
@@ -189,7 +189,7 @@ max_age: 86400`}
         </h2>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4 text-zinc-300 leading-relaxed">
           <p>
-            <strong className="text-zinc-100">TLSRPT (TLS Reporting, RFC 8460)</strong> est le complément ideal de MTA-STS. Il permet de recevoir des rapports des serveurs expéditeurs lorsqu'ils rencontrent des problèmes TLS avec votre domaine.
+            <strong className="text-zinc-100">TLSRPT (TLS Reporting, RFC 8460)</strong> est le complément ideal de MTA-STS. Il permet de recevoir des rapports des serveurs expéditeurs lorsqu’ils rencontrent des problèmes TLS avec votre domaine.
           </p>
           <p>
             Ajoutez un enregistrement TXT à <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">_smtp._tls.votredomaine</code> :
@@ -214,7 +214,7 @@ max_age: 86400`}
               Quelle est la différence entre MTA-STS et STARTTLS ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              STARTTLS est le mécanisme de négociation TLS entre serveurs mail. Le problème est qu'il est "opportuniste" : si un attaquant supprime l'annonce STARTTLS du serveur (attaque par stripping), la connexion se fait en clair sans que personne ne soit prévenu. MTA-STS résout ce problème en déclarant de manière indépendante (via HTTPS) que le TLS est obligatoire.
+              STARTTLS est le mécanisme de négociation TLS entre serveurs mail. Le problème est qu’il est « opportuniste » : si un attaquant supprime l’annonce STARTTLS du serveur (attaque par stripping), la connexion se fait en clair sans que personne ne soit prévenu. MTA-STS résout ce problème en déclarant de manière indépendante (via HTTPS) que le TLS est obligatoire.
             </p>
           </div>
 
@@ -223,7 +223,7 @@ max_age: 86400`}
               MTA-STS protège-t-il contre le spoofing ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              Non. MTA-STS protège la <strong className="text-zinc-100">confidentialité</strong> des emails en transit (chiffrement), pas l'<strong className="text-zinc-100">authenticité</strong> de l'expéditeur. Pour se protéger contre le spoofing, vous devez configurer{" "}
+              Non. MTA-STS protège la <strong className="text-zinc-100">confidentialité</strong> des emails en transit (chiffrement), pas l’<strong className="text-zinc-100">authenticité</strong> de l’expéditeur. Pour se protéger contre le spoofing, vous devez configurer{" "}
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>,{" "}
@@ -242,7 +242,7 @@ max_age: 86400`}
               Quels fournisseurs supportent MTA-STS ?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              Google (Gmail / Google Workspace), Microsoft (Outlook / Microsoft 365) et Yahoo supportent MTA-STS côté expéditeur. Cela signifie qu'ils respecteront votre politique MTA-STS lors de l'envoi d'emails vers votre domaine. Côté réception, vous devez le configurer vous-même sur votre domaine.
+              Google (Gmail / Google Workspace), Microsoft (Outlook / Microsoft 365) et Yahoo supportent MTA-STS côté expéditeur. Cela signifie qu’ils respecteront votre politique MTA-STS lors de l’envoi d’emails vers votre domaine. Côté réception, vous devez le configurer vous-même sur votre domaine.
             </p>
           </div>
         </div>
@@ -254,7 +254,7 @@ max_age: 86400`}
           Vérifiez votre domaine gratuitement
         </h2>
         <p className="text-zinc-400 max-w-lg mx-auto">
-          Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu'il faut corriger.
+          Testez votre configuration SPF, DKIM, DMARC et MTA-STS en un clic. Notre outil analyse votre domaine et vous indique exactement ce qu’il faut corriger.
         </p>
         <Link
           href={`/${lang}`}
@@ -278,7 +278,7 @@ max_age: 86400`}
               Guide SPF
             </h3>
             <p className="text-sm text-zinc-400">
-              Apprenez à configurer un enregistrement SPF pour autoriser vos serveurs d'envoi.
+              Apprenez à configurer un enregistrement SPF pour autoriser vos serveurs d’envoi.
             </p>
           </Link>
           <Link

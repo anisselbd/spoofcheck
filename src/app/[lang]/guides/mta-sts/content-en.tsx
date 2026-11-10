@@ -33,7 +33,7 @@ export default function MtaStsContentEn({ lang }: { lang: string }) {
             Without MTA-STS, even if your servers support TLS, an attacker performing a <strong className="text-zinc-100">man-in-the-middle (MITM)</strong> attack can force a downgrade to plaintext. The attacker can then intercept and read your emails in transit.
           </p>
           <p>
-            MTA-STS solves this by publishing a policy that tells sending servers: "you <strong className="text-zinc-100">must</strong> use TLS with a valid certificate to send me emails, otherwise don't send them at all."
+            MTA-STS solves this by publishing a policy that tells sending servers: “you <strong className="text-zinc-100">must</strong> use TLS with a valid certificate to send me emails, otherwise don’t send them at all.”
           </p>
           <p>
             MTA-STS is complementary to{" "}
@@ -73,14 +73,14 @@ export default function MtaStsContentEn({ lang }: { lang: string }) {
               that defines the policy (mode, authorized MX servers, validity period).
             </li>
             <li>
-              <strong className="text-zinc-100">Sending server verification</strong> — Before sending an email, the sending server checks the DNS record and downloads the policy. If the mode is "enforce", it refuses to send the email without valid TLS.
+              <strong className="text-zinc-100">Sending server verification</strong> — Before sending an email, the sending server checks the DNS record and downloads the policy. If the mode is “enforce”, it refuses to send the email without valid TLS.
             </li>
           </ol>
           <p>
             The DNS record looks like this:
           </p>
           <div className="rounded-lg bg-zinc-800 p-4 font-mono text-sm text-emerald-400 overflow-x-auto">
-            _mta-sts.yourdomain TXT "v=STSv1; id=20260406T000000;"
+            _mta-sts.yourdomain TXT &quot;v=STSv1; id=20260406T000000;&quot;
           </div>
           <p>
             The policy file looks like this:
@@ -198,7 +198,7 @@ max_age: 86400`}
             v=TLSRPTv1; rua=mailto:tls-reports@yourdomain
           </div>
           <p>
-            You'll then receive daily JSON reports indicating TLS negotiation failures, invalid certificates and downgrade attempts — just like DMARC reports but for in-transit encryption.
+            You’ll then receive daily JSON reports indicating TLS negotiation failures, invalid certificates and downgrade attempts — just like DMARC reports but for in-transit encryption.
           </p>
         </div>
       </section>
@@ -211,10 +211,10 @@ max_age: 86400`}
         <div className="space-y-4">
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-3">
             <h3 className="text-lg font-semibold text-zinc-100">
-              What's the difference between MTA-STS and STARTTLS?
+              What’s the difference between MTA-STS and STARTTLS?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              STARTTLS is the TLS negotiation mechanism between mail servers. The problem is that it's "opportunistic": if an attacker strips the STARTTLS announcement from the server (stripping attack), the connection falls back to plaintext without anyone being notified. MTA-STS solves this by independently declaring (via HTTPS) that TLS is mandatory.
+              STARTTLS is the TLS negotiation mechanism between mail servers. The problem is that it’s “opportunistic”: if an attacker strips the STARTTLS announcement from the server (stripping attack), the connection falls back to plaintext without anyone being notified. MTA-STS solves this by independently declaring (via HTTPS) that TLS is mandatory.
             </p>
           </div>
 

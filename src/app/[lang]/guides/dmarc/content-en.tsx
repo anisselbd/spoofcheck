@@ -41,7 +41,7 @@ export default function DmarcContentEn({ lang }: { lang: string }) {
             DMARC acts as a <strong className="text-zinc-100">conductor</strong> that defines a clear policy: what should the receiving server do when an email fails SPF and DKIM checks? Reject it, quarantine it, or do nothing? DMARC also provides a <strong className="text-zinc-100">reporting</strong> system that lets you see exactly who is sending emails using your domain.
           </p>
           <p>
-            The key concept of DMARC is <strong className="text-zinc-100">alignment</strong>: the domain used in the "From" header (visible to the recipient) must match the domain verified by SPF or DKIM. Without this alignment, an attacker could pass SPF with their own envelope domain while displaying your domain in the visible "From" header.
+            The key concept of DMARC is <strong className="text-zinc-100">alignment</strong>: the domain used in the “From” header (visible to the recipient) must match the domain verified by SPF or DKIM. Without this alignment, an attacker could pass SPF with their own envelope domain while displaying your domain in the visible “From” header.
           </p>
           <p>
             DMARC is now considered essential. Many email providers (Google, Yahoo, Microsoft) now require a valid DMARC record to accept bulk email. Without DMARC, your emails risk landing in spam or being rejected entirely.
@@ -60,7 +60,7 @@ export default function DmarcContentEn({ lang }: { lang: string }) {
           </p>
           <ol className="list-decimal list-inside space-y-3 pl-2">
             <li>
-              <strong className="text-zinc-100">Email reception</strong> — The receiving server receives an email and extracts the domain from the "From" header.
+              <strong className="text-zinc-100">Email reception</strong> — The receiving server receives an email and extracts the domain from the “From” header.
             </li>
             <li>
               <strong className="text-zinc-100">DMARC DNS query</strong> — It queries DNS to find a DMARC record at <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">_dmarc.domain.com</code>.
@@ -70,14 +70,14 @@ export default function DmarcContentEn({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
-              passes AND whether the envelope domain (MAIL FROM) is aligned with the "From" header domain.
+              passes AND whether the envelope domain (MAIL FROM) is aligned with the “From” header domain.
             </li>
             <li>
               <strong className="text-zinc-100">DKIM check + alignment</strong> — The server verifies whether{" "}
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}
-              passes AND whether the DKIM signature domain (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>) is aligned with the "From" header domain.
+              passes AND whether the DKIM signature domain (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code>) is aligned with the “From” header domain.
             </li>
             <li>
               <strong className="text-zinc-100">Policy enforcement</strong> — If neither SPF nor DKIM pass with alignment, the server applies the DMARC policy defined by the domain owner.
@@ -300,7 +300,7 @@ export default function DmarcContentEn({ lang }: { lang: string }) {
               What is DMARC alignment?
             </h3>
             <p className="text-zinc-300 leading-relaxed">
-              Alignment verifies that the domain used in the "From" header (visible to the recipient) matches the domain verified by{" "}
+              Alignment verifies that the domain used in the “From” header (visible to the recipient) matches the domain verified by{" "}
               <Link href={`/${lang}/guides/spf`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 SPF
               </Link>{" "}
@@ -308,7 +308,7 @@ export default function DmarcContentEn({ lang }: { lang: string }) {
               <Link href={`/${lang}/guides/dkim`} className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2">
                 DKIM
               </Link>{" "}
-              (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code> domain). In "relaxed" mode (default), subdomains are accepted. In "strict" mode, domains must match exactly.
+              (tag <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-400 text-sm">d=</code> domain). In “relaxed” mode (default), subdomains are accepted. In “strict” mode, domains must match exactly.
             </p>
           </div>
 
