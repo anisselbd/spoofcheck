@@ -13,6 +13,7 @@ Free, no sign-up. Available in English and French.
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://typescriptlang.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 </div>
 
@@ -83,3 +84,7 @@ vercel
 - **TypeScript** — Strict typing
 - **Tailwind CSS v4** — Dark mode UI
 - **Node.js DNS** — Native DNS resolution (no external dependencies)
+
+## License
+
+[MIT](LICENSE)
