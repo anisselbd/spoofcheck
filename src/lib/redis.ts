@@ -1,4 +1,5 @@
 import { createClient } from "redis";
+import { ctaEventField, summarizeCtaEvents, type CtaEvent, type CtaStats } from "./cta-events";
 
 const COUNTER_KEY = "domains_checked";
 const DOMAINS_SET_KEY = "domains_tested";
@@ -6,6 +7,7 @@ const DOMAIN_PREFIX = "domain:";
 const CHECKS_LOG_KEY = "checks_log";
 const COUNTRIES_KEY = "visitors_by_country";
 const CITIES_KEY = "visitors_by_city";
+const CTA_EVENTS_KEY = "cta_events";
 
 function getClient() {
   // Connexion à usage unique : pas de reconnexion (sinon connect() ne rejette
@@ -260,6 +262,25 @@ export async function checkRateLimit(
   } catch (e) {
     console.error("[rate-limit]", e instanceof Error ? e.message : e);
     return { allowed: true, retryAfterSeconds: 0 };
+  }
+}
+
+/** Un compteur par jour, événement, page et note : aucune donnée personnelle. */
+export async function recordCtaEvent(event: CtaEvent, now = Date.now()): Promise<void> {
+  const client = await getClient();
+  try {
+    await client.hIncrBy(CTA_EVENTS_KEY, ctaEventField(event, now), 1);
+  } finally {
+    await client.disconnect();
+  }
+}
+
+export async function getCtaStats(now: number): Promise<CtaStats> {
+  const client = await getClient();
+  try {
+    return summarizeCtaEvents(await client.hGetAll(CTA_EVENTS_KEY), now);
+  } finally {
+    await client.disconnect();
   }
 }
 

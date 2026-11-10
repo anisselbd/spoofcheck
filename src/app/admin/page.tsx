@@ -1,4 +1,4 @@
-import { getDomainsChecked, getAllDomainData, getChecksTimeline, getGeoData } from "@/lib/redis";
+import { getDomainsChecked, getAllDomainData, getChecksTimeline, getGeoData, getCtaStats } from "@/lib/redis";
 import AdminLogin from "@/components/AdminLogin";
 import AdminDashboard from "@/components/AdminDashboard";
 
@@ -10,13 +10,14 @@ const TIMELINE_WINDOW_MS = 48 * 3600000;
 // lecture Redis et sert au découpage horaire de la frise côté client.
 async function loadDashboard() {
   const now = Date.now();
-  const [totalChecks, domains, timeline, geo] = await Promise.all([
+  const [totalChecks, domains, timeline, geo, cta] = await Promise.all([
     getDomainsChecked(),
     getAllDomainData(),
     getChecksTimeline(now - TIMELINE_WINDOW_MS),
     getGeoData(),
+    getCtaStats(now),
   ]);
-  return { now, totalChecks, domains, timeline, geo };
+  return { now, totalChecks, domains, timeline, geo, cta };
 }
 
 export default async function AdminPage({

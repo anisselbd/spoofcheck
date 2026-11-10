@@ -10,6 +10,7 @@ import { calculateScore } from "@/lib/score-calculator";
 import { headers } from "next/headers";
 import { incrementDomainsChecked, trackDomain } from "@/lib/redis";
 import { rateLimitByIp } from "@/lib/rate-limit";
+import { isBotUserAgent } from "@/lib/bots";
 import { getDictionary, hasLocale } from "../../dictionaries";
 import type { Dictionary, Locale } from "../../dictionaries";
 import CheckPageClient from "@/components/CheckPageClient";
@@ -101,9 +102,7 @@ export default async function CheckPage({ params, searchParams }: Props) {
 
   const hdrs = await headers();
   const ua = hdrs.get("user-agent") ?? "";
-  const isBot = /bot|crawl|spider|slurp|facebookexternalhit|bingpreview|googlebot|yandex|baidu|semrush|ahrefs|mj12bot|dotbot|petalbot|bytespider/i.test(ua);
-
-  if (!isBot) {
+  if (!isBotUserAgent(ua)) {
     const country = hdrs.get("x-vercel-ip-country") ?? undefined;
     const city = hdrs.get("x-vercel-ip-city") ? decodeURIComponent(hdrs.get("x-vercel-ip-city")!) : undefined;
 

@@ -2,7 +2,9 @@
 
 import { useState, useMemo } from "react";
 import type { DomainCheckData, CheckEvent } from "@/lib/redis";
+import type { CtaStats } from "@/lib/cta-events";
 import WorldMap, { COUNTRY_NAMES as MAP_COUNTRY_NAMES } from "./WorldMap";
+import AdminCtaStats from "./AdminCtaStats";
 import { POPULAR_DOMAINS } from "@/lib/popular-domains";
 
 type DomainEntry = { domain: string } & DomainCheckData;
@@ -17,6 +19,7 @@ interface Props {
   domains: DomainEntry[];
   timeline: CheckEvent[];
   geo: GeoData;
+  cta: CtaStats;
   now: number;
 }
 
@@ -65,7 +68,7 @@ function getTld(domain: string): string {
 
 type SortKey = "domain" | "score" | "grade" | "checkedAt" | "checkCount";
 
-export default function AdminDashboard({ totalChecks, domains, timeline, geo, now }: Props) {
+export default function AdminDashboard({ totalChecks, domains, timeline, geo, cta, now }: Props) {
   const [search, setSearch] = useState("");
   const [gradeFilter, setGradeFilter] = useState<string>("");
   const [spoofFilter, setSpoofFilter] = useState<string>("");
@@ -237,6 +240,8 @@ export default function AdminDashboard({ totalChecks, domains, timeline, geo, no
           <div className="text-xs text-zinc-500 mt-1">{POPULAR_DOMAINS.length} curatees + {Math.max(0, new Set([...POPULAR_DOMAINS, ...domains.map(d => d.domain)]).size - POPULAR_DOMAINS.length)} via Redis</div>
         </div>
       </div>
+
+      <AdminCtaStats stats={cta} />
 
       {/* Timeline */}
       <div className="rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-5 space-y-3">

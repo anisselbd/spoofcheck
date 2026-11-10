@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { buildPartnerUrl, getPartnerTier, type PartnerTier } from "@/lib/partner";
+import { ctaPlacementFromPath, type CtaEventName } from "@/lib/cta-events";
 
 interface PartnerCtaCopy {
   title: string;
@@ -38,8 +40,48 @@ const tierStyles: Record<PartnerTier, { frame: string; button: string }> = {
   },
 };
 
+/**
+ * Signale un affichage ou un clic au site. Le lien reste direct vers le
+ * partenaire : sendBeacon part même si l'onglet change, sans retarder la
+ * navigation. Toute erreur est ignorée, la mesure ne doit rien bloquer.
+ */
+function sendCtaEvent(event: CtaEventName, grade: string) {
+  const body = JSON.stringify({
+    event,
+    grade,
+    placement: ctaPlacementFromPath(window.location.pathname),
+  });
+  try {
+    if (navigator.sendBeacon?.("/api/cta", body)) return;
+  } catch {
+    // sendBeacon indisponible ou refusé : repli sur fetch ci-dessous.
+  }
+  fetch("/api/cta", { method: "POST", body, keepalive: true }).catch(() => {});
+}
+
 export default function PartnerCta({ grade, score, spoofable, dict, delay = 600 }: PartnerCtaProps) {
   const href = buildPartnerUrl(grade);
+  const frameRef = useRef<HTMLDivElement>(null);
+
+  // Un affichage n'est compté que lorsque le CTA est réellement à l'écran
+  // (au moins à moitié visible), une seule fois par résultat.
+  useEffect(() => {
+    const node = frameRef.current;
+    if (!href || !node || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          sendCtaEvent("view", grade);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [href, grade]);
+
   if (!href) return null;
 
   const tier = getPartnerTier(spoofable, score);
@@ -48,6 +90,7 @@ export default function PartnerCta({ grade, score, spoofable, dict, delay = 600 
 
   return (
     <div
+      ref={frameRef}
       className={`animate-fade-up rounded-xl border p-6 text-center space-y-3 print:hidden ${styles.frame}`}
       style={{ animationDelay: `${delay}ms` }}
     >
@@ -57,6 +100,11 @@ export default function PartnerCta({ grade, score, spoofable, dict, delay = 600 
         href={href}
         target="_blank"
         rel="sponsored noopener noreferrer"
+        onClick={() => sendCtaEvent("click", grade)}
+        onAuxClick={(e) => {
+          // Clic molette : ouverture dans un nouvel onglet, à compter aussi.
+          if (e.button === 1) sendCtaEvent("click", grade);
+        }}
         className={`inline-flex items-center h-11 px-6 rounded-xl font-semibold text-sm transition-colors ${styles.button}`}
       >
         {copy.button}
