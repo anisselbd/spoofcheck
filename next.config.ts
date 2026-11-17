@@ -3,9 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
-    // Redirections sensibles à la casse, comme l'ancien proxy : /FR doit
-    // partir vers /en/FR (404) et non atteindre /[lang] avec lang="FR", ce
-    // qui pouvait servir un 404 en cache à la place de /fr.
+    // Redirections sensibles à la casse en local (next start), comme l'ancien
+    // proxy : sans ça, une requête /FR pouvait y faire servir un 404 à la
+    // place de /fr. Sur Vercel l'option est sans effet : /FR répond
+    // directement 404 (avant : 308 puis 404) avec sa propre entrée de cache,
+    // sans toucher à /fr (vérifié sur un déploiement de prévisualisation).
     caseSensitiveRoutes: true,
   },
   // Préfixe de langue manquant : redirection au niveau du CDN, sans invoquer
