@@ -1,4 +1,7 @@
-export const dynamic = "force-dynamic";
+// ISR : les statistiques Redis (compteur, derniers scans, palmarès) sont
+// recalculées au plus une fois par heure et par langue, au lieu de relire
+// tous les domaines testés à chaque visite (~0,2 à 0,6 s de CPU actif).
+export const revalidate = 3600;
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
